@@ -1,0 +1,21 @@
+steisw 2 riot processes coap server coap client epikoinwnia (Hello World)
+
+
+endiamesw python programma
+
+psakse IP multicast
+
+
+
+
+
+//---------------------------------------------------
+
+momus@DESKTOP-CNL1UTT:~/proj_DID/PythonGateway$ python3 gatewayServer.py
+
+
+momus@DESKTOP-CNL1UTT:~/proj_DID/CoAP_MiddlePy$ make all term
+
+
+momus@DESKTOP-CNL1UTT:~$ coap-client -m get coap://localhost/riot/board
+native
