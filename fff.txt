@@ -5,17 +5,28 @@ endiamesw python programma
 
 psakse IP multicast
 
+coap-client group communication (polla response)
 
-
-
+pshfiakh upografh sto RIOT 
 
 //---------------------------------------------------
 
 momus@DESKTOP-CNL1UTT:~/proj_DID/PythonGateway$ python3 gatewayServer.py
 
 
+
+
 momus@DESKTOP-CNL1UTT:~/proj_DID/CoAP_MiddlePy$ make all term
+
+momus@DESKTOP-CNL1UTT:~/proj_DID/CoAP_MiddlePy$ sudo ip tuntap add tap0 mode tap user ${USER}
+momus@DESKTOP-CNL1UTT:~/proj_DID/CoAP_MiddlePy$ sudo ip link set tap0 up
+
+
 
 
 momus@DESKTOP-CNL1UTT:~$ coap-client -m get coap://localhost/riot/board
 native
+
+east: [fdsa, fsadas]
+west 
+
