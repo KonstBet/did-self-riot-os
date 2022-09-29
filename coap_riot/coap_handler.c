@@ -193,7 +193,7 @@ static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     }
     puts("");
 
-    return coap_reply_simple(pkt, COAP_CLASS_SUCCESS, buf, len,
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, "keys created", 13);
 }
 

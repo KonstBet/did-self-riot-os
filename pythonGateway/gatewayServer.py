@@ -135,6 +135,7 @@ class create_ed25519Keys(resource.Resource):
             print(e)
         else:
             print('Result: %s\n%r'%(response.code, response.payload))
+            print(response.remote.hostinfo) #TODO TODO TODO TODO TODO
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
 
@@ -144,6 +145,25 @@ class getPublicKey(resource.Resource):
         print("GETTING KEYS")
 
         request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/riot/getpublickey')
+
+        print("TAKE KEYS")
+
+        try:
+            response = await protocol.request(request).response
+        except Exception as e:
+            print('Failed to fetch resource:')
+            print(e)
+        else:
+            print('Result: %s\n%r'%(response.code, response.payload))
+            
+            return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+
+class wellknown(resource.Resource):
+    async def render_get(self, request):
+        protocol = await Context.create_client_context()
+        print("GETTING KEYS")
+
+        request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/.well-known/core')
 
         print("TAKE KEYS")
 
@@ -176,6 +196,7 @@ async def main():
     root.add_resource(['riot','board'], RiotBoard())
     root.add_resource(['riot','createkeys'], create_ed25519Keys())
     root.add_resource(['riot','getpublickey'], getPublicKey())
+    root.add_resource(['.well-known','core'], wellknown())
 
 
     await aiocoap.Context.create_server_context(root)
