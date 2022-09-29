@@ -27,6 +27,10 @@ USEMODULE += fmt
 # include sha256 (used by example blockwise handler)
 USEMODULE += hashes
 
+USEMODULE += random
+
+USEPKG += c25519
+
 # Comment this out to enable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
 # development process:

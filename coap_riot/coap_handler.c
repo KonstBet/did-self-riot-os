@@ -15,6 +15,14 @@
 #include "hashes/sha256.h"
 #include "kernel_defines.h"
 
+#include "edsign.h"
+#include "ed25519.h"
+#include "random.h"
+
+/* digital signature key pair */
+static uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
+static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
+
 /* internal value that can be read/written via CoAP */
 static uint8_t internal_value = 0;
 
@@ -162,11 +170,39 @@ ssize_t _sha256_handler(coap_pkt_t* pkt, uint8_t *buf, size_t len, void *context
     return pkt_pos - (uint8_t*)pkt->hdr;
 }
 
+
+static ssize_t _key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+{
+    (void)context;
+    printf("RUNNING KEY HANDLER");
+    /* Create the new keypair */
+    random_bytes(secret_key, sizeof(secret_key));
+    ed25519_prepare(secret_key);
+    edsign_sec_to_pub(public_key, secret_key);
+
+    /* Print the new keypair */
+    puts("New keypair generated:");
+    printf("  - Secret: ");
+    for (uint8_t i = 0; i < EDSIGN_SECRET_KEY_SIZE; ++i) {
+        printf("%02X", secret_key[i]);
+    }
+
+    printf("\n  - Public: ");
+    for (uint8_t i = 0; i < EDSIGN_PUBLIC_KEY_SIZE; ++i) {
+        printf("%02X", public_key[i]);
+    }
+    puts("");
+
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+            COAP_FORMAT_TEXT, "success", 8);
+}
+
 /* must be sorted by path (ASCII order) */
 const coap_resource_t coap_resources[] = {
     COAP_WELL_KNOWN_CORE_DEFAULT_HANDLER,
     { "/echo/", COAP_GET | COAP_MATCH_SUBTREE, _echo_handler, NULL },
     { "/riot/board", COAP_GET, _riot_board_handler, NULL },
+    { "/riot/key", COAP_GET, _key_handler, NULL },
     { "/riot/value", COAP_GET | COAP_PUT | COAP_POST, _riot_value_handler, NULL },
     { "/riot/ver", COAP_GET, _riot_block2_handler, NULL },
     { "/sha256", COAP_POST, _sha256_handler, NULL },

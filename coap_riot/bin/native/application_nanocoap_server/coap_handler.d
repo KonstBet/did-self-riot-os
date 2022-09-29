@@ -51,7 +51,11 @@
  /home/momus/proj_DID/RIOT/sys/include/hashes/sha256.h \
  /usr/include/inttypes.h \
  /home/momus/proj_DID/RIOT/sys/include/hashes/sha2xx_common.h \
- /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h
+ /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/build/pkg/c25519/src/edsign.h \
+ /home/momus/proj_DID/RIOT/build/pkg/c25519/src/ed25519.h \
+ /home/momus/proj_DID/RIOT/build/pkg/c25519/src/f25519.h \
+ /home/momus/proj_DID/RIOT/sys/include/random.h
 
 /usr/include/stdc-predef.h:
 
@@ -228,3 +232,11 @@
 /home/momus/proj_DID/RIOT/sys/include/hashes/sha2xx_common.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/build/pkg/c25519/src/edsign.h:
+
+/home/momus/proj_DID/RIOT/build/pkg/c25519/src/ed25519.h:
+
+/home/momus/proj_DID/RIOT/build/pkg/c25519/src/f25519.h:
+
+/home/momus/proj_DID/RIOT/sys/include/random.h:
