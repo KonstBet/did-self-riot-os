@@ -1,3 +1,5 @@
 Made simple Riot COAP server
 Made simple python COAP gateway
 Implementation of example using Ed25519 public-key signature system in z_others
+Create Ed25519 keys
+Read public key from gateway

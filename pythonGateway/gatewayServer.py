@@ -119,12 +119,12 @@ class RiotBoard(resource.Resource):
 
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
 
-class ed25519Keys(resource.Resource):
+class create_ed25519Keys(resource.Resource):
     async def render_get(self, request):
         protocol = await Context.create_client_context()
         print("GETTING KEYS")
 
-        request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/riot/key')
+        request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/riot/createkeys')
 
         print("TAKE KEYS")
 
@@ -138,6 +138,24 @@ class ed25519Keys(resource.Resource):
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
 
+class getPublicKey(resource.Resource):
+    async def render_get(self, request):
+        protocol = await Context.create_client_context()
+        print("GETTING KEYS")
+
+        request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/riot/getpublickey')
+
+        print("TAKE KEYS")
+
+        try:
+            response = await protocol.request(request).response
+        except Exception as e:
+            print('Failed to fetch resource:')
+            print(e)
+        else:
+            print('Result: %s\n%r'%(response.code, response.payload))
+            
+            return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
 
 # logging setup
 
@@ -156,7 +174,8 @@ async def main():
     root.add_resource(['whoami'], WhoAmI())
 
     root.add_resource(['riot','board'], RiotBoard())
-    root.add_resource(['riot','key'], ed25519Keys())
+    root.add_resource(['riot','createkeys'], create_ed25519Keys())
+    root.add_resource(['riot','getpublickey'], getPublicKey())
 
 
     await aiocoap.Context.create_server_context(root)

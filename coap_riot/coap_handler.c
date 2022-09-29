@@ -171,7 +171,7 @@ ssize_t _sha256_handler(coap_pkt_t* pkt, uint8_t *buf, size_t len, void *context
 }
 
 
-static ssize_t _key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
     printf("RUNNING KEY HANDLER");
@@ -193,8 +193,20 @@ static ssize_t _key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *con
     }
     puts("");
 
+    return coap_reply_simple(pkt, COAP_CLASS_SUCCESS, buf, len,
+            COAP_FORMAT_TEXT, "keys created", 13);
+}
+
+static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+{
+    (void)context;
+
+    char public_key_hex[EDSIGN_PUBLIC_KEY_SIZE * 2 * 2 + 1] = { 0 };
+
+    fmt_bytes_hex(public_key_hex, public_key, EDSIGN_PUBLIC_KEY_SIZE * 2);
+
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, "success", 8);
+            COAP_FORMAT_TEXT, public_key_hex, EDSIGN_PUBLIC_KEY_SIZE * 2);
 }
 
 /* must be sorted by path (ASCII order) */
@@ -202,7 +214,8 @@ const coap_resource_t coap_resources[] = {
     COAP_WELL_KNOWN_CORE_DEFAULT_HANDLER,
     { "/echo/", COAP_GET | COAP_MATCH_SUBTREE, _echo_handler, NULL },
     { "/riot/board", COAP_GET, _riot_board_handler, NULL },
-    { "/riot/key", COAP_GET, _key_handler, NULL },
+    { "/riot/createkeys", COAP_GET, _create_keys_handler, NULL },
+    { "/riot/getpublickey", COAP_GET, _get_public_key_handler, NULL },
     { "/riot/value", COAP_GET | COAP_PUT | COAP_POST, _riot_value_handler, NULL },
     { "/riot/ver", COAP_GET, _riot_block2_handler, NULL },
     { "/sha256", COAP_POST, _sha256_handler, NULL },
