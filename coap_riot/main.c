@@ -45,6 +45,12 @@ int main(void)
     /* initialize nanocoap server instance */
     uint8_t buf[COAP_INBUF_SIZE];
     sock_udp_ep_t local = { .port=COAP_PORT, .family=AF_INET6 };
+
+    // coap_pkt_t pkt;
+    // sock_udp_ep_t remote = { .port=COAP_PORT, .family=AF_INET6, .netif=SOCK_ADDR_ANY_NETIF } ;
+    // ssize_t size_t = nanocoap_request(&pkt, &local, &remote, 0);
+    // printf("%d", size_t);
+
     nanocoap_server(&local, buf, sizeof(buf));
 
     /* should be never reached */

@@ -7,7 +7,9 @@ from aiocoap import *
 
 import aiocoap.resource as resource
 import aiocoap
+import json
 
+devices = []
 
 class BlockResource(resource.Resource):
     """Example resource which supports the GET and PUT methods. It sends large
@@ -104,7 +106,7 @@ class RiotBoard(resource.Resource):
     async def render_get(self, request):
         protocol = await Context.create_client_context()
 
-        request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/riot/board')
+        request = Message(code=GET, uri='coap://[' + devices[0] + ']/riot/board')
 
         print("GET ME THE BOARD FROM ")
 
@@ -176,6 +178,20 @@ class wellknown(resource.Resource):
             print('Result: %s\n%r'%(response.code, response.payload))
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+        
+        
+class newDevice(resource.Resource):
+    async def render_post(self, request):
+        print(request.remote.hostinfo)
+        print(request.payload)
+        newDeviceJson = json.loads(request.payload.decode('utf-8'))
+        print(newDeviceJson)
+        
+        devices.append(newDeviceJson['ipv6']+'%'+newDeviceJson['interface'])
+        print(devices)
+        return aiocoap.Message(payload="success".encode('ascii'))
+        
+        
 
 # logging setup
 
@@ -197,6 +213,7 @@ async def main():
     root.add_resource(['riot','createkeys'], create_ed25519Keys())
     root.add_resource(['riot','getpublickey'], getPublicKey())
     root.add_resource(['.well-known','core'], wellknown())
+    root.add_resource(['newdevice'], newDevice())
 
 
     await aiocoap.Context.create_server_context(root)
