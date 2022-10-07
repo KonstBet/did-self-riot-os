@@ -9,7 +9,20 @@ coap-client group communication (polla response)
 
 pshfiakh upografh sto RIOT 
 
+
+dictionary devices in gateway
+zeugos kleidiwn hardcoded ston kwdika
+gateway verify
+device sign
+
 //---------------------------------------------------
+--REPORT--
+DID
+did_self
+riot
+high level
+implementation
+
 
 //PythonGateway
 momus@DESKTOP-CNL1UTT:~/proj_DID/PythonGateway$ python3 gatewayServer.py
