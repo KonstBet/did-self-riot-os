@@ -9,6 +9,9 @@ import aiocoap.resource as resource
 import aiocoap
 import json
 
+import ed25519
+
+public_key = "9CF5898309BDD8418341FA119C70E9CFFBF4DE60AD0D6583D6195D5D4D0EAEEC"
 devices = { 'all': [] }
 
 class BlockResource(resource.Resource):
@@ -194,6 +197,35 @@ class newDevice(resource.Resource):
         return aiocoap.Message(payload="success".encode('ascii'))
         
         
+class signAndVerify(resource.Resource):
+    async def render_post(self, request):
+        protocol = await Context.create_client_context()
+        print(request.payload)
+
+        request = Message(code=POST, uri='coap://[' + devices['all'][0] + ']/riot/sign', payload=request.payload)
+
+        try:
+            response = await protocol.request(request).response
+        except Exception as e:
+            print('Failed to fetch resource:')
+            print(e)
+        else:
+            print('Result: %s\n%r'%(response.code, response.payload))
+            
+            result = response.payload.decode('utf-8').split(",")
+            print(result)
+            
+            verifyKey = ed25519.VerifyingKey(public_key, encoding="hex")
+            
+            try:
+                verifyKey.verify(result[1], result[0])
+                print("success")
+            except:
+                print("error")
+            
+            return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+        
+        
 
 # logging setup
 
@@ -216,6 +248,7 @@ async def main():
     root.add_resource(['riot','getpublickey'], getPublicKey())
     root.add_resource(['.well-known','core'], wellknown())
     root.add_resource(['newdevice'], newDevice())
+    root.add_resource(['riot','signandverify'], signAndVerify())
 
 
     await aiocoap.Context.create_server_context(root)

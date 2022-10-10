@@ -23,6 +23,10 @@
 static uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
 static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
+/* hardcoded digital signature key pair */
+static uint8_t secret_key_hardcoded[100] = "38CEBB8F42537E85FDDCF9D63D1F6ECB2ED99AB234782C2A707C023BFFF31679";
+static uint8_t public_key_hardcoded[100] = "9CF5898309BDD8418341FA119C70E9CFFBF4DE60AD0D6583D6195D5D4D0EAEEC";
+
 /* internal value that can be read/written via CoAP */
 static uint8_t internal_value = 0;
 
@@ -215,6 +219,33 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
     
 // }
 
+char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len) { // USED IN SIGN HANDLER
+    uint8_t signature[EDSIGN_SIGNATURE_SIZE];
+    edsign_sign(signature, public_key_hardcoded, secret_key_hardcoded, message, message_len);
+
+    char signature_hex[EDSIGN_SIGNATURE_SIZE * 2 + 1] = { 0 };
+    fmt_bytes_hex(signature_hex, signature, EDSIGN_SIGNATURE_SIZE);
+    printf("%s", signature_hex);
+
+    char *response = malloc(EDSIGN_SIGNATURE_SIZE * 2 + 1 + 1 + message_len); 
+    memcpy(response, message, message_len);
+    memcpy(response + message_len, ",", 1);
+    memcpy(response + message_len + 1, signature_hex, EDSIGN_SIGNATURE_SIZE * 2 + 1);
+    
+    return response;
+}
+
+static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+{
+    (void)context;
+
+    char *response;
+    response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len);
+    
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+            COAP_FORMAT_TEXT, response, EDSIGN_SIGNATURE_SIZE * 2 + 1 + pkt->payload_len);
+}
+
 /* must be sorted by path (ASCII order) */
 const coap_resource_t coap_resources[] = {
     COAP_WELL_KNOWN_CORE_DEFAULT_HANDLER,
@@ -222,6 +253,7 @@ const coap_resource_t coap_resources[] = {
     { "/riot/board", COAP_GET, _riot_board_handler, NULL },
     { "/riot/createkeys", COAP_GET, _create_keys_handler, NULL },
     { "/riot/getpublickey", COAP_GET, _get_public_key_handler, NULL },
+    { "/riot/sign", COAP_POST, ed25519_sign_handler, NULL },
     { "/riot/value", COAP_GET | COAP_PUT | COAP_POST, _riot_value_handler, NULL },
     { "/riot/ver", COAP_GET, _riot_block2_handler, NULL },
     { "/sha256", COAP_POST, _sha256_handler, NULL },
