@@ -9,7 +9,7 @@ import aiocoap.resource as resource
 import aiocoap
 import json
 
-devices = []
+devices = { 'all': [] }
 
 class BlockResource(resource.Resource):
     """Example resource which supports the GET and PUT methods. It sends large
@@ -105,28 +105,30 @@ class WhoAmI(resource.Resource):
 class RiotBoard(resource.Resource):
     async def render_get(self, request):
         protocol = await Context.create_client_context()
+        
+        for device in devices['all']:
 
-        request = Message(code=GET, uri='coap://[' + devices[0] + ']/riot/board')
+            request = Message(code=GET, uri='coap://[' + device + ']/riot/board')
 
-        print("GET ME THE BOARD FROM ")
+            print("GET ME THE BOARD FROM ")
 
-        try:
-            response = await protocol.request(request).response
-        except Exception as e:
-            print('Failed to fetch resource:')
-            print(e)
-        else:
-            print('Result: %s\n%r'%(response.code, response.payload))
-            
+            try:
+                response = await protocol.request(request).response
+            except Exception as e:
+                print('Failed to fetch resource:')
+                print(e)
+            else:
+                print('Result: %s\n%r'%(response.code, response.payload))
+                
 
-            return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+                return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
 
 class create_ed25519Keys(resource.Resource):
     async def render_get(self, request):
         protocol = await Context.create_client_context()
         print("GETTING KEYS")
 
-        request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/riot/createkeys')
+        request = Message(code=GET, uri='coap://[' + devices['all'][0] + ']/riot/createkeys')
 
         print("TAKE KEYS")
 
@@ -146,7 +148,7 @@ class getPublicKey(resource.Resource):
         protocol = await Context.create_client_context()
         print("GETTING KEYS")
 
-        request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/riot/getpublickey')
+        request = Message(code=GET, uri='coap://[' + devices['all'][0] + ']/riot/getpublickey')
 
         print("TAKE KEYS")
 
@@ -165,7 +167,7 @@ class wellknown(resource.Resource):
         protocol = await Context.create_client_context()
         print("GETTING KEYS")
 
-        request = Message(code=GET, uri='coap://[fe80::c838:15ff:fe53:fbc%tap0]/.well-known/core')
+        request = Message(code=GET, uri='coap://[' + devices['all'][0] + ']/.well-known/core')
 
         print("TAKE KEYS")
 
@@ -187,7 +189,7 @@ class newDevice(resource.Resource):
         newDeviceJson = json.loads(request.payload.decode('utf-8'))
         print(newDeviceJson)
         
-        devices.append(newDeviceJson['ipv6']+'%'+newDeviceJson['interface'])
+        devices['all'].append(newDeviceJson['ipv6']+'%'+newDeviceJson['interface'])
         print(devices)
         return aiocoap.Message(payload="success".encode('ascii'))
         
