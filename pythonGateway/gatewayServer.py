@@ -11,6 +11,7 @@ import json
 
 import ed25519
 
+secret_key = "38CEBB8F42537E85FDDCF9D63D1F6ECB2ED99AB234782C2A707C023BFFF31679"
 public_key = "9CF5898309BDD8418341FA119C70E9CFFBF4DE60AD0D6583D6195D5D4D0EAEEC"
 devices = { 'all': [] }
 
@@ -214,14 +215,18 @@ class signAndVerify(resource.Resource):
             
             result = response.payload.decode('utf-8').split(",")
             print(result)
+
+            print(request.payload)
             
             verifyKey = ed25519.VerifyingKey(public_key, encoding="hex")
             
             try:
-                verifyKey.verify(result[1], result[0])
-                print("success")
+                print(result[1])
+                print(result[0])
+                verifyKey.verify(result[1], result[0], encoding="base64")
+                print("Signature is valid")
             except:
-                print("error")
+                print("Signature is invalid")
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
         
