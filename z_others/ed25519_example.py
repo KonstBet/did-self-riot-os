@@ -1,7 +1,9 @@
 import ed25519
 
 privKey, pubKey = ed25519.create_keypair()
+print(privKey)
 print("Private key (32 bytes):", privKey.to_ascii(encoding='hex'))
+print(pubKey)
 print("Public key (32 bytes): ", pubKey.to_ascii(encoding='hex'))
 
 msg = b'Message for Ed25519 signing'

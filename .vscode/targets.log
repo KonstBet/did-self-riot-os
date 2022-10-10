@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Oct 10 12:32:47 2022
+# Make data base, printed on Mon Oct 10 19:47:27 2022
 
 # Variables
 
@@ -51,7 +51,7 @@ PATH = /home/momus/.vscode-server/bin/64bbfbf67ada9953918d72e1df2f4d8e537d340e/b
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-935de238-6393-4820-9fa4-ecd165e6891b.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-e3a9c450-691e-49a4-bb4b-8f8c8c52a246.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -63,7 +63,7 @@ PWD = /home/momus/proj_DID
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/12_interop
+WSL_INTEROP = /run/WSL/27_interop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -205,7 +205,7 @@ GNUmakefile:
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Mon Oct 10 12:32:47 2022
+# Finished Make data base on Mon Oct 10 19:47:27 2022
 
  
 make: *** No rule to make target 'all'.  Stop.

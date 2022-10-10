@@ -25,7 +25,10 @@ static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
 /* hardcoded digital signature key pair */
 static uint8_t secret_key_hardcoded[100] = "38CEBB8F42537E85FDDCF9D63D1F6ECB2ED99AB234782C2A707C023BFFF31679";
+static uint8_t secret_key_hardcoded_bytes[EDSIGN_SECRET_KEY_SIZE] = { 0 };
+
 static uint8_t public_key_hardcoded[100] = "9CF5898309BDD8418341FA119C70E9CFFBF4DE60AD0D6583D6195D5D4D0EAEEC";
+static uint8_t public_key_hardcoded_bytes[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
 /* internal value that can be read/written via CoAP */
 static uint8_t internal_value = 0;
@@ -221,10 +224,14 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
 
 char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len) { // USED IN SIGN HANDLER
     uint8_t signature[EDSIGN_SIGNATURE_SIZE];
-    edsign_sign(signature, public_key_hardcoded, secret_key_hardcoded, message, message_len);
+    fmt_hex_bytes(secret_key_hardcoded_bytes, (char*)secret_key_hardcoded);
+    fmt_hex_bytes(public_key_hardcoded_bytes, (char*)public_key_hardcoded);
 
-    int aaaa = edsign_verify(signature, public_key_hardcoded, message, message_len);
-    printf("%d\n\n", aaaa);
+    edsign_sign(signature, public_key_hardcoded_bytes, secret_key_hardcoded_bytes, message, message_len);
+
+    //CHECK WITH VERIFY IF SIGN WORKED
+    // int aaaa = edsign_verify(signature, public_key_hardcoded_bytes, message, message_len);
+    // printf("%d\n\n", aaaa);
 
     char signature_hex[EDSIGN_SIGNATURE_SIZE * 2 + 1] = { 0 };
     fmt_bytes_hex(signature_hex, signature, EDSIGN_SIGNATURE_SIZE);

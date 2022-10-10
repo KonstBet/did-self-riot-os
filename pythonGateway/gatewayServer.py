@@ -219,14 +219,16 @@ class signAndVerify(resource.Resource):
             print(request.payload)
             
             verifyKey = ed25519.VerifyingKey(public_key, encoding="hex")
+            print(verifyKey)
+            print("Public key (32 bytes): ", verifyKey.to_ascii(encoding='hex'))
             
             try:
                 print(result[1])
                 print(result[0])
-                verifyKey.verify(result[1], result[0], encoding="base64")
+                verifyKey.verify(result[1], result[0], encoding="hex") #TODO SIGNATURE IS TOO BIG???
                 print("Signature is valid")
             except:
-                print("Signature is invalid")
+                print("signature is bad!")
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
         
