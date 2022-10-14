@@ -229,11 +229,9 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len) { // 
 
     edsign_sign(signature, public_key_hardcoded_bytes, secret_key_hardcoded_bytes, message, message_len);
 
-    printf("Signature: %s\n", signature);
-
     //CHECK WITH VERIFY IF SIGN WORKED
-    int aaaa = edsign_verify(signature, public_key_hardcoded_bytes, message, message_len);
-    printf("%d\n\n", aaaa);
+    // int aaaa = edsign_verify(signature, public_key_hardcoded_bytes, message, message_len);
+    // printf("%d\n\n", aaaa);
 
     char signature_hex[EDSIGN_SIGNATURE_SIZE * 2 + 1] = { 0 };
     fmt_bytes_hex(signature_hex, signature, EDSIGN_SIGNATURE_SIZE);
