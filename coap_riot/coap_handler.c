@@ -239,10 +239,10 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len) { // 
     fmt_bytes_hex(signature_hex, signature, EDSIGN_SIGNATURE_SIZE);
     printf("%s", signature_hex);
 
-    char *response = malloc(EDSIGN_SIGNATURE_SIZE * 2 + 1); 
-    // memcpy(response, message, message_len);
-    // memcpy(response + message_len, ",", 1);
-    memcpy(response, signature_hex, EDSIGN_SIGNATURE_SIZE * 2 + 1);
+    char *response = malloc(EDSIGN_SIGNATURE_SIZE * 2 + 1 + 1 + message_len); 
+    memcpy(response, message, message_len);
+    memcpy(response + message_len, ",", 1);
+    memcpy(response + message_len + 1, signature_hex, EDSIGN_SIGNATURE_SIZE * 2 + 1);
     
     return response;
 }
@@ -255,7 +255,7 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len);
     
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, response, EDSIGN_SIGNATURE_SIZE * 2);
+            COAP_FORMAT_TEXT, response, EDSIGN_SIGNATURE_SIZE * 2 + 1 + pkt->payload_len);
 }
 
 /* must be sorted by path (ASCII order) */

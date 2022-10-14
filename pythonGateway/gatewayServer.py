@@ -213,30 +213,17 @@ class signAndVerify(resource.Resource):
         else:
             print('Result: %s\n%r'%(response.code, response.payload))
             
-            result = response.payload #.decode('utf-8').split(",")
-            # print(result)
-
-            # print(request.payload)
+            result = response.payload.decode('utf-8').split(",")
+            print(result)
             
-            # signKey = ed25519.SigningKey(secret_key)
-            
-            # print(signKey)
-            # print("Secret key (32 bytes): ", signKey.to_ascii(encoding='hex'))
             
             verifyKey = ed25519.VerifyingKey(public_key, encoding="hex")
             
-            
-            print(verifyKey)
-            print("Public key (32 bytes): ", verifyKey.to_ascii(encoding='hex'))
-            
             try:
-                # print(result[1])
-                # print(result[0])
-                print(result, request.payload)
-                verifyKey.verify(result, request.payload, encoding="hex") #TODO SIGNATURE IS TOO BIG???
-                print("Signature is VALID!")
+                verifyKey.verify(result[1].encode('UTF-8'), result[0].encode('UTF-8'), encoding="hex") #TODO SIGNATURE IS TOO BIG???
+                print("Signature is valid")
             except:
-                print("Signature is BAD!")
+                print("signature is bad!")
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
         
