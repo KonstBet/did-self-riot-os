@@ -11,8 +11,8 @@ import json
 
 import ed25519
 
-secret_key = "38CEBB8F42537E85FDDCF9D63D1F6ECB2ED99AB234782C2A707C023BFFF31679"
-public_key = "9CF5898309BDD8418341FA119C70E9CFFBF4DE60AD0D6583D6195D5D4D0EAEEC"
+secret_key = b"8bb4014d8b0a63af72d88482c1276ccd032e26fc05806886a9f1a727210f4fc3"
+public_key = b"d04e907192471c603e148d73d6a3897976dc260106aa120837ebcf815f0445c2"
 devices = { 'all': [] }
 
 class BlockResource(resource.Resource):
@@ -213,22 +213,30 @@ class signAndVerify(resource.Resource):
         else:
             print('Result: %s\n%r'%(response.code, response.payload))
             
-            result = response.payload.decode('utf-8').split(",")
-            print(result)
+            result = response.payload #.decode('utf-8').split(",")
+            # print(result)
 
-            print(request.payload)
+            # print(request.payload)
+            
+            # signKey = ed25519.SigningKey(secret_key)
+            
+            # print(signKey)
+            # print("Secret key (32 bytes): ", signKey.to_ascii(encoding='hex'))
             
             verifyKey = ed25519.VerifyingKey(public_key, encoding="hex")
+            
+            
             print(verifyKey)
             print("Public key (32 bytes): ", verifyKey.to_ascii(encoding='hex'))
             
             try:
-                print(result[1])
-                print(result[0])
-                verifyKey.verify(result[1], result[0], encoding="hex") #TODO SIGNATURE IS TOO BIG???
-                print("Signature is valid")
+                # print(result[1])
+                # print(result[0])
+                print(result, request.payload)
+                verifyKey.verify(result, request.payload, encoding="hex") #TODO SIGNATURE IS TOO BIG???
+                print("Signature is VALID!")
             except:
-                print("signature is bad!")
+                print("Signature is BAD!")
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
         

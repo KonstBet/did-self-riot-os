@@ -24,10 +24,10 @@ static uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
 static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
 /* hardcoded digital signature key pair */
-static uint8_t secret_key_hardcoded[100] = "38CEBB8F42537E85FDDCF9D63D1F6ECB2ED99AB234782C2A707C023BFFF31679";
+static uint8_t secret_key_hardcoded[100] = "8bb4014d8b0a63af72d88482c1276ccd032e26fc05806886a9f1a727210f4fc3";
 static uint8_t secret_key_hardcoded_bytes[EDSIGN_SECRET_KEY_SIZE] = { 0 };
 
-static uint8_t public_key_hardcoded[100] = "9CF5898309BDD8418341FA119C70E9CFFBF4DE60AD0D6583D6195D5D4D0EAEEC";
+static uint8_t public_key_hardcoded[100] = "d04e907192471c603e148d73d6a3897976dc260106aa120837ebcf815f0445c2";
 static uint8_t public_key_hardcoded_bytes[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
 /* internal value that can be read/written via CoAP */
@@ -229,18 +229,20 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len) { // 
 
     edsign_sign(signature, public_key_hardcoded_bytes, secret_key_hardcoded_bytes, message, message_len);
 
+    printf("Signature: %s\n", signature);
+
     //CHECK WITH VERIFY IF SIGN WORKED
-    // int aaaa = edsign_verify(signature, public_key_hardcoded_bytes, message, message_len);
-    // printf("%d\n\n", aaaa);
+    int aaaa = edsign_verify(signature, public_key_hardcoded_bytes, message, message_len);
+    printf("%d\n\n", aaaa);
 
     char signature_hex[EDSIGN_SIGNATURE_SIZE * 2 + 1] = { 0 };
     fmt_bytes_hex(signature_hex, signature, EDSIGN_SIGNATURE_SIZE);
     printf("%s", signature_hex);
 
-    char *response = malloc(EDSIGN_SIGNATURE_SIZE * 2 + 1 + 1 + message_len); 
-    memcpy(response, message, message_len);
-    memcpy(response + message_len, ",", 1);
-    memcpy(response + message_len + 1, signature_hex, EDSIGN_SIGNATURE_SIZE * 2 + 1);
+    char *response = malloc(EDSIGN_SIGNATURE_SIZE * 2 + 1); 
+    // memcpy(response, message, message_len);
+    // memcpy(response + message_len, ",", 1);
+    memcpy(response, signature_hex, EDSIGN_SIGNATURE_SIZE * 2 + 1);
     
     return response;
 }
@@ -253,7 +255,7 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len);
     
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, response, EDSIGN_SIGNATURE_SIZE * 2 + 1 + pkt->payload_len);
+            COAP_FORMAT_TEXT, response, EDSIGN_SIGNATURE_SIZE * 2);
 }
 
 /* must be sorted by path (ASCII order) */
