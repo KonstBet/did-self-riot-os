@@ -21,7 +21,7 @@
 
 /* digital signature key pair */
 static uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
-static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
+static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 }; //DID
 
 /* hardcoded digital signature key pair */
 static uint8_t secret_key_hardcoded[100] = "8bb4014d8b0a63af72d88482c1276ccd032e26fc05806886a9f1a727210f4fc3";
@@ -178,8 +178,22 @@ ssize_t _sha256_handler(coap_pkt_t* pkt, uint8_t *buf, size_t len, void *context
 }
 
 
+//// getdiddocument() returns this document signed
+    /*
+        DID document
+        "{
+            \"attestation\": \"public_key we created\"
+        }"
+
+
+        --> we sign this with hardcoded private key
+
+        change sign function from hardcoded to created keys
+    */
+
 static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
+    
     (void)context;
     printf("RUNNING KEY HANDLER");
     /* Create the new keypair */

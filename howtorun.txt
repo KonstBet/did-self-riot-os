@@ -13,3 +13,5 @@ $ coap-client -m get coap://localhost/riot/board
 $ coap-client -m get coap://localhost/riot/createkeys
 $ coap-client -m get coap://localhost/riot/getpublickey
 $ coap-client -m post coap://localhost/newdevice -e '{"ipv6": "fe80::3c4f:23ff:febb:8b1f", "interface": "tap0"}'
+
+$ coap-client -m post coap://localhost/riot/signandverify -e message

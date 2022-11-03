@@ -11,7 +11,6 @@ import json
 
 import ed25519
 
-secret_key = b"8bb4014d8b0a63af72d88482c1276ccd032e26fc05806886a9f1a727210f4fc3"
 public_key = b"d04e907192471c603e148d73d6a3897976dc260106aa120837ebcf815f0445c2"
 devices = { 'all': [] }
 
