@@ -203,14 +203,19 @@ class signAndVerify(resource.Resource):
         print(request.payload)
 
         request = Message(code=POST, uri='coap://[' + devices['all'][0] + ']/riot/sign', payload=request.payload)
-
+        
+        print("AAAAAAAAAA")
+        print(request)
         try:
             response = await protocol.request(request).response
+            
+            print(response)
         except Exception as e:
             print('Failed to fetch resource:')
             print(e)
         else:
             print('Result: %s\n%r'%(response.code, response.payload))
+            print
             
             result = response.payload.decode('utf-8').split(",")
             print(result)
