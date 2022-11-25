@@ -19,16 +19,18 @@
 #include "ed25519.h"
 #include "random.h"
 
-/* digital signature key pair */
-static uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
-static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 }; //DID
+/* digital signature key pair */ /* Generated using ed25519-genkeypair */
+static uint8_t secret_key_hex[100] = { 0 };
+// static uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
+static uint8_t public_key_hex[100] = { 0 };
+// static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
 /* hardcoded digital signature key pair */
-static uint8_t secret_key_hardcoded[100] = "8bb4014d8b0a63af72d88482c1276ccd032e26fc05806886a9f1a727210f4fc3";
-static uint8_t secret_key_hardcoded_bytes[EDSIGN_SECRET_KEY_SIZE] = { 0 };
+static uint8_t secret_key_hex_hardcoded[100] = "8bb4014d8b0a63af72d88482c1276ccd032e26fc05806886a9f1a727210f4fc3";
+//static uint8_t secret_key_hex_hardcoded[EDSIGN_SECRET_KEY_SIZE] = { 0 };
 
-static uint8_t public_key_hardcoded[100] = "d04e907192471c603e148d73d6a3897976dc260106aa120837ebcf815f0445c2";
-static uint8_t public_key_hardcoded_bytes[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
+static uint8_t public_key_hex_hardcoded[100] = "d04e907192471c603e148d73d6a3897976dc260106aa120837ebcf815f0445c2";
+//static uint8_t public_key_hex_hardcoded[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
 /* internal value that can be read/written via CoAP */
 static uint8_t internal_value = 0;
@@ -191,10 +193,13 @@ ssize_t _sha256_handler(coap_pkt_t* pkt, uint8_t *buf, size_t len, void *context
         change sign function from hardcoded to created keys
     */
 
+
 static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
-    
     (void)context;
+    uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
+    uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
+
     printf("RUNNING KEY HANDLER");
     /* Create the new keypair */
     random_bytes(secret_key, sizeof(secret_key));
@@ -214,6 +219,12 @@ static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     }
     puts("");
 
+    //SAVE KEYS TO HEX
+    fmt_bytes_hex((char*) secret_key_hex, secret_key, EDSIGN_PUBLIC_KEY_SIZE);
+    fmt_bytes_hex((char*) public_key_hex, public_key, EDSIGN_PUBLIC_KEY_SIZE);
+    printf("Secret key: %s", secret_key_hex);
+    printf("Public key: %s", public_key_hex);
+
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, "keys created", 13);
 }
@@ -221,10 +232,6 @@ static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
 static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
-
-    char public_key_hex[EDSIGN_PUBLIC_KEY_SIZE * 2 * 2 + 1] = { 0 };
-
-    fmt_bytes_hex(public_key_hex, public_key, EDSIGN_PUBLIC_KEY_SIZE * 2);
 
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, public_key_hex, EDSIGN_PUBLIC_KEY_SIZE * 2);
@@ -236,21 +243,28 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
     
 // }
 
-char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len) { // USED IN SIGN HANDLER
+char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8_t* secret_key, uint8_t* public_key) { // USED IN SIGN HANDLER
     uint8_t signature[EDSIGN_SIGNATURE_SIZE];
-    fmt_hex_bytes(secret_key_hardcoded_bytes, (char*)secret_key_hardcoded);
-    fmt_hex_bytes(public_key_hardcoded_bytes, (char*)public_key_hardcoded);
+    // secret_key_bytes & public_key_bytes are used to make hex string to bytes
+    uint8_t secret_key_bytes[EDSIGN_SECRET_KEY_SIZE] = { 0 };
+    uint8_t public_key_bytes[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
-    edsign_sign(signature, public_key_hardcoded_bytes, secret_key_hardcoded_bytes, message, message_len);
+    //Turn keys from hex to bytes to be able to sign
+    fmt_hex_bytes(secret_key_bytes, (char*)secret_key);
+    fmt_hex_bytes(public_key_bytes, (char*)public_key);
+
+    //Sign message
+    edsign_sign(signature, public_key_bytes, secret_key_bytes, message, message_len);
 
     //CHECK WITH VERIFY IF SIGN WORKED
-    // int aaaa = edsign_verify(signature, public_key_hardcoded_bytes, message, message_len);
-    // printf("%d\n\n", aaaa);
+    int aaaa = edsign_verify(signature, public_key_bytes, message, message_len);
+    printf("%d\n\n", aaaa);
 
     char signature_hex[EDSIGN_SIGNATURE_SIZE * 2 + 1] = { 0 };
     fmt_bytes_hex(signature_hex, signature, EDSIGN_SIGNATURE_SIZE);
-    printf("%s", signature_hex);
+    //printf("%s", signature_hex);
 
+    //Create response with signature
     char *response = malloc(EDSIGN_SIGNATURE_SIZE * 2 + 1 + 1 + message_len); 
     memcpy(response, message, message_len);
     memcpy(response + message_len, ",", 1);
@@ -264,10 +278,56 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     (void)context;
 
     char *response;
-    response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len);
+    // sign message with hardcoded keys
+    response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len, secret_key_hex_hardcoded, public_key_hex_hardcoded);
+    printf("payload size: %d\n", pkt->payload_len);
+    printf("payload size: %d\n", strlen(response));
+    printf("payload message size: %d\n", strlen((char*)pkt->payload));
+    printf("SIZE: %d\n", EDSIGN_SIGNATURE_SIZE * 2 + 1 + pkt->payload_len);
+    // send back message and signature
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+            COAP_FORMAT_TEXT, response, strlen(response));
+}
+
+
+char* createDidDocument(void) {
+    char* did = malloc(100);
+    strcat(did, "\"id\": \"did:self:");
+    strncat(did, (char*)public_key_hex, EDSIGN_PUBLIC_KEY_SIZE * 2);
+    strcat(did, "\"");
+
+    char* didAttestation = malloc(100);
+    strcat(didAttestation, "\"attestation\": \"");
+    strncat(didAttestation, (char*)public_key_hex, EDSIGN_PUBLIC_KEY_SIZE * 2);
+    strcat(didAttestation, "\"");
+
+
+    char* didDocument = malloc(1000); 
+    strcat(didDocument, "{");
+
+    strcat(didDocument, did);
+    strcat(didDocument, ", ");
+    strcat(didDocument, didAttestation);
+
+    strcat(didDocument, "}");
+            
+    return didDocument;
+}
+
+static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+{
+    (void) context;
+    char* didDocument = createDidDocument();
+    
+    char* result = signMessageAndReturnResponse((uint8_t*)didDocument, strlen(didDocument), secret_key_hex, public_key_hex);
+    printf("\nDID DOCUMENT: %s\n", result);
+    printf("payload size: %d\n", strlen(didDocument));
+    printf("response size: %d\n", strlen(result));
+    printf("payload message size: %d\n", strlen(didDocument));
+    printf("SIZE: %d\n", EDSIGN_SIGNATURE_SIZE * 2 + 1 + strlen(didDocument));
     
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, response, EDSIGN_SIGNATURE_SIZE * 2 + 1 + pkt->payload_len);
+            COAP_FORMAT_TEXT, (uint8_t*)result, strlen(result));
 }
 
 /* must be sorted by path (ASCII order) */
@@ -275,9 +335,10 @@ const coap_resource_t coap_resources[] = {
     COAP_WELL_KNOWN_CORE_DEFAULT_HANDLER,
     { "/echo/", COAP_GET | COAP_MATCH_SUBTREE, _echo_handler, NULL },
     { "/riot/board", COAP_GET, _riot_board_handler, NULL },
-    { "/riot/createkeys", COAP_GET, _create_keys_handler, NULL },
-    { "/riot/getpublickey", COAP_GET, _get_public_key_handler, NULL },
-    { "/riot/sign", COAP_POST, ed25519_sign_handler, NULL },
+    { "/riot/createkeys", COAP_GET, _create_keys_handler, NULL }, //MINE
+    { "/riot/did", COAP_GET, getDidDocument, NULL }, //MINE
+    { "/riot/getpublickey", COAP_GET, _get_public_key_handler, NULL }, //MINE
+    { "/riot/sign", COAP_POST, ed25519_sign_handler, NULL }, //MINE
     { "/riot/value", COAP_GET | COAP_PUT | COAP_POST, _riot_value_handler, NULL },
     { "/riot/ver", COAP_GET, _riot_block2_handler, NULL },
     { "/sha256", COAP_POST, _sha256_handler, NULL },

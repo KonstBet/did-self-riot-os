@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Nov  3 23:47:16 2022
+# Make data base, printed on Fri Nov 25 13:46:41 2022
 
 # Variables
 
@@ -31,7 +31,7 @@ SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
 # environment
-_ = /home/momus/.vscode-server/bin/8fa188b2b301d36553cbc9ce1b0a146ccb93351f/node
+_ = /home/momus/.vscode-server/bin/6261075646f055b99068d3688932416f2346dd3b/node
 # makefile
 MAKEFILE_LIST := 
 # environment
@@ -47,11 +47,11 @@ VSCODE_CWD = /mnt/c/Users/kosta/AppData/Local/Programs/Microsoft VS Code
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/momus/.vscode-server/bin/8fa188b2b301d36553cbc9ce1b0a146ccb93351f/bin/remote-cli:/home/momus/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Program Files (x86)/Razer/ChromaBroadcast/bin:/mnt/c/Program Files/Razer/ChromaBroadcast/bin:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Users/kosta/AppData/Roaming/ActiveState/bin:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/flutter/bin:/mnt/c/Program Files (x86)/Windows Kits/8.1/Windows Performance Toolkit/:/mnt/c/Program Files (x86)/sbt/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Users/kosta/.jbang/bin:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/Tools/WinNT:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/MSDev98/Bin:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/Tools:/mnt/c/Program Files (x86)/Microsoft Visual Studio/VC98/bin:/mnt/c/Users/kosta/AppData/Local/Programs/AdoptOpenJDK/bin:/mnt/c/Users/kosta/AppData/Local/Programs/Python/Python37/Scripts/:/mnt/c/Users/kosta/AppData/Local/Programs/Python/Python37/:/mnt/c/Users/kosta/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/kosta/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/MongoDB/Server/4.2/bin:/mnt/c/Users/kosta/.dotnet/tools:/mnt/c/Users/kosta/AppData/Local/Microsoft/WindowsApps:/mnt/c/temp/TempNASM/packages/nasm.2.10.07/tools:/mnt/c/Program Files (x86)/OpenSSL/include:/mnt/c/Program Files (x86)/Windows Kits/8.1/Include:/mnt/c/Program Files (x86)/Windows Kits/10/Include:/mnt/c/Program Files (x86)/Windows Kits/10/bin:/mnt/c/Program Files (x86)/Windows Kits/8.1/bin:/mnt/c/b2/bin:/mnt/c/Spark/spark-3.1.2-bin-hadoop3.2/bin:/mnt/c/hadoop/bin:/mnt/c/Users/kosta/apache-maven-3.6.3-bin/apache-maven-3.6.3/bin:/mnt/c/Users/kosta/.dotnet/tools:/mnt/c/Users/kosta/AppData/Roaming/npm:/mnt/c/WINDOWS/system32/config/systemprofile/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/kosta/.jbang/bin:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/Tools/WinNT:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/MSDev98/Bin:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/Tools:/mnt/c/Program Files (x86)/Microsoft Visual Studio/VC98/bin:/mnt/c/Users/kosta/AppData/Local/Programs/AdoptOpenJDK/bin:/mnt/c/Users/kosta/AppData/Local/Programs/Python/Python37/Scripts/:/mnt/c/Users/kosta/AppData/Local/Programs/Python/Python37/:/mnt/c/Users/kosta/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/kosta/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/MongoDB/Server/4.2/bin:/mnt/c/Users/kosta/.dotnet/tools:/mnt/c/Users/kosta/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/flutter/bin:/mnt/c/temp/TempNASM/packages/nasm.2.10.07/tools:/mnt/c/Program Files (x86)/OpenSSL/include:/mnt/c/Program Files (x86)/Windows Kits/8.1/Include:/mnt/c/Program Files/CMake/bin:/mnt/c/Program Files (x86)/Windows Kits/10/Include:/mnt/c/Program Files (x86)/Windows Kits/10/bin:/mnt/c/Program Files (x86)/Windows Kits/8.1/bin:/mnt/c/b2/bin:/mnt/c/Spark/spark-3.1.2-bin-hadoop3.2/bin:/mnt/c/hadoop/bin:/mnt/c/Users/kosta/apache-maven-3.6.3-bin/apache-maven-3.6.3/bin:/mnt/c/Users/kosta/.dotnet/tools:/mnt/c/Users/kosta/AppData/Roaming/npm:/snap/bin
+PATH = /home/momus/.vscode-server/bin/6261075646f055b99068d3688932416f2346dd3b/bin/remote-cli:/home/momus/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Java/jre1.8.0_331:/mnt/c/Program Files (x86)/Java/jre1.8.0_331/bin:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Program Files (x86)/Razer/ChromaBroadcast/bin:/mnt/c/Program Files/Razer/ChromaBroadcast/bin:/mnt/c/Users/kosta/AppData/Roaming/ActiveState/bin:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/flutter/bin:/mnt/c/Program Files (x86)/Windows Kits/8.1/Windows Performance Toolkit/:/mnt/c/Program Files (x86)/sbt/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Users/kosta/.jbang/bin:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/Tools/WinNT:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/MSDev98/Bin:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/Tools:/mnt/c/Program Files (x86)/Microsoft Visual Studio/VC98/bin:/mnt/c/Users/kosta/AppData/Local/Programs/AdoptOpenJDK/bin:/mnt/c/Users/kosta/AppData/Local/Programs/Python/Python37/Scripts/:/mnt/c/Users/kosta/AppData/Local/Programs/Python/Python37/:/mnt/c/Users/kosta/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/kosta/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/MongoDB/Server/4.2/bin:/mnt/c/Users/kosta/.dotnet/tools:/mnt/c/Users/kosta/AppData/Local/Microsoft/WindowsApps:/mnt/c/temp/TempNASM/packages/nasm.2.10.07/tools:/mnt/c/Program Files (x86)/OpenSSL/include:/mnt/c/Program Files (x86)/Windows Kits/8.1/Include:/mnt/c/Program Files (x86)/Windows Kits/10/Include:/mnt/c/Program Files (x86)/Windows Kits/10/bin:/mnt/c/Program Files (x86)/Windows Kits/8.1/bin:/mnt/c/b2/bin:/mnt/c/Spark/spark-3.1.2-bin-hadoop3.2/bin:/mnt/c/hadoop/bin:/mnt/c/Users/kosta/apache-maven-3.6.3-bin/apache-maven-3.6.3/bin:/mnt/c/Users/kosta/.dotnet/tools:/mnt/c/Users/kosta/AppData/Roaming/npm:/mnt/c/WINDOWS/system32/config/systemprofile/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/MongoDB/Tools/100/bin:/mnt/c/Program Files/hawk-2.9.0:/mnt/c/Users/kosta/.jbang/bin:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/Tools/WinNT:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/MSDev98/Bin:/mnt/c/Program Files (x86)/Microsoft Visual Studio/Common/Tools:/mnt/c/Program Files (x86)/Microsoft Visual Studio/VC98/bin:/mnt/c/Users/kosta/AppData/Local/Programs/AdoptOpenJDK/bin:/mnt/c/Users/kosta/AppData/Local/Programs/Python/Python37/Scripts/:/mnt/c/Users/kosta/AppData/Local/Programs/Python/Python37/:/mnt/c/Users/kosta/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/kosta/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files/MongoDB/Server/4.2/bin:/mnt/c/Users/kosta/.dotnet/tools:/mnt/c/Users/kosta/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/flutter/bin:/mnt/c/temp/TempNASM/packages/nasm.2.10.07/tools:/mnt/c/Program Files (x86)/OpenSSL/include:/mnt/c/Program Files (x86)/Windows Kits/8.1/Include:/mnt/c/Program Files/CMake/bin:/mnt/c/Program Files (x86)/Windows Kits/10/Include:/mnt/c/Program Files (x86)/Windows Kits/10/bin:/mnt/c/Program Files (x86)/Windows Kits/8.1/bin:/mnt/c/b2/bin:/mnt/c/Spark/spark-3.1.2-bin-hadoop3.2/bin:/mnt/c/hadoop/bin:/mnt/c/Users/kosta/apache-maven-3.6.3-bin/apache-maven-3.6.3/bin:/mnt/c/Users/kosta/.dotnet/tools:/mnt/c/Users/kosta/AppData/Roaming/npm:/snap/bin
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-7f979cf1-e32f-4bbb-84a6-5326f2ebaa33.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-993dfd45-c859-4c62-aedd-2d09fe678d51.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -63,7 +63,7 @@ PWD = /home/momus/proj_DID
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/345_interop
+WSL_INTEROP = /run/WSL/219_interop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -205,7 +205,7 @@ GNUmakefile:
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Thu Nov  3 23:47:16 2022
+# Finished Make data base on Fri Nov 25 13:46:41 2022
 
  
 make: *** No rule to make target 'all'.  Stop.
