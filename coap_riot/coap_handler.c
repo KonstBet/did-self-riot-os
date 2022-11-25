@@ -244,6 +244,7 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
 // }
 
 char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8_t* secret_key, uint8_t* public_key) { // USED IN SIGN HANDLER
+
     uint8_t signature[EDSIGN_SIGNATURE_SIZE];
     // secret_key_bytes & public_key_bytes are used to make hex string to bytes
     uint8_t secret_key_bytes[EDSIGN_SECRET_KEY_SIZE] = { 0 };
@@ -257,8 +258,8 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8
     edsign_sign(signature, public_key_bytes, secret_key_bytes, message, message_len);
 
     //CHECK WITH VERIFY IF SIGN WORKED
-    int aaaa = edsign_verify(signature, public_key_bytes, message, message_len);
-    printf("%d\n\n", aaaa);
+    // int aaaa = edsign_verify(signature, public_key_bytes, message, message_len);
+    // printf("%d\n\n", aaaa);
 
     char signature_hex[EDSIGN_SIGNATURE_SIZE * 2 + 1] = { 0 };
     fmt_bytes_hex(signature_hex, signature, EDSIGN_SIGNATURE_SIZE);
@@ -280,10 +281,8 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     char *response;
     // sign message with hardcoded keys
     response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len, secret_key_hex_hardcoded, public_key_hex_hardcoded);
-    printf("payload size: %d\n", pkt->payload_len);
-    printf("payload size: %d\n", strlen(response));
-    printf("payload message size: %d\n", strlen((char*)pkt->payload));
-    printf("SIZE: %d\n", EDSIGN_SIGNATURE_SIZE * 2 + 1 + pkt->payload_len);
+    printf("Response: %s\n", response);
+
     // send back message and signature
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, response, strlen(response));
@@ -319,15 +318,11 @@ static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *c
     (void) context;
     char* didDocument = createDidDocument();
     
-    char* result = signMessageAndReturnResponse((uint8_t*)didDocument, strlen(didDocument), secret_key_hex, public_key_hex);
-    printf("\nDID DOCUMENT: %s\n", result);
-    printf("payload size: %d\n", strlen(didDocument));
-    printf("response size: %d\n", strlen(result));
-    printf("payload message size: %d\n", strlen(didDocument));
-    printf("SIZE: %d\n", EDSIGN_SIGNATURE_SIZE * 2 + 1 + strlen(didDocument));
+    char* response = signMessageAndReturnResponse((uint8_t*)didDocument, strlen(didDocument), secret_key_hex, public_key_hex);
+    printf("Response: %s\n", response);
     
-    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, (uint8_t*)result, strlen(result));
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len+2048, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
+            COAP_FORMAT_TEXT, response, strlen(response));
 }
 
 /* must be sorted by path (ASCII order) */
