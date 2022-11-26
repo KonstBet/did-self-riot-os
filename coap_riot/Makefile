@@ -29,6 +29,8 @@ USEMODULE += hashes
 
 USEMODULE += random
 
+USEMODULE += base64
+
 USEPKG += c25519
 
 # Comment this out to enable code in RIOT that does safety checking

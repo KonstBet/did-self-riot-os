@@ -18,6 +18,7 @@
 #include "edsign.h"
 #include "ed25519.h"
 #include "random.h"
+#include "base64.h"
 
 /* digital signature key pair */ /* Generated using ed25519-genkeypair */
 static uint8_t secret_key_hex[100] = { 0 };
@@ -180,6 +181,17 @@ ssize_t _sha256_handler(coap_pkt_t* pkt, uint8_t *buf, size_t len, void *context
 }
 
 
+
+
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+//<---------------------------  MY CODE  ------------------------------>
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+
+
+
 //// getdiddocument() returns this document signed
     /*
         DID document
@@ -193,7 +205,26 @@ ssize_t _sha256_handler(coap_pkt_t* pkt, uint8_t *buf, size_t len, void *context
         change sign function from hardcoded to created keys
     */
 
+/** @brief   Convert hex string to base64 string
+* @param[in]   in_hex     Hex string
+* @param[out]  out_base64  Base64 string
+* @returns      size of base64 string
+ */
+size_t hex_to_base64(uint8_t* in_hex, char* out_base64) {
+    uint8_t toBytes[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
+    fmt_hex_bytes(toBytes, (char*)in_hex); // convert hex to bytes
 
+    size_t size;
+    base64_encode(toBytes, sizeof(toBytes), out_base64, &size); // convert bytes to base64
+
+    return size;
+}
+
+
+/** @brief  Create public and private keys for DID
+* @param COAP-PARAMETERS
+* @returns "keys created" if success
+*/
 static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
@@ -222,19 +253,28 @@ static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     //SAVE KEYS TO HEX
     fmt_bytes_hex((char*) secret_key_hex, secret_key, EDSIGN_PUBLIC_KEY_SIZE);
     fmt_bytes_hex((char*) public_key_hex, public_key, EDSIGN_PUBLIC_KEY_SIZE);
-    printf("Secret key: %s", secret_key_hex);
-    printf("Public key: %s", public_key_hex);
+    printf("Secret key: %s\n", secret_key_hex);
+    printf("Public key: %s\n", public_key_hex);
 
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, "keys created", 13);
 }
 
+/** @brief  Get public key of DID
+* @param COAP-PARAMETERS
+* @returns public key of DID
+*/
 static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
 
+    char* public_key_base64 = malloc(200);
+    size_t size;
+
+    size = hex_to_base64(public_key_hex_hardcoded, public_key_base64);
+
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, public_key_hex, EDSIGN_PUBLIC_KEY_SIZE * 2);
+            COAP_FORMAT_TEXT, public_key_base64, size);
 }
 
 // static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context) {
@@ -243,6 +283,13 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
     
 // }
 
+/** @brief  Get public key of DID
+* @param[in] message to sign
+* @param[in] message_len length of message
+* @param[in] secret_key secret key
+* @param[in] public_key public key
+* @returns message with signature as string ("message,signature")
+*/
 char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8_t* secret_key, uint8_t* public_key) { // USED IN SIGN HANDLER
 
     uint8_t signature[EDSIGN_SIGNATURE_SIZE];
@@ -274,6 +321,10 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8
     return response;
 }
 
+/** @brief  Sign message with hardcoded keys
+* @param COAP-PARAMETERS
+* @returns message with signature as string ("message,signature")
+*/
 static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
@@ -288,7 +339,10 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
             COAP_FORMAT_TEXT, response, strlen(response));
 }
 
-
+/** @brief  Create DID Document
+* @param COAP-PARAMETERS
+* @returns DID Document as string
+*/
 char* createDidDocument(void) {
     char* did = malloc(100);
     strcat(did, "\"id\": \"did:self:");
@@ -313,6 +367,10 @@ char* createDidDocument(void) {
     return didDocument;
 }
 
+/** @brief  Get DID document
+* @param COAP-PARAMETERS
+* @returns DID document
+*/
 static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void) context;

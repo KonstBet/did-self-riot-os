@@ -46,8 +46,19 @@ int main(void)
     uint8_t buf[COAP_INBUF_SIZE];
     sock_udp_ep_t local = { .port=COAP_PORT, .family=AF_INET6 };
 
+
+    // uint8_t buf2[COAP_INBUF_SIZE];
+    // coap_opt_put_uri_path(buf2, 0, "newdevice");
     // coap_pkt_t pkt;
-    // sock_udp_ep_t remote = { .port=COAP_PORT, .family=AF_INET6, .netif=SOCK_ADDR_ANY_NETIF } ;
+    // memcpy(pkt.payload, "Hello World!", 12);
+    // pkt.payload_len = 12;
+
+    // sock_udp_ep_t remote = { .family=AF_INET, .netif=SOCK_ADDR_ANY_NETIF };
+    // remote.addr.ipv4[0] = 224;
+    // remote.addr.ipv4[1] = 0;
+    // remote.addr.ipv4[2] = 1;
+    // remote.addr.ipv4[3] = 187;
+    // remote.port = 5683;
     // ssize_t size_t = nanocoap_request(&pkt, &local, &remote, 0);
     // printf("%d", size_t);
 
