@@ -21,8 +21,10 @@
 #include "base64.h"
 
 /* digital signature key pair */ /* Generated using ed25519-genkeypair */
+static char* secret_key_base64;
 static uint8_t secret_key_hex[100] = { 0 };
 // static uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
+static char* public_key_base64;
 static uint8_t public_key_hex[100] = { 0 };
 // static uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
@@ -205,21 +207,47 @@ ssize_t _sha256_handler(coap_pkt_t* pkt, uint8_t *buf, size_t len, void *context
         change sign function from hardcoded to created keys
     */
 
-/** @brief   Convert hex string to base64 string
-* @param[in]   in_hex     Hex string
+// /** @brief   Convert hex string to base64 string
+// * @param[in]   in_hex     Hex string
+// * @param[out]  out_base64  Base64 string
+// * @returns      size of base64 string
+//  */
+// size_t hex_to_base64(uint8_t* in_hex, char* out_base64) {
+//     uint8_t toBytes[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
+//     fmt_hex_bytes(toBytes, (char*)in_hex); // convert hex to bytes
+
+//     size_t size;
+//     base64_encode(toBytes, sizeof(toBytes), out_base64, &size); // convert bytes to base64
+
+//     return size;
+// }
+
+/** @brief   Convert bytes to base64 string
+* @param[in]   in_bytes     Bytes
+* @param[in]  in_bytes_size  Size of bytes array
 * @param[out]  out_base64  Base64 string
 * @returns      size of base64 string
  */
-size_t hex_to_base64(uint8_t* in_hex, char* out_base64) {
-    uint8_t toBytes[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
-    fmt_hex_bytes(toBytes, (char*)in_hex); // convert hex to bytes
-
+size_t bytes_to_base64(uint8_t* in_bytes, size_t in_bytes_size, char* out_base64) {
     size_t size;
-    base64_encode(toBytes, sizeof(toBytes), out_base64, &size); // convert bytes to base64
+
+    base64_encode(in_bytes, in_bytes_size, out_base64, &size); // convert bytes to base64
 
     return size;
 }
 
+/** @brief   Convert base64 to bytes
+* @param[in]   in_base64     Base64 string
+* @param[out]  out_bytes  Bytes
+* @returns      size of bytes array
+ */
+size_t base64_to_bytes(char* in_base64, uint8_t* out_bytes) {
+    size_t size;
+
+    base64_decode(in_base64, strlen(in_base64), out_bytes, &size); // convert bytes to base64
+
+    return size;
+}
 
 /** @brief  Create public and private keys for DID
 * @param COAP-PARAMETERS
@@ -231,13 +259,13 @@ static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     uint8_t secret_key[EDSIGN_SECRET_KEY_SIZE] = { 0 };
     uint8_t public_key[EDSIGN_PUBLIC_KEY_SIZE] = { 0 };
 
-    printf("RUNNING KEY HANDLER");
-    /* Create the new keypair */
+    printf("RUNNING KEY HANDLER\n");
+    /* Create the new keypair */ // Ed25519
     random_bytes(secret_key, sizeof(secret_key));
     ed25519_prepare(secret_key);
     edsign_sec_to_pub(public_key, secret_key);
 
-    /* Print the new keypair */
+    /* Print the new keypair */ //Prints the hex to compare with base64
     puts("New keypair generated:");
     printf("  - Secret: ");
     for (uint8_t i = 0; i < EDSIGN_SECRET_KEY_SIZE; ++i) {
@@ -250,11 +278,29 @@ static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
     }
     puts("");
 
-    //SAVE KEYS TO HEX
-    fmt_bytes_hex((char*) secret_key_hex, secret_key, EDSIGN_PUBLIC_KEY_SIZE);
-    fmt_bytes_hex((char*) public_key_hex, public_key, EDSIGN_PUBLIC_KEY_SIZE);
-    printf("Secret key: %s\n", secret_key_hex);
-    printf("Public key: %s\n", public_key_hex);
+
+    //TRYING bytes_to_base64 and base64_to_bytes functions
+
+    // // convert public key to base64
+    // char* public_key_base64 = malloc(EDSIGN_PUBLIC_KEY_SIZE * 2);
+    // bytes_to_base64(public_key, EDSIGN_SECRET_KEY_SIZE, public_key_base64);
+    // printf("\n\nBase64: %s with size %d\n\n", public_key_base64, strlen(public_key_base64));
+
+    // //convert base64 to bytes
+    // uint8_t public_key_BYTES[EDSIGN_SECRET_KEY_SIZE] = { 0 };
+    // base64_to_bytes(public_key_base64, public_key_BYTES);
+    // printf("Compare: %d\n",memcmp(public_key_BYTES, public_key, sizeof(public_key)));
+
+    free(secret_key_base64);
+    free(public_key_base64);
+    secret_key_base64 = malloc(EDSIGN_SECRET_KEY_SIZE * 2);
+    public_key_base64 = malloc(EDSIGN_PUBLIC_KEY_SIZE * 2);
+
+    //SAVE KEYS TO BASE64
+    bytes_to_base64(secret_key, EDSIGN_SECRET_KEY_SIZE, secret_key_base64);
+    bytes_to_base64(public_key, EDSIGN_PUBLIC_KEY_SIZE, public_key_base64);
+    printf("\nSecret key base64: %s\n", secret_key_base64);
+    printf("\nPublic key base64: %s\n", public_key_base64);
 
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, "keys created", 13);
@@ -268,13 +314,8 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
 {
     (void)context;
 
-    char* public_key_base64 = malloc(200);
-    size_t size;
-
-    size = hex_to_base64(public_key_hex_hardcoded, public_key_base64);
-
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, public_key_base64, size);
+            COAP_FORMAT_TEXT, public_key_base64, strlen(public_key_base64));
 }
 
 // static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context) {
