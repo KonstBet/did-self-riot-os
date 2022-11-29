@@ -33,7 +33,11 @@
  /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
  /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
- /usr/include/bits/stdio.h /home/momus/proj_DID/RIOT/sys/include/fmt.h \
+ /usr/include/bits/stdio.h /usr/include/time.h /usr/include/bits/time.h \
+ /usr/include/bits/types/struct_tm.h \
+ /usr/include/bits/types/struct_timespec.h \
+ /usr/include/bits/types/struct_itimerspec.h \
+ /home/momus/proj_DID/RIOT/sys/include/fmt.h \
  /home/momus/proj_DID/RIOT/sys/include/net/nanocoap.h \
  /home/momus/proj_DID/RIOT/core/lib/include/assert.h /usr/include/errno.h \
  /usr/include/bits/errno.h /usr/include/linux/errno.h \
@@ -181,6 +185,16 @@
 /usr/include/bits/sys_errlist.h:
 
 /usr/include/bits/stdio.h:
+
+/usr/include/time.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/bits/types/struct_tm.h:
+
+/usr/include/bits/types/struct_timespec.h:
+
+/usr/include/bits/types/struct_itimerspec.h:
 
 /home/momus/proj_DID/RIOT/sys/include/fmt.h:
 

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "fmt.h"
 #include "net/nanocoap.h"
@@ -286,11 +287,33 @@ Response: {"id": "did:self:Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8=", "attes
 */
 static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
+    
+
     (void) context;
     char* didDocument = createDidDocument();
     
     char* response = signMessageAndReturnResponse((uint8_t*)didDocument, strlen(didDocument), secret_key_bytes, public_key_bytes);
     printf("Response: %s\n", response);
+
+
+    time_t now = time(NULL); // IAT
+    if (now == -1) {
+        
+        puts("The time() function failed");
+    }
+    char* buffer = malloc(100);
+    sprintf(buffer, "%ld\n", now);
+    printf("Current time: %s", buffer);
+
+    struct tm* tm = localtime(&now);
+    tm->tm_year = tm->tm_year + 1;
+    time_t next = mktime(tm); // EXP
+    char* buffer2 = malloc(100);
+    sprintf(buffer2, "%ld\n", next);
+    printf("Next time: %s", buffer2);
+
+    free(buffer);
+    free(buffer2);
     
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len+2048, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
             COAP_FORMAT_TEXT, response, strlen(response));

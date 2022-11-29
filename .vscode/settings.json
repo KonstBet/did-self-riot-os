@@ -3,6 +3,13 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "nanocoap_sock.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "edsign.h": "c",
+        "xtimer.h": "c",
+        "xtimer_compat.h": "c",
+        "rmutex.h": "c",
+        "ed25519.h": "c",
+        "ztimer.h": "c",
+        "nanocoap.h": "c"
     }
 }
