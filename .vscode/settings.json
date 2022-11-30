@@ -10,6 +10,7 @@
         "rmutex.h": "c",
         "ed25519.h": "c",
         "ztimer.h": "c",
-        "nanocoap.h": "c"
+        "nanocoap.h": "c",
+        "base64.h": "c"
     }
 }

@@ -47,20 +47,30 @@ int main(void)
     sock_udp_ep_t local = { .port=COAP_PORT, .family=AF_INET6 };
 
 
-    // uint8_t buf2[COAP_INBUF_SIZE];
-    // coap_opt_put_uri_path(buf2, 0, "newdevice");
-    // coap_pkt_t pkt;
-    // memcpy(pkt.payload, "Hello World!", 12);
-    // pkt.payload_len = 12;
+    // ipv6_addr_t* addr = malloc(sizeof(ipv6_addr_t));
+    // netifs_get_ipv6(addr, 1);
+    // char addr_str[IPV6_ADDR_MAX_STR_LEN];
 
-    // sock_udp_ep_t remote = { .family=AF_INET, .netif=SOCK_ADDR_ANY_NETIF };
-    // remote.addr.ipv4[0] = 224;
-    // remote.addr.ipv4[1] = 0;
-    // remote.addr.ipv4[2] = 1;
-    // remote.addr.ipv4[3] = 187;
-    // remote.port = 5683;
-    // ssize_t size_t = nanocoap_request(&pkt, &local, &remote, 0);
-    // printf("%d", size_t);
+    // ipv6_addr_to_str(addr_str, addr,IPV6_ADDR_MAX_STR_LEN);
+    // printf("\n\n%s\n\n", addr_str);
+
+    // ipv6_addr_to_str(addr_str, &ipv6_addr_all_nodes_link_local,IPV6_ADDR_MAX_STR_LEN);
+    // printf("\n\n%s\n\n", addr_str);
+
+    // ipv6_addr_from_str(addr, addr_str);
+
+    // sock_udp_ep_t remote = { .port=COAP_PORT, .family=AF_INET6 };
+    // remote.netif = SOCK_ADDR_ANY_NETIF;
+    // memcpy(remote.addr.ipv6, addr->u8, 16);
+    // nanocoap_sock_t *sock = malloc(sizeof(nanocoap_sock_t));
+    // printf("\n\n%d\n\n",nanocoap_sock_connect(sock, &local, &remote));
+
+    // coap_pkt_t *pkt = malloc(sizeof(coap_pkt_t));
+    // pkt->hdr = malloc(sizeof(coap_hdr_t));
+    // pkt->payload = malloc(sizeof(uint8_t));
+    // pkt->token = malloc(sizeof(uint8_t));
+    // nanocoap_sock_request(sock, pkt, COAP_INBUF_SIZE);
+
 
     nanocoap_server(&local, buf, sizeof(buf));
 

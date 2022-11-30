@@ -27,6 +27,10 @@ static uint8_t* public_key_bytes;
 static char* secret_key_base64;
 static char* public_key_base64;
 
+//IAT & EXP
+static char* iat_str = NULL;
+static char* exp_str = NULL;
+
 /* hardcoded digital signature key pair */
 // static char secret_key_base64_hardcoded[100] = "i7QBTYsKY69y2ISCwSdszQMuJvwFgGiGqfGnJyEPT8M=";
 // static char public_key_base64_hardcoded[100] = "0E6QcZJHHGA+FI1z1qOJeXbcJgEGqhIIN+vPgV8ERcI=";
@@ -81,7 +85,7 @@ size_t base64_to_bytes(char* in_base64, uint8_t* out_bytes) {
 /** @brief   Hash string with SHA256
  * @param[in]   str     String to hash
  * @param[out]  hash    Hash of str
- * returns 0 on success
+ * @returns returns 0 on success
  */
 int hash_string(char *str, char *hash)
 {
@@ -140,8 +144,8 @@ static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
 
     free(secret_key_base64);
     free(public_key_base64);
-    secret_key_base64 = malloc(EDSIGN_SECRET_KEY_SIZE * 2);
-    public_key_base64 = malloc(EDSIGN_PUBLIC_KEY_SIZE * 2);
+    secret_key_base64 = calloc(EDSIGN_SECRET_KEY_SIZE * 2, sizeof(char));
+    public_key_base64 = calloc(EDSIGN_PUBLIC_KEY_SIZE * 2, sizeof(char));
 
     //SAVE KEYS TO BASE64
     bytes_to_base64(secret_key_bytes, EDSIGN_SECRET_KEY_SIZE, secret_key_base64);
@@ -199,11 +203,11 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8
         printf("SIGNATURE VERIFIED\n");
 
     //Turn signature to base64 string
-    char* signature_base64 = malloc(EDSIGN_SIGNATURE_SIZE * 2);
+    char* signature_base64 = calloc(EDSIGN_SIGNATURE_SIZE * 2, sizeof(char));
     size_t size = bytes_to_base64(signature, EDSIGN_SIGNATURE_SIZE, signature_base64);
 
     //Create response with signature
-    char *response = malloc(size + 1 + message_len); 
+    char *response = calloc(size + 1 + message_len, sizeof(char));
     memcpy(response, message, message_len);
     memcpy(response + message_len, ",", 1);
     memcpy(response + message_len + 1, signature_base64, size);
@@ -243,23 +247,91 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
             COAP_FORMAT_TEXT, response, strlen(response));
 }
 
+/** @brief  Create DID Proof Payload iat and exp
+* @returns 1 if iat and exp exist already else 0 if just created
+*/
+int createIatAndExp(void) {
+    // IAT = CURRENT TIME
+    // EXP = CURRENT TIME + 1 YEAR
+
+    if (iat_str != NULL && exp_str != NULL) {
+        return 1;
+    }
+    time_t now = time(NULL); // IAT
+    if (now == -1)
+        puts("The time() function failed");
+        
+    iat_str = calloc(30, sizeof(char));
+    sprintf(iat_str, "%ld", now);
+
+    struct tm* tm = localtime(&now);
+    tm->tm_year = tm->tm_year + 1;
+    time_t next = mktime(tm); // EXP
+    exp_str = calloc(30, sizeof(char));
+    sprintf(exp_str, "%ld", next);
+
+    return 0;
+}
+
+/** @brief  Create DID Proof Payload
+* @param COAP-PARAMETERS
+* @returns Proof Payload as string
+*/
+char* createDocumentProofPayload(char* s256_str) { //s256 is the sha256 hash of the did document
+
+    // CREATE IAT AND EXP IF NOT EXISTING
+    createIatAndExp();
+
+
+    // CREATE STRING PAYLOAD KEY VALUE PAIRS
+    char* iat = calloc(32, sizeof(char));
+    strcat(iat, "\"iat\": ");
+    strncat(iat, iat_str, strlen(iat_str));
+
+    char* exp = calloc(32, sizeof(char));
+    strcat(exp, "\"exp\": ");
+    strncat(exp, exp_str, strlen(exp_str));
+
+    char* s256 = calloc(100, sizeof(char));
+    strcat(s256, "\"s256\": \"");
+    strncat(s256, s256_str, strlen(s256_str));
+    strcat(s256, "\"");
+
+
+    // CREATE PAYLOAD
+    char* payload = calloc(300, sizeof(char));
+    memcpy(payload, "{", 1);
+
+    memcpy(payload + 1, iat, strlen(iat));
+    memcpy(payload + strlen(payload), ", ", 2);
+
+    memcpy(payload + strlen(payload), exp, strlen(exp));
+    memcpy(payload+ strlen(payload), ", ", 2);
+
+    memcpy(payload + strlen(payload), s256, strlen(s256));
+
+    memcpy(payload + strlen(payload), "}", 2);
+
+    return payload;
+}
+
 /** @brief  Create DID Document
 * @param COAP-PARAMETERS
 * @returns DID Document as string
 */
 char* createDidDocument(void) {
-    char* did = malloc(100);
+    char* did = calloc(100, sizeof(char));
     strcat(did, "\"id\": \"did:self:");
     strncat(did, public_key_base64, strlen(public_key_base64));
     strcat(did, "\"");
 
-    char* didAttestation = malloc(100);
+    char* didAttestation = calloc(100, sizeof(char));
     strcat(didAttestation, "\"attestation\": \"");
     strncat(didAttestation, public_key_base64, strlen(public_key_base64));
     strcat(didAttestation, "\"");
 
 
-    char* didDocument = malloc(1000); 
+    char* didDocument = calloc(1000, sizeof(char)); 
     strcat(didDocument, "{");
 
     strcat(didDocument, did);
@@ -291,29 +363,17 @@ static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *c
 
     (void) context;
     char* didDocument = createDidDocument();
-    
-    char* response = signMessageAndReturnResponse((uint8_t*)didDocument, strlen(didDocument), secret_key_bytes, public_key_bytes);
+    printf("didDocument: %s\n", didDocument);
+
+    char * s256_str = calloc(100, sizeof(char));
+    hash_string(didDocument, s256_str);
+    printf("s256_str: %s\n", s256_str);
+
+    char* payload = createDocumentProofPayload(s256_str);
+
+
+    char* response = signMessageAndReturnResponse((uint8_t*)payload, strlen(payload), secret_key_bytes, public_key_bytes);
     printf("Response: %s\n", response);
-
-
-    time_t now = time(NULL); // IAT
-    if (now == -1) {
-        
-        puts("The time() function failed");
-    }
-    char* buffer = malloc(100);
-    sprintf(buffer, "%ld\n", now);
-    printf("Current time: %s", buffer);
-
-    struct tm* tm = localtime(&now);
-    tm->tm_year = tm->tm_year + 1;
-    time_t next = mktime(tm); // EXP
-    char* buffer2 = malloc(100);
-    sprintf(buffer2, "%ld\n", next);
-    printf("Next time: %s", buffer2);
-
-    free(buffer);
-    free(buffer2);
     
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len+2048, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
             COAP_FORMAT_TEXT, response, strlen(response));
