@@ -22,3 +22,12 @@ $ coap-client -m post coap://localhost/riot/signandverify -e message
 coap-client -m post coap://[ff02::1%tap0]/riot/sign -e message
 
 coap-client -m post coap://[ff02::1%tap0]/riot/sign -e message -N
+
+
+
+{
+  "kty": "OKP",
+  "alg": "EdDSA",
+  "crv": "Ed25519",
+  "x": "60mR98SQlHUSeLeIu7TeJBTLRG10qlcDLU4AJjQdqMQ"
+}

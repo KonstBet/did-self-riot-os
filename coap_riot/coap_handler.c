@@ -1,11 +1,3 @@
-/*
- * Copyright (C) 2016 Kaspar Schleiser <kaspar@schleiser.de>
- *
- * This file is subject to the terms and conditions of the GNU Lesser
- * General Public License v2.1. See the file LICENSE in the top level
- * directory for more details.
- */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -21,15 +13,158 @@
 #include "random.h"
 #include "base64.h"
 
+//DID PROOF -----------------------------------------------------
+typedef struct {
+    char* kty;
+    char* crv;
+    char* x;
+} jwk;
+
+typedef struct {
+    char* alg;
+    jwk* jwk;
+} did_proof_header;
+
+typedef struct {
+    char* iat;
+    char* exp;
+    char* s256;
+} did_proof_payload;
+
+typedef struct {
+    did_proof_header* header;
+    did_proof_payload* payload;
+} did_proof;
+
+//DID DOCUMENT --------------------------------------------------
+typedef struct {
+    char* id;
+    char* type;
+    jwk* publicKeyJwk;
+} attestation;
+
+typedef struct {
+    char* id;
+    attestation* attestation;
+} did_document;
+
+//DID ALL INFORMATION -------------------------------------------
+typedef struct {
+    did_document* document;
+    did_proof* proof;
+} did;
+
+
 /* digital signature key pair */ /* Generated using ed25519-genkeypair */
 static uint8_t* secret_key_bytes;
 static uint8_t* public_key_bytes;
 static char* secret_key_base64;
 static char* public_key_base64;
 
-//IAT & EXP
-static char* iat_str = NULL;
-static char* exp_str = NULL;
+//----------------------------------------------------------------
+static did* deviceDid = NULL; //DEVICE DID
+//----------------------------------------------------------------
+
+// CREATE DID INFO
+jwk* createJwk(char* kty, char* crv, char* x){
+    jwk* jwk = malloc(sizeof(jwk));
+    jwk->kty = kty;
+    jwk->crv = crv;
+    jwk->x = x;
+    return jwk;
+}
+
+did_proof_header* createDidProofHeader(char* alg, jwk* jwk){
+    did_proof_header* header = malloc(sizeof(did_proof_header));
+    header->alg = alg;
+    header->jwk = jwk;
+    return header;
+}
+
+did_proof_payload* createDidProofPayload(char* iat, char* exp, char* s256){
+    did_proof_payload* payload = malloc(sizeof(did_proof_payload));
+    payload->iat = iat;
+    payload->exp = exp;
+    payload->s256 = s256;
+    return payload;
+}
+
+did_proof* createDidProof(did_proof_header* header, did_proof_payload* payload){
+    did_proof* proof = malloc(sizeof(did_proof));
+    proof->header = header;
+    proof->payload = payload;
+    return proof;
+}
+
+attestation* createAttestation(char* id, char* type, jwk* publicKeyJwk){
+    attestation* attestation = malloc(sizeof(attestation));
+    attestation->id = id;
+    attestation->type = type;
+    attestation->publicKeyJwk = publicKeyJwk;
+    return attestation;
+}
+
+did_document* createDidDocument(char* id, attestation* attestation){
+    did_document* document = malloc(sizeof(did_document));
+    document->id = id;
+    document->attestation = attestation;
+    return document;
+}
+
+did* createDid(did_document* document, did_proof* proof){
+    did* deviceDID = malloc(sizeof(did));
+    deviceDID->document = document;
+    deviceDID->proof = proof;
+    return deviceDID;
+}
+//----------------------------------------------------------------
+
+// STRUCTS TO STRING FOR JSON ------------------------------------
+char* jwkToString(jwk* jwk){
+    char* jwk_str = calloc(200, sizeof(char));
+    sprintf(jwk_str, "{\"kty\":\"%s\",\"crv\":\"%s\",\"x\":\"%s\"}", jwk->kty, jwk->crv, jwk->x);
+    return jwk_str;
+}
+
+char* didProofHeaderToString(did_proof_header* header){
+    char* header_str = calloc(300, sizeof(char));
+    sprintf(header_str, "{\"alg\":\"%s\",\"jwk\":%s}", header->alg, jwkToString(header->jwk));
+    return header_str;
+}
+
+char* didProofPayloadToString(did_proof_payload* payload){
+    char* payload_str = calloc(300, sizeof(char));
+    sprintf(payload_str, "{\"iat\":\"%s\",\"exp\":\"%s\",\"s256\":\"%s\"}", payload->iat, payload->exp, payload->s256);
+    return payload_str;
+}
+
+char* didProofToString(did_proof* proof){
+    char* proof_str = calloc(600, sizeof(char));
+    sprintf(proof_str, "{\"header\":%s,\"payload\":%s}", didProofHeaderToString(proof->header), didProofPayloadToString(proof->payload));
+    return proof_str;
+}
+
+char* attestationToString(attestation* attestation){
+    char* attestation_str = calloc(300, sizeof(char));
+    sprintf(attestation_str, "{\"id\":\"%s\",\"type\":\"%s\",\"publicKeyJwk\":%s}", attestation->id, attestation->type, jwkToString(attestation->publicKeyJwk));
+    return attestation_str;
+}
+
+char* didDocumentToString(did_document* document){
+    char* document_str = calloc(300, sizeof(char));
+    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
+    return document_str;
+}
+
+char* didToString(did* deviceDID){
+    char* did_str = calloc(900, sizeof(char));
+    sprintf(did_str, "{\"document\":%s,\"proof\":%s}", didDocumentToString(deviceDID->document), didProofToString(deviceDID->proof));
+    return did_str;
+}
+//----------------------------------------------------------------
+
+
+
 
 /* hardcoded digital signature key pair */
 // static char secret_key_base64_hardcoded[100] = "i7QBTYsKY69y2ISCwSdszQMuJvwFgGiGqfGnJyEPT8M=";
@@ -247,101 +382,79 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
             COAP_FORMAT_TEXT, response, strlen(response));
 }
 
-/** @brief  Create DID Proof Payload iat and exp
-* @returns 1 if iat and exp exist already else 0 if just created
-*/
-int createIatAndExp(void) {
-    // IAT = CURRENT TIME
-    // EXP = CURRENT TIME + 1 YEAR
+void createDeviceDid(void)
+{
+    //CREATE KEY
+    char* okp = calloc(3, sizeof(char));
+    memcpy(okp, "OKP", 3);
+    char* crv = calloc(7, sizeof(char));
+    memcpy(crv, "Ed25519", 7);
 
-    if (iat_str != NULL && exp_str != NULL) {
-        return 1;
-    }
+    jwk* myjwk = createJwk(okp, crv, public_key_base64);
+    printf("%s\n", jwkToString(myjwk));
+
+
+    //CREATE PROOF HEADER
+    char* alg = calloc(5, sizeof(char));
+    memcpy(alg, "EdDSA", 5);
+
+    did_proof_header* myDidProofHeader = createDidProofHeader(alg, myjwk);
+    printf("%s\n", didProofHeaderToString(myDidProofHeader));
+
+
+    //CREATE ATTESTATION
+    char* attestationID = calloc(5, sizeof(char));
+    memcpy(attestationID, "#key1", 5);
+    char* attestationType = calloc(15, sizeof(char));
+    memcpy(attestationType, "JsonWebKey2020", 15);
+
+    attestation* myattestation = createAttestation(attestationID, attestationType, myjwk);
+    printf("%s\n", attestationToString(myattestation));
+
+
+    //CREATE DID DOCUMENT
+    char* id = calloc(100, sizeof(char));
+    memcpy(id, "did:self:", 9);
+    char* jwkHash = calloc(100, sizeof(char)); //SAVE HASH OF JWK
+    hash_string(public_key_base64, jwkHash);
+    memcpy(id + 9, jwkHash, strlen(jwkHash));
+
+    did_document* mydocument = createDidDocument(id, myattestation);
+    printf("%s\n", didDocumentToString(mydocument));
+
+
+    //CREATE PROOF PAYLOAD
     time_t now = time(NULL); // IAT
     if (now == -1)
         puts("The time() function failed");
         
-    iat_str = calloc(30, sizeof(char));
+    char* iat_str = calloc(10, sizeof(char));
     sprintf(iat_str, "%ld", now);
 
     struct tm* tm = localtime(&now);
-    tm->tm_year = tm->tm_year + 1;
+    tm->tm_year = tm->tm_year + 1; // EXPIRE IN 1 YEAR
     time_t next = mktime(tm); // EXP
-    exp_str = calloc(30, sizeof(char));
+    char* exp_str = calloc(10, sizeof(char));
     sprintf(exp_str, "%ld", next);
 
-    return 0;
-}
-
-/** @brief  Create DID Proof Payload
-* @param COAP-PARAMETERS
-* @returns Proof Payload as string
-*/
-char* createDocumentProofPayload(char* s256_str) { //s256 is the sha256 hash of the did document
-
-    // CREATE IAT AND EXP IF NOT EXISTING
-    createIatAndExp();
-
-
-    // CREATE STRING PAYLOAD KEY VALUE PAIRS
-    char* iat = calloc(32, sizeof(char));
-    strcat(iat, "\"iat\": ");
-    strncat(iat, iat_str, strlen(iat_str));
-
-    char* exp = calloc(32, sizeof(char));
-    strcat(exp, "\"exp\": ");
-    strncat(exp, exp_str, strlen(exp_str));
-
     char* s256 = calloc(100, sizeof(char));
-    strcat(s256, "\"s256\": \"");
-    strncat(s256, s256_str, strlen(s256_str));
-    strcat(s256, "\"");
+    hash_string(didDocumentToString(mydocument), s256);
+
+    did_proof_payload* myDidProofPayload = createDidProofPayload(iat_str, exp_str, s256);
+    printf("%s\n", didProofPayloadToString(myDidProofPayload));
+
+    
+    //CREATE PROOF
+    did_proof* myproof = createDidProof(myDidProofHeader, myDidProofPayload);
+    printf("%s\n", didProofToString(myproof));
 
 
-    // CREATE PAYLOAD
-    char* payload = calloc(300, sizeof(char));
-    memcpy(payload, "{", 1);
-
-    memcpy(payload + 1, iat, strlen(iat));
-    memcpy(payload + strlen(payload), ", ", 2);
-
-    memcpy(payload + strlen(payload), exp, strlen(exp));
-    memcpy(payload+ strlen(payload), ", ", 2);
-
-    memcpy(payload + strlen(payload), s256, strlen(s256));
-
-    memcpy(payload + strlen(payload), "}", 2);
-
-    return payload;
+    //CREATE DID COMPLETE
+    deviceDid = malloc(sizeof(did));
+    deviceDid = createDid(mydocument, myproof);
+    printf("%s\n", didToString(deviceDid));
 }
 
-/** @brief  Create DID Document
-* @param COAP-PARAMETERS
-* @returns DID Document as string
-*/
-char* createDidDocument(void) {
-    char* did = calloc(100, sizeof(char));
-    strcat(did, "\"id\": \"did:self:");
-    strncat(did, public_key_base64, strlen(public_key_base64));
-    strcat(did, "\"");
-
-    char* didAttestation = calloc(100, sizeof(char));
-    strcat(didAttestation, "\"attestation\": \"");
-    strncat(didAttestation, public_key_base64, strlen(public_key_base64));
-    strcat(didAttestation, "\"");
-
-
-    char* didDocument = calloc(1000, sizeof(char)); 
-    strcat(didDocument, "{");
-
-    strcat(didDocument, did);
-    strcat(didDocument, ", ");
-    strcat(didDocument, didAttestation);
-
-    strcat(didDocument, "}");
-            
-    return didDocument;
-}
 
 /** @brief  Get DID document
 * @param COAP-PARAMETERS
@@ -349,31 +462,20 @@ char* createDidDocument(void) {
 */
 /* -- COAP REQUEST --
 REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/did
-RESPONSE: {"id": "did:self:Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8=", "attestation": "Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8="},Xq2loWtdtJ3dmw5ZercJutIE+fD9RYHpEWuiB9iVYHQCscGYDSorgeUCvMpiSwXD1Ao0z+/Cs5iqYoiNFTWRDw==
+RESPONSE: 
 */
 /* -- PRINT AT DEVICE CONSOLE --
-SIGNATURE VERIFIED
-Response: {"id": "did:self:Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8=", "attestation": "Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8="},Xq2loWtdtJ3dmw5ZercJutIE+fD9RYHpEWuiB9iVYHQCscGYDSorgeUCvMpiSwXD1Ao0z+/Cs5iqYoiNFTWRDw==
 
-//DID STILL NOT IMPLEMENTED CORRECTLY
 */
 static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
-    
+    (void)context;
+    if (deviceDid == NULL) {
+        printf("DID NOT CREATED\n");
+        createDeviceDid();
+    }
 
-    (void) context;
-    char* didDocument = createDidDocument();
-    printf("didDocument: %s\n", didDocument);
-
-    char * s256_str = calloc(100, sizeof(char));
-    hash_string(didDocument, s256_str);
-    printf("s256_str: %s\n", s256_str);
-
-    char* payload = createDocumentProofPayload(s256_str);
-
-
-    char* response = signMessageAndReturnResponse((uint8_t*)payload, strlen(payload), secret_key_bytes, public_key_bytes);
-    printf("Response: %s\n", response);
+    char* response = didToString(deviceDid);
     
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len+2048, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
             COAP_FORMAT_TEXT, response, strlen(response));
