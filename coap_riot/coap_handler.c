@@ -414,8 +414,7 @@ void createDeviceDid(void)
     //CREATE DID DOCUMENT
     char* id = calloc(100, sizeof(char));
     memcpy(id, "did:self:", 9);
-    char* jwkHash = calloc(300, sizeof(char)); //SAVE HASH OF JWK
-    bytes_to_base64(jwkToString(myjwk), strlen(jwkToString(myjwk)), jwkHash);
+    char* jwkHash = hash_string(jwkToString(myjwk));
     memcpy(id + 9, jwkHash, strlen(jwkHash));
 
     did_document* mydocument = createDidDocument(id, myattestation);
