@@ -196,7 +196,7 @@ static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, vo
 * @param[out]  out_base64  Base64 string
 * @returns      size of base64 string
  */
-size_t bytes_to_base64(uint8_t* in_bytes, size_t in_bytes_size, char* out_base64) {
+size_t bytes_to_base64(void* in_bytes, size_t in_bytes_size, void* out_base64) {
     size_t size;
 
     base64_encode(in_bytes, in_bytes_size, out_base64, &size); // convert bytes to base64
@@ -209,7 +209,7 @@ size_t bytes_to_base64(uint8_t* in_bytes, size_t in_bytes_size, char* out_base64
 * @param[out]  out_bytes  Bytes
 * @returns      size of bytes array
  */
-size_t base64_to_bytes(char* in_base64, uint8_t* out_bytes) {
+size_t base64_to_bytes(void* in_base64, void* out_bytes) {
     size_t size;
 
     base64_decode(in_base64, strlen(in_base64), out_bytes, &size); // convert bytes to base64
@@ -222,18 +222,17 @@ size_t base64_to_bytes(char* in_base64, uint8_t* out_bytes) {
  * @param[out]  hash    Hash of str
  * @returns returns 0 on success
  */
-int hash_string(char *str, char *hash)
+char* hash_string(char *str)
 {
-    uint8_t digest[SHA256_DIGEST_LENGTH];
-    sha256_context_t sha256;
+    uint8_t* digest = calloc(SHA256_DIGEST_LENGTH, sizeof(uint8_t));
+    sha256(str, strlen(str), digest);
+    
+    char* hash = calloc(SHA256_DIGEST_LENGTH*2, sizeof(char));
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+        sprintf(hash + (i * 2), "%02x", digest[i]);
+    }
 
-    sha256_init(&sha256);
-    sha256_update(&sha256, (uint8_t*)str, strlen(str));
-    sha256_final(&sha256, digest);
-
-    fmt_bytes_hex(hash, digest, sizeof(digest));
-
-    return 0;
+    return hash;
 }
 
 /** @brief  Create public and private keys for DID
@@ -396,7 +395,7 @@ void createDeviceDid(void)
 
     //CREATE PROOF HEADER
     char* alg = calloc(5, sizeof(char));
-    memcpy(alg, "EdDSA", 5);
+    memcpy(alg, "HS256", 5);
 
     did_proof_header* myDidProofHeader = createDidProofHeader(alg, myjwk);
     printf("%s\n", didProofHeaderToString(myDidProofHeader));
@@ -415,8 +414,8 @@ void createDeviceDid(void)
     //CREATE DID DOCUMENT
     char* id = calloc(100, sizeof(char));
     memcpy(id, "did:self:", 9);
-    char* jwkHash = calloc(100, sizeof(char)); //SAVE HASH OF JWK
-    hash_string(jwkToString(myjwk), jwkHash);
+    char* jwkHash = calloc(300, sizeof(char)); //SAVE HASH OF JWK
+    bytes_to_base64(jwkToString(myjwk), strlen(jwkToString(myjwk)), jwkHash);
     memcpy(id + 9, jwkHash, strlen(jwkHash));
 
     did_document* mydocument = createDidDocument(id, myattestation);
@@ -437,8 +436,7 @@ void createDeviceDid(void)
     char* exp_str = calloc(10, sizeof(char));
     sprintf(exp_str, "%ld", next);
 
-    char* s256 = calloc(100, sizeof(char));
-    hash_string(didDocumentToString(mydocument), s256);
+    char* s256 = hash_string(didDocumentToString(mydocument));
 
     did_proof_payload* myDidProofPayload = createDidProofPayload(iat_str, exp_str, s256);
     printf("%s\n", didProofPayloadToString(myDidProofPayload));
