@@ -127,6 +127,12 @@ char* jwkToString(jwk* jwk){
     return jwk_str;
 }
 
+char* jwkToStringLexicographically(jwk* jwk){
+    char* jwk_str = calloc(200, sizeof(char));
+    sprintf(jwk_str, "{\"crv\":\"%s\",\"kty\":\"%s\",\"x\":\"%s\"}", jwk->crv, jwk->kty, jwk->x);
+    return jwk_str;
+}
+
 char* didProofHeaderToString(did_proof_header* header){
     char* header_str = calloc(300, sizeof(char));
     sprintf(header_str, "{\"alg\":\"%s\",\"jwk\":%s}", header->alg, jwkToString(header->jwk));
@@ -406,7 +412,7 @@ void createDeviceDid(void)
     memcpy(id, "did:self:", 9);
 
     char* jwkHash = calloc(100, sizeof(char));
-    uint8_t* digest = hashSH256(jwkToString(myjwk));
+    uint8_t* digest = hashSH256(jwkToStringLexicographically(myjwk));
     bytes_to_base64url(digest, 32, jwkHash);
     memcpy(id + 9, jwkHash, strlen(jwkHash));
 
