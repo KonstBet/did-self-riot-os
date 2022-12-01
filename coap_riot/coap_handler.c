@@ -34,6 +34,7 @@ typedef struct {
 typedef struct {
     did_proof_header* header;
     did_proof_payload* payload;
+    char* signature;
 } did_proof;
 
 //DID DOCUMENT --------------------------------------------------
@@ -53,149 +54,14 @@ typedef struct {
     did_document* document;
     did_proof* proof;
 } did;
-
-
-/* digital signature key pair */ /* Generated using ed25519-genkeypair */
-static uint8_t* secret_key_bytes;
-static uint8_t* public_key_bytes;
-static char* secret_key_base64;
-static char* public_key_base64;
+// ----------------------------------------------------------------
 
 //----------------------------------------------------------------
 static did* deviceDid = NULL; //DEVICE DID
 //----------------------------------------------------------------
-
-// CREATE DID INFO
-jwk* createJwk(char* kty, char* crv, char* x){
-    jwk* jwk = malloc(sizeof(jwk));
-    jwk->kty = kty;
-    jwk->crv = crv;
-    jwk->x = x;
-    return jwk;
-}
-
-did_proof_header* createDidProofHeader(char* alg, jwk* jwk){
-    did_proof_header* header = malloc(sizeof(did_proof_header));
-    header->alg = alg;
-    header->jwk = jwk;
-    return header;
-}
-
-did_proof_payload* createDidProofPayload(char* iat, char* exp, char* s256){
-    did_proof_payload* payload = malloc(sizeof(did_proof_payload));
-    payload->iat = iat;
-    payload->exp = exp;
-    payload->s256 = s256;
-    return payload;
-}
-
-did_proof* createDidProof(did_proof_header* header, did_proof_payload* payload){
-    did_proof* proof = malloc(sizeof(did_proof));
-    proof->header = header;
-    proof->payload = payload;
-    return proof;
-}
-
-attestation* createAttestation(char* id, char* type, jwk* publicKeyJwk){
-    attestation* attestation = malloc(sizeof(attestation));
-    attestation->id = id;
-    attestation->type = type;
-    attestation->publicKeyJwk = publicKeyJwk;
-    return attestation;
-}
-
-did_document* createDidDocument(char* id, attestation* attestation){
-    did_document* document = malloc(sizeof(did_document));
-    document->id = id;
-    document->attestation = attestation;
-    return document;
-}
-
-did* createDid(did_document* document, did_proof* proof){
-    did* deviceDID = malloc(sizeof(did));
-    deviceDID->document = document;
-    deviceDID->proof = proof;
-    return deviceDID;
-}
 //----------------------------------------------------------------
 
-// STRUCTS TO STRING FOR JSON ------------------------------------
-
-char* jwkToString(jwk* jwk){
-    char* jwk_str = calloc(200, sizeof(char));
-    sprintf(jwk_str, "{\"kty\":\"%s\",\"crv\":\"%s\",\"x\":\"%s\"}", jwk->kty, jwk->crv, jwk->x);
-    return jwk_str;
-}
-
-char* jwkToStringLexicographically(jwk* jwk){
-    char* jwk_str = calloc(200, sizeof(char));
-    sprintf(jwk_str, "{\"crv\":\"%s\",\"kty\":\"%s\",\"x\":\"%s\"}", jwk->crv, jwk->kty, jwk->x);
-    return jwk_str;
-}
-
-char* didProofHeaderToString(did_proof_header* header){
-    char* header_str = calloc(300, sizeof(char));
-    sprintf(header_str, "{\"alg\":\"%s\",\"jwk\":%s}", header->alg, jwkToString(header->jwk));
-    return header_str;
-}
-
-char* didProofPayloadToString(did_proof_payload* payload){
-    char* payload_str = calloc(300, sizeof(char));
-    sprintf(payload_str, "{\"iat\":\"%s\",\"exp\":\"%s\",\"s256\":\"%s\"}", payload->iat, payload->exp, payload->s256);
-    return payload_str;
-}
-
-char* didProofToString(did_proof* proof){
-    char* proof_str = calloc(600, sizeof(char));
-    sprintf(proof_str, "{\"header\":%s,\"payload\":%s}", didProofHeaderToString(proof->header), didProofPayloadToString(proof->payload));
-    return proof_str;
-}
-
-char* attestationToString(attestation* attestation){
-    char* attestation_str = calloc(300, sizeof(char));
-    sprintf(attestation_str, "{\"id\":\"%s\",\"type\":\"%s\",\"publicKeyJwk\":%s}", attestation->id, attestation->type, jwkToString(attestation->publicKeyJwk));
-    return attestation_str;
-}
-
-char* didDocumentToString(did_document* document){
-    char* document_str = calloc(300, sizeof(char));
-    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
-    return document_str;
-}
-
-char* didToString(did* deviceDID){
-    char* did_str = calloc(900, sizeof(char));
-    sprintf(did_str, "{\"document\":%s,\"proof\":%s}", didDocumentToString(deviceDID->document), didProofToString(deviceDID->proof));
-    return did_str;
-}
-//----------------------------------------------------------------
-
-
-
-
-/* hardcoded digital signature key pair */
-// static char secret_key_base64_hardcoded[100] = "i7QBTYsKY69y2ISCwSdszQMuJvwFgGiGqfGnJyEPT8M=";
-// static char public_key_base64_hardcoded[100] = "0E6QcZJHHGA+FI1z1qOJeXbcJgEGqhIIN+vPgV8ERcI=";
-
-static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
-{
-    (void)context;
-    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, (uint8_t*)RIOT_BOARD, strlen(RIOT_BOARD));
-}
-
-//// getdiddocument() returns this document signed
-    /*
-        DID document
-        "{
-            \"attestation\": \"public_key we created\"
-        }"
-
-
-        --> we sign this with hardcoded private key
-
-        change sign function from hardcoded to created keys
-    */
+// ----------------------------------------------------------------
 
 /** @brief   Convert bytes to base64url
 * @param[in]   in_bytes     Bytes
@@ -228,64 +94,233 @@ uint8_t* hashSH256(char *str)
 
     return digest;
 }
+//----------------------------------------------------------------
 
-/** @brief  Create public and private keys for DID
-* @param COAP-PARAMETERS
-* @returns "keys created" if success
-*/
-/* -- COAP REQUEST --
-REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/createkeys
-RESPONSE: keys created
-*/
-/* -- PRINT AT DEVICE CONSOLE --
-New keypair generated(PRINT IN HEX TO VERIFY WITH BASE64):
-  - Secret key hex: 4881E2BA00000000000000000000000000000000000000000000000000000040
-  - Public key hex: 62FF3DADE2EFDA7C53D38F6005DF358946E22402E5CCDF2EBAC179E249F159FF
-  - Secret key base64: SIHiugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=
-  - Public key base64: Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8=
+typedef struct {
+    uint8_t* secret_key_bytes;
+    uint8_t* public_key_bytes;
+    char* secret_key_base64;
+    char* public_key_base64;
+} key_pair;
 
-  //PRINT HEX AS WELL FOR DEBUGGING
+/* digital signature key pair PROOF JWK*/ /* Generated using ed25519-genkeypair */
+static key_pair* proof_key_pair = NULL;
+
+
+/* digital signature key pair DID DOCUMENT JWK*/ /* Generated using ed25519-genkeypair */
+static key_pair* document_key_pair = NULL;
+
+//----------------------------------------------------------------
+
+/** @brief  Sign message with private key
+* @param[in] message to sign
+* @param[in] message_len length of message
+* @param[in] secret_key secret key
+* @param[in] public_key public key
+* @returns signature of message in base64
 */
-static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+char* sign_message(uint8_t* message, uint16_t message_len, uint8_t* secret_key, uint8_t* public_key) {
+    uint8_t* signature = calloc(EDSIGN_SIGNATURE_SIZE, sizeof(uint8_t));
+
+    //Sign message
+    edsign_sign(signature, public_key, secret_key, message, message_len);
+
+    //CHECK WITH VERIFY IF SIGN WORKED (MUST BE NOT 0)
+    int verify = edsign_verify(signature, public_key, message, message_len);
+    if (verify == 0)
+        printf("SIGNATURE NOT VERIFIED\n");
+    else
+        printf("SIGNATURE VERIFIED\n");
+
+    //Turn signature to base64 string
+    char* signature_base64 = calloc(EDSIGN_SIGNATURE_SIZE * 2, sizeof(char));
+    bytes_to_base64url(signature, EDSIGN_SIGNATURE_SIZE, signature_base64);
+
+    free(signature);
+
+    return signature_base64;
+}
+//----------------------------------------------------------------
+
+// STRUCTS TO STRING FOR JSON ------------------------------------
+
+char* jwkToString(jwk* jwk){
+    char* jwk_str = calloc(200, sizeof(char));
+    sprintf(jwk_str, "{\"kty\":\"%s\",\"crv\":\"%s\",\"x\":\"%s\"}", jwk->kty, jwk->crv, jwk->x);
+    return jwk_str;
+}
+
+char* jwkToStringLexicographically(jwk* jwk){
+    char* jwk_str = calloc(200, sizeof(char));
+    sprintf(jwk_str, "{\"crv\":\"%s\",\"kty\":\"%s\",\"x\":\"%s\"}", jwk->crv, jwk->kty, jwk->x);
+    return jwk_str;
+}
+
+char* didProofHeaderToString(did_proof_header* header){
+    char* header_str = calloc(300, sizeof(char));
+    sprintf(header_str, "{\"alg\":\"%s\",\"jwk\":%s}", header->alg, jwkToString(header->jwk));
+    return header_str;
+}
+
+char* didProofPayloadToString(did_proof_payload* payload){
+    char* payload_str = calloc(300, sizeof(char));
+    sprintf(payload_str, "{\"iat\":\"%s\",\"exp\":\"%s\",\"s256\":\"%s\"}", payload->iat, payload->exp, payload->s256);
+    return payload_str;
+}
+
+char* didProofHeaderAndPayloadToString(did_proof* proof){
+    char* proof_str = calloc(600, sizeof(char));
+    sprintf(proof_str, "{\"header\":%s,\"payload\":%s", didProofHeaderToString(proof->header), didProofPayloadToString(proof->payload));
+    return proof_str;
+}
+
+char* didProofToString(did_proof* proof){
+    char* proof_str = calloc(600, sizeof(char));
+    sprintf(proof_str, "{\"header\":%s,\"payload\":%s,\"signature\":\"%s\"}", didProofHeaderToString(proof->header), didProofPayloadToString(proof->payload), proof->signature);
+    return proof_str;
+}
+
+char* attestationToString(attestation* attestation){
+    char* attestation_str = calloc(300, sizeof(char));
+    sprintf(attestation_str, "{\"id\":\"%s\",\"type\":\"%s\",\"publicKeyJwk\":%s}", attestation->id, attestation->type, jwkToString(attestation->publicKeyJwk));
+    return attestation_str;
+}
+
+char* didDocumentToString(did_document* document){
+    char* document_str = calloc(300, sizeof(char));
+    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
+    return document_str;
+}
+
+char* didToString(did* deviceDID){
+    char* did_str = calloc(900, sizeof(char));
+    sprintf(did_str, "{\"document\":%s,\"proof\":%s}", didDocumentToString(deviceDID->document), didProofToString(deviceDID->proof));
+    return did_str;
+}
+//----------------------------------------------------------------
+
+// CREATE DID INFO
+jwk* createJwk(char* kty, char* crv, char* x){
+    jwk* jwk = malloc(sizeof(jwk));
+    jwk->kty = kty;
+    jwk->crv = crv;
+    jwk->x = x;
+    return jwk;
+}
+
+did_proof_header* createDidProofHeader(char* alg, jwk* jwk){
+    did_proof_header* header = malloc(sizeof(did_proof_header));
+    header->alg = alg;
+    header->jwk = jwk;
+    return header;
+}
+
+did_proof_payload* createDidProofPayload(char* iat, char* exp, char* s256){
+    did_proof_payload* payload = malloc(sizeof(did_proof_payload));
+    payload->iat = iat;
+    payload->exp = exp;
+    payload->s256 = s256;
+    return payload;
+}
+
+did_proof* createDidProof(did_proof_header* header, did_proof_payload* payload){
+    did_proof* proof = malloc(sizeof(did_proof));
+    proof->header = header;
+    proof->payload = payload;
+
+    char* msg = didProofHeaderAndPayloadToString(proof);
+    char *signature_base64 = sign_message((uint8_t*) msg, strlen(msg), proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
+    proof->signature = signature_base64;
+    
+    return proof;
+}
+
+attestation* createAttestation(char* id, char* type, jwk* publicKeyJwk){
+    attestation* attestation = malloc(sizeof(attestation));
+    attestation->id = id;
+    attestation->type = type;
+    attestation->publicKeyJwk = publicKeyJwk;
+    return attestation;
+}
+
+did_document* createDidDocument(char* id, attestation* attestation){
+    did_document* document = malloc(sizeof(did_document));
+    document->id = id;
+    document->attestation = attestation;
+    return document;
+}
+
+did* createDid(did_document* document, did_proof* proof){
+    did* deviceDID = malloc(sizeof(did));
+    deviceDID->document = document;
+    deviceDID->proof = proof;
+    return deviceDID;
+}
+//----------------------------------------------------------------
+
+static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
-    secret_key_bytes = calloc(EDSIGN_SECRET_KEY_SIZE, sizeof(uint8_t));
-    public_key_bytes = calloc(EDSIGN_PUBLIC_KEY_SIZE, sizeof(uint8_t));
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+            COAP_FORMAT_TEXT, (uint8_t*)RIOT_BOARD, strlen(RIOT_BOARD));
+}
 
-    printf("RUNNING KEY HANDLER\n");
-    /* Create the new keypair */ // Ed25519
-    random_bytes(secret_key_bytes, sizeof(secret_key_bytes));
-    ed25519_prepare(secret_key_bytes);
-    edsign_sec_to_pub(public_key_bytes, secret_key_bytes);
+//// getdiddocument() returns this document signed
+    /*
+        DID document
+        "{
+            \"attestation\": \"public_key we created\"
+        }"
+
+
+        --> we sign this with hardcoded private key
+
+        change sign function from hardcoded to created keys
+    */
+
+
+
+void createKeysEd25519(key_pair* keyPair){
+
+    if (keyPair->secret_key_bytes == NULL) {
+        proof_key_pair->secret_key_bytes = calloc(EDSIGN_SECRET_KEY_SIZE, sizeof(uint8_t));
+        proof_key_pair->public_key_bytes = calloc(EDSIGN_PUBLIC_KEY_SIZE, sizeof(uint8_t));
+
+        random_bytes(proof_key_pair->secret_key_bytes, sizeof(proof_key_pair->secret_key_bytes));
+    }
+    else {
+        free(proof_key_pair->public_key_bytes); 
+        proof_key_pair->public_key_bytes = calloc(EDSIGN_PUBLIC_KEY_SIZE, sizeof(uint8_t));
+    }
+    
+    ed25519_prepare(keyPair->secret_key_bytes);
+    edsign_sec_to_pub(keyPair->public_key_bytes, keyPair->secret_key_bytes);
 
     /* Print the new keypair */ //Prints the hex to compare with base64
     puts("New keypair generated(PRINT IN HEX TO VERIFY WITH BASE64):");
     printf("  - Secret key hex: ");
     for (uint8_t i = 0; i < EDSIGN_SECRET_KEY_SIZE; ++i)
-        printf("%02X", secret_key_bytes[i]);
-
+        printf("%02X", keyPair->secret_key_bytes[i]);
     printf("\n  - Public key hex: ");
     for (uint8_t i = 0; i < EDSIGN_PUBLIC_KEY_SIZE; ++i)
-        printf("%02X", public_key_bytes[i]);
+        printf("%02X", keyPair->public_key_bytes[i]);
     puts("");
 
-
-    free(secret_key_base64);
-    free(public_key_base64);
+    
+    free(keyPair->public_key_base64);
+    free(keyPair->secret_key_base64);
 
     //SAVE KEYS TO BASE64
-    public_key_base64 = calloc(100, sizeof(char));
-    bytes_to_base64url(public_key_bytes, EDSIGN_PUBLIC_KEY_SIZE, public_key_base64);
+    keyPair->public_key_base64 = calloc(100, sizeof(char));
+    bytes_to_base64url(keyPair->public_key_bytes, EDSIGN_PUBLIC_KEY_SIZE, keyPair->public_key_base64);
 
-    secret_key_base64 = calloc(100, sizeof(char));
-    bytes_to_base64url(secret_key_bytes, EDSIGN_SECRET_KEY_SIZE, secret_key_base64);
-    
-    printf("  - Secret key base64: %s\n", secret_key_base64);
-    printf("  - Public key base64: %s\n", public_key_base64);
+    keyPair->secret_key_base64 = calloc(100, sizeof(char));
+    bytes_to_base64url(keyPair->secret_key_bytes, EDSIGN_SECRET_KEY_SIZE, keyPair->secret_key_base64);
 
-    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, "keys created", 13);
+    printf("  - Secret key base64: %s\n", keyPair->secret_key_base64);
+    printf("  - Public key base64: %s\n", keyPair->public_key_base64);
 }
+
 
 /** @brief  Get public key of DID
 * @param COAP-PARAMETERS
@@ -301,8 +336,12 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
 {
     (void)context;
 
-    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, public_key_base64, strlen(public_key_base64));
+    if (proof_key_pair->public_key_base64 == NULL)
+        return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+            COAP_FORMAT_TEXT, "no public key", 13);
+    else
+        return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+            COAP_FORMAT_TEXT, proof_key_pair->public_key_base64, strlen(proof_key_pair->public_key_base64));
 }
 
 // static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context) {
@@ -310,6 +349,7 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
 //     char* temperature = "temperature"; 
     
 // }
+
 
 /** @brief  Get public key of DID
 * @param[in] message to sign
@@ -320,29 +360,15 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
 */
 char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8_t* secret_key, uint8_t* public_key) // USED IN SIGN HANDLER
 { 
-    uint8_t* signature = malloc(EDSIGN_SIGNATURE_SIZE);
 
-    //Sign message
-    edsign_sign(signature, public_key, secret_key, message, message_len);
-
-    //CHECK WITH VERIFY IF SIGN WORKED (MUST BE NOT 0)
-    int verify = edsign_verify(signature, public_key, message, message_len);
-    if (verify == 0)
-        printf("SIGNATURE NOT VERIFIED\n");
-    else
-        printf("SIGNATURE VERIFIED\n");
-
-    //Turn signature to base64 string
-    char* signature_base64 = calloc(EDSIGN_SIGNATURE_SIZE * 2, sizeof(char));
-    size_t size = bytes_to_base64url(signature, EDSIGN_SIGNATURE_SIZE, signature_base64);
+    char *signature_base64 = sign_message(message, message_len, secret_key, public_key);
 
     //Create response with signature
-    char *response = calloc(size + 1 + message_len, sizeof(char));
+    char *response = calloc(strlen(signature_base64) + 1 + message_len, sizeof(char));
     memcpy(response, message, message_len);
     memcpy(response + message_len, ",", 1);
-    memcpy(response + message_len + 1, signature_base64, size);
+    memcpy(response + message_len + 1, signature_base64, strlen(signature_base64));
 
-    free(signature);
     free(signature_base64);
     
     return response;
@@ -369,13 +395,14 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
 
     char *response;
     // sign message with hardcoded keys
-    response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len, secret_key_bytes, public_key_bytes);
+    response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len, proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
     printf("\nResponse: %s\n", response);
 
     // send back message and signature
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, response, strlen(response));
 }
+
 
 void createDeviceDid(void)
 {
@@ -385,7 +412,7 @@ void createDeviceDid(void)
     char* crv = calloc(7, sizeof(char));
     memcpy(crv, "Ed25519", 7);
 
-    jwk* myjwk = createJwk(okp, crv, public_key_base64);
+    jwk* myjwk = createJwk(okp, crv, proof_key_pair->public_key_base64);
     printf("%s\n", jwkToString(myjwk));
 
 
