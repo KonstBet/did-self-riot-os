@@ -120,6 +120,7 @@ did* createDid(did_document* document, did_proof* proof){
 //----------------------------------------------------------------
 
 // STRUCTS TO STRING FOR JSON ------------------------------------
+
 char* jwkToString(jwk* jwk){
     char* jwk_str = calloc(200, sizeof(char));
     sprintf(jwk_str, "{\"kty\":\"%s\",\"crv\":\"%s\",\"x\":\"%s\"}", jwk->kty, jwk->crv, jwk->x);
@@ -190,29 +191,16 @@ static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, vo
         change sign function from hardcoded to created keys
     */
 
-/** @brief   Convert bytes to base64 string
+/** @brief   Convert bytes to base64url
 * @param[in]   in_bytes     Bytes
 * @param[in]  in_bytes_size  Size of bytes array
-* @param[out]  out_base64  Base64 string
+* @param[out]  out_base64url  Base64 string
 * @returns      size of base64 string
  */
-size_t bytes_to_base64(void* in_bytes, size_t in_bytes_size, void* out_base64) {
+size_t bytes_to_base64url(void* in_bytes, size_t in_bytes_size, void* out_base64url) {
     size_t size;
 
-    base64_encode(in_bytes, in_bytes_size, out_base64, &size); // convert bytes to base64
-
-    return size;
-}
-
-/** @brief   Convert base64 to bytes
-* @param[in]   in_base64     Base64 string
-* @param[out]  out_bytes  Bytes
-* @returns      size of bytes array
- */
-size_t base64_to_bytes(void* in_base64, void* out_bytes) {
-    size_t size;
-
-    base64_decode(in_base64, strlen(in_base64), out_bytes, &size); // convert bytes to base64
+    base64url_encode(in_bytes, in_bytes_size, out_base64url, &size); // convert bytes to base64url
 
     return size;
 }
@@ -222,17 +210,17 @@ size_t base64_to_bytes(void* in_base64, void* out_bytes) {
  * @param[out]  hash    Hash of str
  * @returns returns 0 on success
  */
-char* hash_string(char *str)
+uint8_t* hashSH256(char *str)
 {
     uint8_t* digest = calloc(SHA256_DIGEST_LENGTH, sizeof(uint8_t));
     sha256(str, strlen(str), digest);
     
-    char* hash = calloc(SHA256_DIGEST_LENGTH*2, sizeof(char));
-    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-        sprintf(hash + (i * 2), "%02x", digest[i]);
-    }
+    // char* hash = calloc(SHA256_DIGEST_LENGTH*2, sizeof(char));
+    // for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+    //     sprintf(hash + (i * 2), "%02x", digest[i]);
+    // }
 
-    return hash;
+    return digest;
 }
 
 /** @brief  Create public and private keys for DID
@@ -255,8 +243,8 @@ New keypair generated(PRINT IN HEX TO VERIFY WITH BASE64):
 static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
-    secret_key_bytes = malloc(EDSIGN_SECRET_KEY_SIZE);
-    public_key_bytes = malloc(EDSIGN_PUBLIC_KEY_SIZE);
+    secret_key_bytes = calloc(EDSIGN_SECRET_KEY_SIZE, sizeof(uint8_t));
+    public_key_bytes = calloc(EDSIGN_PUBLIC_KEY_SIZE, sizeof(uint8_t));
 
     printf("RUNNING KEY HANDLER\n");
     /* Create the new keypair */ // Ed25519
@@ -278,12 +266,14 @@ static ssize_t _create_keys_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
 
     free(secret_key_base64);
     free(public_key_base64);
-    secret_key_base64 = calloc(EDSIGN_SECRET_KEY_SIZE * 2, sizeof(char));
-    public_key_base64 = calloc(EDSIGN_PUBLIC_KEY_SIZE * 2, sizeof(char));
 
     //SAVE KEYS TO BASE64
-    bytes_to_base64(secret_key_bytes, EDSIGN_SECRET_KEY_SIZE, secret_key_base64);
-    bytes_to_base64(public_key_bytes, EDSIGN_PUBLIC_KEY_SIZE, public_key_base64);
+    public_key_base64 = calloc(100, sizeof(char));
+    bytes_to_base64url(public_key_bytes, EDSIGN_PUBLIC_KEY_SIZE, public_key_base64);
+
+    secret_key_base64 = calloc(100, sizeof(char));
+    bytes_to_base64url(secret_key_bytes, EDSIGN_SECRET_KEY_SIZE, secret_key_base64);
+    
     printf("  - Secret key base64: %s\n", secret_key_base64);
     printf("  - Public key base64: %s\n", public_key_base64);
 
@@ -338,7 +328,7 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8
 
     //Turn signature to base64 string
     char* signature_base64 = calloc(EDSIGN_SIGNATURE_SIZE * 2, sizeof(char));
-    size_t size = bytes_to_base64(signature, EDSIGN_SIGNATURE_SIZE, signature_base64);
+    size_t size = bytes_to_base64url(signature, EDSIGN_SIGNATURE_SIZE, signature_base64);
 
     //Create response with signature
     char *response = calloc(size + 1 + message_len, sizeof(char));
@@ -414,7 +404,10 @@ void createDeviceDid(void)
     //CREATE DID DOCUMENT
     char* id = calloc(100, sizeof(char));
     memcpy(id, "did:self:", 9);
-    char* jwkHash = hash_string(jwkToString(myjwk));
+
+    char* jwkHash = calloc(100, sizeof(char));
+    uint8_t* digest = hashSH256(jwkToString(myjwk));
+    bytes_to_base64url(digest, 32, jwkHash);
     memcpy(id + 9, jwkHash, strlen(jwkHash));
 
     did_document* mydocument = createDidDocument(id, myattestation);
@@ -435,7 +428,11 @@ void createDeviceDid(void)
     char* exp_str = calloc(10, sizeof(char));
     sprintf(exp_str, "%ld", next);
 
-    char* s256 = hash_string(didDocumentToString(mydocument));
+    char* s256 = calloc(100, sizeof(char));
+    digest = hashSH256(didDocumentToString(mydocument));
+    bytes_to_base64url(digest, 32, s256);
+
+    free(digest);
 
     did_proof_payload* myDidProofPayload = createDidProofPayload(iat_str, exp_str, s256);
     printf("%s\n", didProofPayloadToString(myDidProofPayload));

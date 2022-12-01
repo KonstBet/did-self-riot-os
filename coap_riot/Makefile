@@ -29,7 +29,7 @@ USEMODULE += hashes
 
 USEMODULE += random
 
-USEMODULE += base64
+USEMODULE += base64url
 
 USEPKG += c25519
 
