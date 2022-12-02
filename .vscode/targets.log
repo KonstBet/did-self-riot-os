@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Dec  1 17:38:41 2022
+# Make data base, printed on Fri Dec  2 18:06:23 2022
 
 # Variables
 
@@ -53,7 +51,7 @@ PATH = /home/momus/.vscode-server/bin/6261075646f055b99068d3688932416f2346dd3b/b
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-e08d510f-b65b-4ffa-a0b1-26d1462dd3ba.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-290cfefa-6fcd-45a9-85fe-05108ef59168.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -65,7 +63,7 @@ PWD = /home/momus/proj_DID
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/12_interop
+WSL_INTEROP = /run/WSL/42_interop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -207,6 +205,8 @@ GNUmakefile:
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Thu Dec  1 17:38:41 2022
+# Finished Make data base on Fri Dec  2 18:06:23 2022
 
  
+make: *** No rule to make target 'all'.  Stop.
+

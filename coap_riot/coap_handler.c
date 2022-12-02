@@ -80,7 +80,7 @@ size_t bytes_to_base64url(void* in_bytes, size_t in_bytes_size, void* out_base64
 /** @brief   Hash string with SHA256
  * @param[in]   str     String to hash
  * @param[out]  hash    Hash of str
- * @returns returns 0 on success
+ * @returns returns bytes of hash
  */
 uint8_t* hashSH256(char *str)
 {
@@ -91,6 +91,7 @@ uint8_t* hashSH256(char *str)
     // for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
     //     sprintf(hash + (i * 2), "%02x", digest[i]);
     // }
+    // printf("\nHash: %s\n", hash);
 
     return digest;
 }
@@ -108,7 +109,7 @@ static key_pair* proof_key_pair = NULL;
 
 
 /* digital signature key pair DID DOCUMENT JWK*/ /* Generated using ed25519-genkeypair */
-static key_pair* document_key_pair = NULL;
+//static key_pair* document_key_pair = NULL;
 
 //----------------------------------------------------------------
 
@@ -150,7 +151,7 @@ char* jwkToString(jwk* jwk){
     return jwk_str;
 }
 
-char* jwkToStringLexicographically(jwk* jwk){
+char* jwkToStringLexicographically(jwk* jwk){ //LEXYCOGRAPHICALLY ORDERED FOR THUMPRINT OF JWK
     char* jwk_str = calloc(200, sizeof(char));
     sprintf(jwk_str, "{\"crv\":\"%s\",\"kty\":\"%s\",\"x\":\"%s\"}", jwk->crv, jwk->kty, jwk->x);
     return jwk_str;
@@ -201,7 +202,7 @@ char* didToString(did* deviceDID){
 
 // CREATE DID INFO
 jwk* createJwk(char* kty, char* crv, char* x){
-    jwk* jwk = malloc(sizeof(jwk));
+    jwk* jwk = calloc(1, sizeof(jwk));
     jwk->kty = kty;
     jwk->crv = crv;
     jwk->x = x;
@@ -209,14 +210,14 @@ jwk* createJwk(char* kty, char* crv, char* x){
 }
 
 did_proof_header* createDidProofHeader(char* alg, jwk* jwk){
-    did_proof_header* header = malloc(sizeof(did_proof_header));
+    did_proof_header* header = calloc(1, sizeof(did_proof_header));
     header->alg = alg;
     header->jwk = jwk;
     return header;
 }
 
 did_proof_payload* createDidProofPayload(char* iat, char* exp, char* s256){
-    did_proof_payload* payload = malloc(sizeof(did_proof_payload));
+    did_proof_payload* payload = calloc(1, sizeof(did_proof_payload));
     payload->iat = iat;
     payload->exp = exp;
     payload->s256 = s256;
@@ -224,7 +225,7 @@ did_proof_payload* createDidProofPayload(char* iat, char* exp, char* s256){
 }
 
 did_proof* createDidProof(did_proof_header* header, did_proof_payload* payload){
-    did_proof* proof = malloc(sizeof(did_proof));
+    did_proof* proof = calloc(1, sizeof(did_proof));
     proof->header = header;
     proof->payload = payload;
 
@@ -236,7 +237,7 @@ did_proof* createDidProof(did_proof_header* header, did_proof_payload* payload){
 }
 
 attestation* createAttestation(char* id, char* type, jwk* publicKeyJwk){
-    attestation* attestation = malloc(sizeof(attestation));
+    attestation* attestation = calloc(1, sizeof(attestation));
     attestation->id = id;
     attestation->type = type;
     attestation->publicKeyJwk = publicKeyJwk;
@@ -244,18 +245,55 @@ attestation* createAttestation(char* id, char* type, jwk* publicKeyJwk){
 }
 
 did_document* createDidDocument(char* id, attestation* attestation){
-    did_document* document = malloc(sizeof(did_document));
+    did_document* document = calloc(1, sizeof(did_document));
     document->id = id;
     document->attestation = attestation;
     return document;
 }
 
 did* createDid(did_document* document, did_proof* proof){
-    did* deviceDID = malloc(sizeof(did));
+    did* deviceDID = calloc(1, sizeof(did));
     deviceDID->document = document;
     deviceDID->proof = proof;
     return deviceDID;
 }
+//----------------------------------------------------------------
+
+//DELETE & FREE MEMORY
+void deleteDid(did* deviceDID){
+    if (deviceDID != NULL) {
+        free(deviceDID->proof->header->alg);
+        free(deviceDID->proof->header->jwk->kty);
+        free(deviceDID->proof->header->jwk->crv);
+        free(deviceDID->proof->header->jwk);
+        free(deviceDID->proof->header);
+        free(deviceDID->proof->payload->iat);
+        free(deviceDID->proof->payload->exp);
+        free(deviceDID->proof->payload->s256);
+        free(deviceDID->proof->payload);
+        free(deviceDID->proof->signature);
+        free(deviceDID->proof);
+        free(deviceDID->document->id);
+        free(deviceDID->document->attestation->id);
+        free(deviceDID->document->attestation->type);
+        free(deviceDID->document->attestation);
+        free(deviceDID->document);
+        free(deviceDID);
+        deviceDID = NULL;
+    }
+}
+
+void deleteKeyPair(key_pair* keyPair) {
+    if (keyPair != NULL) {
+        free(keyPair->secret_key_bytes);
+        free(keyPair->public_key_bytes);
+        free(keyPair->secret_key_base64);
+        free(keyPair->public_key_base64);
+        free(keyPair);
+        keyPair = NULL;
+    }
+}
+
 //----------------------------------------------------------------
 
 static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
@@ -280,17 +318,19 @@ static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, vo
 
 
 
+/** @brief  Create Public/Private Key Pair
+ *  @param  keyPair: pointer to key_pair struct to store keys
+ */
 void createKeysEd25519(key_pair* keyPair){
 
     if (keyPair->secret_key_bytes == NULL) {
-        proof_key_pair->secret_key_bytes = calloc(EDSIGN_SECRET_KEY_SIZE, sizeof(uint8_t));
-        proof_key_pair->public_key_bytes = calloc(EDSIGN_PUBLIC_KEY_SIZE, sizeof(uint8_t));
+        keyPair->secret_key_bytes = calloc(EDSIGN_SECRET_KEY_SIZE, sizeof(uint8_t));
+        keyPair->public_key_bytes = calloc(EDSIGN_PUBLIC_KEY_SIZE, sizeof(uint8_t));
 
-        random_bytes(proof_key_pair->secret_key_bytes, sizeof(proof_key_pair->secret_key_bytes));
+        random_bytes(keyPair->secret_key_bytes, sizeof(keyPair->secret_key_bytes));
     }
     else {
-        free(proof_key_pair->public_key_bytes); 
-        proof_key_pair->public_key_bytes = calloc(EDSIGN_PUBLIC_KEY_SIZE, sizeof(uint8_t));
+        keyPair->public_key_bytes = calloc(EDSIGN_PUBLIC_KEY_SIZE, sizeof(uint8_t));
     }
     
     ed25519_prepare(keyPair->secret_key_bytes);
@@ -307,9 +347,6 @@ void createKeysEd25519(key_pair* keyPair){
     puts("");
 
     
-    free(keyPair->public_key_base64);
-    free(keyPair->secret_key_base64);
-
     //SAVE KEYS TO BASE64
     keyPair->public_key_base64 = calloc(100, sizeof(char));
     bytes_to_base64url(keyPair->public_key_bytes, EDSIGN_PUBLIC_KEY_SIZE, keyPair->public_key_base64);
@@ -321,24 +358,23 @@ void createKeysEd25519(key_pair* keyPair){
     printf("  - Public key base64: %s\n", keyPair->public_key_base64);
 }
 
-
-/** @brief  Get public key of DID
+// /* -- COAP REQUEST --
+// REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/getpublickey
+// RESPONSE: Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8= (SAME AS PRINTED IN DEVICE CONSOLE AT CREATEKEYS)
+// */
+/** @brief  Get public key of DID Document
 * @param COAP-PARAMETERS
 * @returns public key of DID
-*/
-/* -- COAP REQUEST --
-REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/getpublickey
-RESPONSE: Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8= (SAME AS PRINTED IN DEVICE CONSOLE AT CREATEKEYS)
-*/
-/* -- PRINT AT DEVICE CONSOLE --
 */
 static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
 
-    if (proof_key_pair->public_key_base64 == NULL)
+    if (proof_key_pair->public_key_base64 == NULL) {
+        char msg[] = "No Public Key found for DID Document Verification";
         return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, "no public key", 13);
+            COAP_FORMAT_TEXT, msg, strlen(msg));
+    }
     else
         return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, proof_key_pair->public_key_base64, strlen(proof_key_pair->public_key_base64));
@@ -356,7 +392,7 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
 * @param[in] message_len length of message
 * @param[in] secret_key secret key
 * @param[in] public_key public key
-* @returns message with signature as string ("message,signature")
+* @returns message with signature as string => "message,signature"
 */
 char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8_t* secret_key, uint8_t* public_key) // USED IN SIGN HANDLER
 { 
@@ -374,20 +410,13 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8
     return response;
 }
 
+// /* -- COAP REQUEST --
+// REQUEST: coap-client -m post coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/sign -e message
+// RESPONSE: message,/bbM2225+nZeRJ6aA6xmGJdM2Bbc3qFNXpBjzdK8l8PiQGgiqDLHMRuIZO9ZF6qksvo7yvZOBKd9nuCDSgeaBg==
+// */
 /** @brief  Sign message with hardcoded keys
 * @param COAP-PARAMETERS
 * @returns message with signature as string ("message,signature")
-*/
-/* -- COAP REQUEST --
-REQUEST: coap-client -m post coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/sign -e message
-RESPONSE: message,/bbM2225+nZeRJ6aA6xmGJdM2Bbc3qFNXpBjzdK8l8PiQGgiqDLHMRuIZO9ZF6qksvo7yvZOBKd9nuCDSgeaBg==
-*/
-/* -- PRINT AT DEVICE CONSOLE --
-SIGNATURE VERIFIED
-
-Response: message,/bbM2225+nZeRJ6aA6xmGJdM2Bbc3qFNXpBjzdK8l8PiQGgiqDLHMRuIZO9ZF6qksvo7yvZOBKd9nuCDSgeaBg==
-
-//TESTING SIGN MESSAGE AND RETURN MESSAGE WITH SIGNATURE SEPARATED BY COMMA
 */
 static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
@@ -403,9 +432,16 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, v
             COAP_FORMAT_TEXT, response, strlen(response));
 }
 
-
-void createDeviceDid(void)
+/** @brief  Creates a DID including DID Document and Proof
+* @return Saves Result in deviceDid global variable and returns it
+*/
+did* createDeviceDid(void)
 {
+    deleteKeyPair(proof_key_pair);
+    deleteDid(deviceDid);
+    proof_key_pair = calloc(1, sizeof(key_pair));
+    createKeysEd25519(proof_key_pair);
+
     //CREATE KEY
     char* okp = calloc(3, sizeof(char));
     memcpy(okp, "OKP", 3);
@@ -418,7 +454,7 @@ void createDeviceDid(void)
 
     //CREATE PROOF HEADER
     char* alg = calloc(5, sizeof(char));
-    memcpy(alg, "HS256", 5);
+    memcpy(alg, "EdDSA", 5);
 
     did_proof_header* myDidProofHeader = createDidProofHeader(alg, myjwk);
     printf("%s\n", didProofHeaderToString(myDidProofHeader));
@@ -477,44 +513,103 @@ void createDeviceDid(void)
 
 
     //CREATE DID COMPLETE
-    deviceDid = malloc(sizeof(did));
     deviceDid = createDid(mydocument, myproof);
     printf("%s\n", didToString(deviceDid));
+
+    return deviceDid;
 }
 
 
-/** @brief  Get DID document
+// /* -- COAP REQUEST --
+// REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/did
+// RESPONSE: 
+// */
+/** @brief  Get DID ALL INFORMATION
 * @param COAP-PARAMETERS
-* @returns DID document
+* @returns DID ALL INFORMATION
 */
-/* -- COAP REQUEST --
-REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/did
-RESPONSE: 
-*/
-/* -- PRINT AT DEVICE CONSOLE --
-
-*/
-static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t getDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 {
     (void)context;
     if (deviceDid == NULL) {
-        printf("DID NOT CREATED\n");
         createDeviceDid();
     }
 
     char* response = didToString(deviceDid);
     
-    return coap_reply_simple(pkt, COAP_CODE_205, buf, len+2048, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len+1024, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
             COAP_FORMAT_TEXT, response, strlen(response));
+}
+
+// /* -- COAP REQUEST --
+// REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/did/document
+// RESPONSE: 
+// */
+/** @brief  Get DID document
+* @param COAP-PARAMETERS
+* @returns DID document
+*/
+static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+{
+    (void)context;
+    if (deviceDid == NULL) {
+        createDeviceDid();
+    }
+
+    char* response = didDocumentToString(deviceDid->document);
+    
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len+1024, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
+            COAP_FORMAT_TEXT, response, strlen(response));
+}
+
+// /* -- COAP REQUEST --
+// REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/did/proof
+// RESPONSE: 
+// */
+/** @brief  Get DID Proof
+* @param COAP-PARAMETERS
+* @returns DID Proof
+*/
+static ssize_t getDidProof(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+{
+    (void)context;
+    if (deviceDid == NULL) {
+        createDeviceDid();
+    }
+
+    char* response = didProofToString(deviceDid->proof);
+    
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len+1024, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
+            COAP_FORMAT_TEXT, response, strlen(response));
+}
+
+
+// /* -- COAP REQUEST --
+// REQUEST: coap-client -m put coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/did
+// RESPONSE: 
+// */
+/** @brief  Update DID
+* @param COAP-PARAMETERS
+* @returns "DID Updated" on success
+*/
+static ssize_t updateDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+{
+    (void)context;
+    createDeviceDid();
+    
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len+1024, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
+            COAP_FORMAT_TEXT, "DID Updated", 11);
 }
 
 /* must be sorted by path (ASCII order) */
 const coap_resource_t coap_resources[] = {
     COAP_WELL_KNOWN_CORE_DEFAULT_HANDLER,
     { "/riot/board", COAP_GET, _riot_board_handler, NULL },
-    { "/riot/createkeys", COAP_GET, _create_keys_handler, NULL }, //MINE
-    { "/riot/did", COAP_GET, getDidDocument, NULL }, //MINE
-    { "/riot/getpublickey", COAP_GET, _get_public_key_handler, NULL }, //MINE
+    { "/riot/did", COAP_GET, getDid, NULL }, //MINE
+    { "/riot/did/document", COAP_GET, getDidDocument, NULL }, //MINE
+    { "/riot/did/getpublickey", COAP_GET, _get_public_key_handler, NULL }, //MINE
+    { "/riot/did/proof", COAP_GET, getDidProof, NULL }, //MINE
+    { "/riot/did", COAP_PUT, updateDid, NULL }, //MINE
     { "/riot/sign", COAP_POST, ed25519_sign_handler, NULL }, //MINE
 };
 
