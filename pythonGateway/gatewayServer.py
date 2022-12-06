@@ -8,6 +8,7 @@ from aiocoap import *
 import aiocoap.resource as resource
 import aiocoap
 import json
+import hashlib
 
 import ed25519
 
@@ -164,6 +165,31 @@ class getPublicKey(resource.Resource):
             print('Result: %s\n%r'%(response.code, response.payload))
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+        
+def verifyDiD(did):
+    print("VERIFYING DID")
+    
+
+class getDid(resource.Resource):
+    async def render_get(self, request):
+        protocol = await Context.create_client_context()
+
+        request = Message(code=GET, uri='coap://[' + devices['all'][0] + ']/riot/did')
+
+        try:
+            response = await protocol.request(request).response
+        except Exception as e:
+            print('Failed to fetch resource:')
+            print(e)
+        else:
+            print('Result: %s\n%r'%(response.code, response.payload))
+            
+            did = json.loads(response.payload.decode('utf-8'))
+            print(did["document"]["id"])
+            verifyDiD(did)
+            
+            
+            return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
 
 class wellknown(resource.Resource):
     async def render_get(self, request):
@@ -252,6 +278,7 @@ async def main():
     root.add_resource(['riot','board'], RiotBoard())
     root.add_resource(['riot','createkeys'], create_ed25519Keys())
     root.add_resource(['riot','getpublickey'], getPublicKey())
+    root.add_resource(['riot','did'], getDid())
     root.add_resource(['.well-known','core'], wellknown())
     root.add_resource(['newdevice'], newDevice())
     root.add_resource(['riot','signandverify'], signAndVerify())

@@ -12,6 +12,10 @@
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
  /usr/include/inttypes.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
@@ -83,6 +87,14 @@
 /usr/include/inttypes.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

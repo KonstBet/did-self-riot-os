@@ -21,7 +21,7 @@
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/wchar.h /usr/include/bits/stdint-intn.h \
  /usr/include/bits/stdint-uintn.h \
- /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h
 
 /usr/include/stdc-predef.h:
 
@@ -93,4 +93,4 @@
 
 /usr/include/bits/stdint-uintn.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:

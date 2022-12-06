@@ -15,13 +15,19 @@
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  /usr/include/bits/stdio.h \
  /home/momus/proj_DID/RIOT/core/lib/include/assert.h \
+ /home/momus/proj_DID/RIOT/sys/include/architecture.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
+ /usr/include/bits/wchar.h /usr/include/bits/stdint-intn.h \
+ /usr/include/bits/stdint-uintn.h /usr/include/inttypes.h \
+ /home/momus/proj_DID/RIOT/cpu/native/include/architecture_arch.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/cpu.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h \
  /home/momus/proj_DID/RIOT/core/lib/include/panic.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
- /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
- /usr/include/bits/wchar.h /usr/include/bits/stdint-intn.h \
- /usr/include/bits/stdint-uintn.h
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h
 
 /usr/include/stdc-predef.h:
 
@@ -75,13 +81,7 @@
 
 /home/momus/proj_DID/RIOT/core/lib/include/assert.h:
 
-/home/momus/proj_DID/RIOT/cpu/native/include/cpu.h:
-
-/home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h:
-
-/home/momus/proj_DID/RIOT/core/lib/include/panic.h:
-
-/home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+/home/momus/proj_DID/RIOT/sys/include/architecture.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
@@ -92,3 +92,23 @@
 /usr/include/bits/stdint-intn.h:
 
 /usr/include/bits/stdint-uintn.h:
+
+/usr/include/inttypes.h:
+
+/home/momus/proj_DID/RIOT/cpu/native/include/architecture_arch.h:
+
+/home/momus/proj_DID/RIOT/cpu/native/include/cpu.h:
+
+/home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/panic.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:

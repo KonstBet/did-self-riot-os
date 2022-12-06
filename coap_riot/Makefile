@@ -15,27 +15,20 @@ USEMODULE += auto_init_gnrc_netif
 USEMODULE += gnrc_ipv6_default
 USEMODULE += sock_udp
 # Additional networking modules that can be dropped if not needed
-USEMODULE += gnrc_icmpv6_echo
-
+SEMODULE += gnrc_icmpv6_echo
 USEMODULE += nanocoap_sock
-
 USEMODULE += xtimer
-
 # include this for nicely formatting the returned internal value
 USEMODULE += fmt
-
 # include sha256 (used by example blockwise handler)
 USEMODULE += hashes
-
 USEMODULE += random
-
 USEMODULE += base64url
-
 USEPKG += c25519
 
 # Comment this out to enable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
-# development process:
+# development process:`
 #DEVELHELP = 1
 
 # Use different settings when compiling for one of the following (low-memory)

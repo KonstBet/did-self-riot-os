@@ -19,11 +19,15 @@
  /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  /usr/include/bits/stdio.h /home/momus/proj_DID/RIOT/core/include/mutex.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/lib/include/list.h \
  /home/momus/proj_DID/RIOT/core/include/thread.h \
  /home/momus/proj_DID/RIOT/core/lib/include/clist.h \
- /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
  /home/momus/proj_DID/RIOT/core/lib/include/list.h \
  /home/momus/proj_DID/RIOT/core/lib/include/cib.h \
  /home/momus/proj_DID/RIOT/core/lib/include/assert.h \
@@ -35,8 +39,8 @@
  /home/momus/proj_DID/RIOT/core/include/sched.h \
  /home/momus/proj_DID/RIOT/core/include/thread_flags.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/thread_arch.h \
- /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /home/momus/proj_DID/RIOT/core/include/thread.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /home/momus/proj_DID/RIOT/core/lib/include/debug.h
 
 /usr/include/stdc-predef.h:
@@ -115,15 +119,23 @@
 
 /home/momus/proj_DID/RIOT/core/include/mutex.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
+
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/list.h:
 
 /home/momus/proj_DID/RIOT/core/include/thread.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/clist.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/list.h:
 
@@ -147,8 +159,8 @@
 
 /home/momus/proj_DID/RIOT/cpu/native/include/thread_arch.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/irq.h:
-
 /home/momus/proj_DID/RIOT/core/include/thread.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/irq.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/debug.h:

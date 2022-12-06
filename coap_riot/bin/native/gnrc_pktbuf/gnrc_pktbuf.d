@@ -12,11 +12,15 @@
  /usr/include/bits/timesize.h /usr/include/bits/typesizes.h \
  /usr/include/bits/time64.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/lib/include/list.h \
  /home/momus/proj_DID/RIOT/core/include/thread.h \
  /home/momus/proj_DID/RIOT/core/lib/include/clist.h \
- /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
  /home/momus/proj_DID/RIOT/core/lib/include/list.h \
  /home/momus/proj_DID/RIOT/core/lib/include/cib.h \
  /home/momus/proj_DID/RIOT/core/lib/include/assert.h \
@@ -34,7 +38,6 @@
  /home/momus/proj_DID/RIOT/core/include/sched.h \
  /home/momus/proj_DID/RIOT/core/include/thread_flags.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/thread_arch.h \
- /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/pktbuf.h \
  /usr/include/stdlib.h /usr/include/bits/waitflags.h \
  /usr/include/bits/waitstatus.h /usr/include/bits/floatn.h \
@@ -55,6 +58,7 @@
  /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/pkt.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/nettype.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ethertype.h \
  /home/momus/proj_DID/RIOT/sys/include/net/protnum.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/neterr.h \
@@ -109,15 +113,23 @@
 
 /usr/include/bits/stdint-uintn.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
+
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/list.h:
 
 /home/momus/proj_DID/RIOT/core/include/thread.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/clist.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/list.h:
 
@@ -164,8 +176,6 @@
 /home/momus/proj_DID/RIOT/core/include/thread_flags.h:
 
 /home/momus/proj_DID/RIOT/cpu/native/include/thread_arch.h:
-
-/home/momus/proj_DID/RIOT/core/lib/include/irq.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/gnrc/pktbuf.h:
 
@@ -234,6 +244,8 @@
 /home/momus/proj_DID/RIOT/sys/include/net/gnrc/pkt.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/gnrc/nettype.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/ethertype.h:
 

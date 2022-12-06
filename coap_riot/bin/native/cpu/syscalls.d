@@ -59,18 +59,22 @@
  /usr/include/bits/types/struct_statx_timestamp.h \
  /usr/include/bits/types/struct_statx.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/cpu.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
+ /usr/include/bits/wchar.h /usr/include/bits/stdint-uintn.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h \
  /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h \
  /home/momus/proj_DID/RIOT/sys/include/xtimer.h \
- /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
- /usr/include/bits/wchar.h /usr/include/bits/stdint-uintn.h \
  /home/momus/proj_DID/RIOT/sys/include/timex.h /usr/include/inttypes.h \
  /home/momus/proj_DID/RIOT/sys/include/time_units.h \
  /home/momus/proj_DID/RIOT/core/include/msg.h \
  /home/momus/proj_DID/RIOT/core/include/sched.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/include/native_sched.h \
  /home/momus/proj_DID/RIOT/core/lib/include/clist.h \
  /home/momus/proj_DID/RIOT/core/lib/include/list.h \
@@ -106,6 +110,7 @@
  /home/momus/proj_DID/RIOT/sys/include/timex.h \
  /home/momus/proj_DID/RIOT/sys/include/ztimer.h \
  /home/momus/proj_DID/RIOT/sys/include/stdio_base.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/native_internal.h \
  /usr/include/signal.h /usr/include/bits/signum.h \
  /usr/include/bits/signum-generic.h \
@@ -351,6 +356,14 @@
 
 /home/momus/proj_DID/RIOT/cpu/native/include/cpu.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/bits/stdint-uintn.h:
+
 /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/irq.h:
@@ -360,14 +373,6 @@
 /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h:
 
 /home/momus/proj_DID/RIOT/sys/include/xtimer.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
-
-/usr/include/stdint.h:
-
-/usr/include/bits/wchar.h:
-
-/usr/include/bits/stdint-uintn.h:
 
 /home/momus/proj_DID/RIOT/sys/include/timex.h:
 
@@ -380,6 +385,14 @@
 /home/momus/proj_DID/RIOT/core/include/sched.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/core/include/native_sched.h:
 
@@ -460,6 +473,8 @@
 /home/momus/proj_DID/RIOT/sys/include/ztimer.h:
 
 /home/momus/proj_DID/RIOT/sys/include/stdio_base.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
 
 /home/momus/proj_DID/RIOT/cpu/native/include/native_internal.h:
 

@@ -37,6 +37,10 @@
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  /usr/include/bits/stdio.h /home/momus/proj_DID/RIOT/sys/include/fmt.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ipv6/addr.h \
  /home/momus/proj_DID/RIOT/sys/include/byteorder.h \
  /home/momus/proj_DID/RIOT/sys/include/unaligned.h \
@@ -171,6 +175,14 @@
 /home/momus/proj_DID/RIOT/sys/include/fmt.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/ipv6/addr.h:
 

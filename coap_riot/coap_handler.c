@@ -87,11 +87,11 @@ uint8_t* hashSH256(char *str)
     uint8_t* digest = calloc(SHA256_DIGEST_LENGTH, sizeof(uint8_t));
     sha256(str, strlen(str), digest);
     
-    // char* hash = calloc(SHA256_DIGEST_LENGTH*2, sizeof(char));
-    // for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-    //     sprintf(hash + (i * 2), "%02x", digest[i]);
-    // }
-    // printf("\nHash: %s\n", hash);
+    char* hash = calloc(SHA256_DIGEST_LENGTH*2, sizeof(char));
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+        sprintf(hash + (i * 2), "%02x", digest[i]);
+    }
+    printf("\nHash: %s\n", hash);
 
     return digest;
 }
@@ -296,7 +296,7 @@ void deleteKeyPair(key_pair* keyPair) {
 
 //----------------------------------------------------------------
 
-static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
 {
     (void)context;
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
@@ -366,11 +366,11 @@ void createKeysEd25519(key_pair* keyPair){
 * @param COAP-PARAMETERS
 * @returns public key of DID
 */
-static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
 {
     (void)context;
 
-    if (proof_key_pair->public_key_base64 == NULL) {
+    if (proof_key_pair == NULL || proof_key_pair->public_key_base64 == NULL) {
         char msg[] = "No Public Key found for DID Document Verification";
         return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, msg, strlen(msg));
@@ -418,7 +418,7 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8
 * @param COAP-PARAMETERS
 * @returns message with signature as string ("message,signature")
 */
-static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
 {
     (void)context;
 
@@ -528,12 +528,16 @@ did* createDeviceDid(void)
 * @param COAP-PARAMETERS
 * @returns DID ALL INFORMATION
 */
-static ssize_t getDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t getDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
 {
     (void)context;
     if (deviceDid == NULL) {
         createDeviceDid();
     }
+    // char* result = calloc(IPV6_ADDR_MAX_STR_LEN, sizeof(char));
+    // ipv6_addr_to_str(result, context->remote->addr, IPV6_ADDR_MAX_STR_LEN);
+    // printf("Target: %s\n", result);
+    
 
     char* response = didToString(deviceDid);
     
@@ -549,7 +553,7 @@ static ssize_t getDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
 * @param COAP-PARAMETERS
 * @returns DID document
 */
-static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
 {
     (void)context;
     if (deviceDid == NULL) {
@@ -570,7 +574,7 @@ static ssize_t getDidDocument(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *c
 * @param COAP-PARAMETERS
 * @returns DID Proof
 */
-static ssize_t getDidProof(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t getDidProof(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
 {
     (void)context;
     if (deviceDid == NULL) {
@@ -592,7 +596,7 @@ static ssize_t getDidProof(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *cont
 * @param COAP-PARAMETERS
 * @returns "DID Updated" on success
 */
-static ssize_t updateDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context)
+static ssize_t updateDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
 {
     (void)context;
     createDeviceDid();

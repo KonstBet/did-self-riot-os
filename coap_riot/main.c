@@ -27,6 +27,8 @@
 #define MAIN_QUEUE_SIZE     (8)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
 
+
+
 int main(void)
 {
     puts("RIOT nanocoap example application");

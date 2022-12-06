@@ -24,9 +24,13 @@
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/wchar.h /usr/include/bits/stdint-intn.h \
  /usr/include/bits/stdint-uintn.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/sys/include/net/netif.h /usr/include/unistd.h \
  /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
  /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
@@ -125,6 +129,10 @@
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
 
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
 /usr/include/stdint.h:
@@ -134,6 +142,10 @@
 /usr/include/bits/stdint-intn.h:
 
 /usr/include/bits/stdint-uintn.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/netif.h:
 

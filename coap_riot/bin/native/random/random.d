@@ -39,6 +39,10 @@
  /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h \
  /home/momus/proj_DID/RIOT/sys/include/net/netopt.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/lib/include/debug.h \
  /home/momus/proj_DID/RIOT/core/include/sched.h \
  /home/momus/proj_DID/RIOT/core/include/native_sched.h \
@@ -181,6 +185,14 @@
 /home/momus/proj_DID/RIOT/sys/include/net/netopt.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/debug.h:
 

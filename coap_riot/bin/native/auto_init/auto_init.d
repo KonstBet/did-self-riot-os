@@ -19,6 +19,10 @@
  /usr/include/bits/stdio.h /home/momus/proj_DID/RIOT/core/include/sched.h \
  /usr/include/inttypes.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/include/native_sched.h \
  /home/momus/proj_DID/RIOT/core/lib/include/clist.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
@@ -27,6 +31,8 @@
  /home/momus/proj_DID/RIOT/sys/include/auto_init_utils.h \
  /home/momus/proj_DID/RIOT/core/lib/include/xfa.h \
  /home/momus/proj_DID/RIOT/core/lib/include/macros/xtstr.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/coap_riot/bin/native/preprocessor/preprocessor_successor.h \
  /home/momus/proj_DID/RIOT/sys/auto_init/include/auto_init_priorities.h \
  /home/momus/proj_DID/RIOT/core/lib/include/debug.h \
  /home/momus/proj_DID/RIOT/core/include/thread.h \
@@ -105,6 +111,14 @@
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
 
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
+
 /home/momus/proj_DID/RIOT/core/include/native_sched.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/clist.h:
@@ -120,6 +134,10 @@
 /home/momus/proj_DID/RIOT/core/lib/include/xfa.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/macros/xtstr.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/coap_riot/bin/native/preprocessor/preprocessor_successor.h:
 
 /home/momus/proj_DID/RIOT/sys/auto_init/include/auto_init_priorities.h:
 

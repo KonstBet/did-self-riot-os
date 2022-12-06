@@ -31,6 +31,10 @@
  /usr/include/bits/stdint-uintn.h \
  /home/momus/proj_DID/RIOT/core/include/sched.h /usr/include/inttypes.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/include/native_sched.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h \
  /home/momus/proj_DID/RIOT/core/lib/include/thread_config.h \
@@ -136,6 +140,14 @@
 /usr/include/inttypes.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/core/include/native_sched.h:
 

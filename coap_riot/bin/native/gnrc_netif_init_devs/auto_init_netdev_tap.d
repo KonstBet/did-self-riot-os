@@ -22,6 +22,10 @@
  /usr/include/bits/wchar.h /usr/include/bits/stdint-intn.h \
  /usr/include/bits/stdint-uintn.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/include/native_sched.h \
  /home/momus/proj_DID/RIOT/core/lib/include/clist.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
@@ -90,6 +94,7 @@
  /home/momus/proj_DID/RIOT/sys/include/net/ipv4/addr.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/netapi.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/nettype.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ethertype.h \
  /home/momus/proj_DID/RIOT/sys/include/net/protnum.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/pkt.h \
@@ -112,7 +117,8 @@
  /home/momus/proj_DID/RIOT/sys/include/net/ipv6/ext/frag.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ipv6/ext/rh.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ipv6/hdr.h \
- /home/momus/proj_DID/RIOT/sys/include/net/inet_csum.h
+ /home/momus/proj_DID/RIOT/sys/include/net/inet_csum.h \
+ /home/momus/proj_DID/RIOT/sys/net/gnrc/netif/init_devs/include/init_devs.h
 
 /usr/include/stdc-predef.h:
 
@@ -183,6 +189,14 @@
 /usr/include/bits/stdint-uintn.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/core/include/native_sched.h:
 
@@ -368,6 +382,8 @@
 
 /home/momus/proj_DID/RIOT/sys/include/net/gnrc/nettype.h:
 
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
 /home/momus/proj_DID/RIOT/sys/include/net/ethertype.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/protnum.h:
@@ -413,3 +429,5 @@
 /home/momus/proj_DID/RIOT/sys/include/net/ipv6/hdr.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/inet_csum.h:
+
+/home/momus/proj_DID/RIOT/sys/net/gnrc/netif/init_devs/include/init_devs.h:

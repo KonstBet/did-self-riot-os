@@ -46,8 +46,11 @@
  /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h \
- /home/momus/proj_DID/RIOT/cpu/native/include/cpu.h /usr/include/stdio.h \
- /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__mbstate_t.h \
+ /home/momus/proj_DID/RIOT/cpu/native/include/cpu.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
+ /usr/include/bits/wchar.h /usr/include/bits/stdint-uintn.h \
+ /usr/include/stdio.h /usr/include/bits/types/__fpos_t.h \
+ /usr/include/bits/types/__mbstate_t.h \
  /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
  /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
@@ -68,8 +71,7 @@
  /home/momus/proj_DID/RIOT/cpu/native/include/native_internal.h \
  /usr/include/poll.h /usr/include/sys/poll.h /usr/include/bits/poll.h \
  /usr/include/ucontext.h /usr/include/bits/indirect-return.h \
- /usr/include/netdb.h /usr/include/netinet/in.h \
- /usr/include/bits/stdint-uintn.h /usr/include/sys/socket.h \
+ /usr/include/netdb.h /usr/include/netinet/in.h /usr/include/sys/socket.h \
  /usr/include/bits/types/struct_iovec.h /usr/include/bits/socket.h \
  /usr/include/bits/socket_type.h /usr/include/bits/sockaddr.h \
  /usr/include/asm/socket.h /usr/include/asm-generic/socket.h \
@@ -82,9 +84,11 @@
  /usr/include/sys/stat.h /usr/include/bits/stat.h /usr/include/sys/uio.h \
  /usr/include/bits/uio_lim.h \
  /home/momus/proj_DID/RIOT/core/include/sched.h /usr/include/inttypes.h \
- /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
- /usr/include/bits/wchar.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/include/native_sched.h \
  /home/momus/proj_DID/RIOT/core/lib/include/clist.h \
  /home/momus/proj_DID/RIOT/core/lib/include/list.h \
@@ -262,6 +266,14 @@
 
 /home/momus/proj_DID/RIOT/cpu/native/include/cpu.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/bits/stdint-uintn.h:
+
 /usr/include/stdio.h:
 
 /usr/include/bits/types/__fpos_t.h:
@@ -338,8 +350,6 @@
 
 /usr/include/netinet/in.h:
 
-/usr/include/bits/stdint-uintn.h:
-
 /usr/include/sys/socket.h:
 
 /usr/include/bits/types/struct_iovec.h:
@@ -390,13 +400,15 @@
 
 /usr/include/inttypes.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
-
-/usr/include/stdint.h:
-
-/usr/include/bits/wchar.h:
-
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/core/include/native_sched.h:
 

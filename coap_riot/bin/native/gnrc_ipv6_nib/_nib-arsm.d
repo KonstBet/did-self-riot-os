@@ -4,7 +4,8 @@
  /home/momus/proj_DID/coap_riot/bin/native/riotbuild/riotbuild.h \
  /home/momus/proj_DID/RIOT/core/lib/include/assert.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
- /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
@@ -13,7 +14,11 @@
  /usr/include/bits/timesize.h /usr/include/bits/typesizes.h \
  /usr/include/bits/time64.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  /home/momus/proj_DID/RIOT/sys/include/evtimer.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
  /home/momus/proj_DID/RIOT/sys/include/ztimer.h \
  /home/momus/proj_DID/RIOT/core/include/sched.h /usr/include/inttypes.h \
  /home/momus/proj_DID/RIOT/core/include/native_sched.h \
@@ -38,7 +43,6 @@
  /home/momus/proj_DID/RIOT/core/lib/include/thread_config.h \
  /home/momus/proj_DID/RIOT/core/include/thread_flags.h \
  /home/momus/proj_DID/RIOT/cpu/native/include/thread_arch.h \
- /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /home/momus/proj_DID/RIOT/core/lib/include/rmutex.h \
  /home/momus/proj_DID/RIOT/sys/include/timex.h \
  /home/momus/proj_DID/RIOT/sys/include/time_units.h \
@@ -66,6 +70,7 @@
  /home/momus/proj_DID/RIOT/sys/include/net/protnum.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/netif.h \
  /home/momus/proj_DID/RIOT/sys/include/event.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /home/momus/proj_DID/RIOT/core/include/thread.h \
  /home/momus/proj_DID/RIOT/core/include/thread_flags.h \
  /home/momus/proj_DID/RIOT/sys/include/ptrtag.h \
@@ -138,7 +143,9 @@
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
@@ -172,7 +179,15 @@
 
 /usr/include/bits/stdint-uintn.h:
 
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
+
 /home/momus/proj_DID/RIOT/sys/include/evtimer.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
 
 /home/momus/proj_DID/RIOT/sys/include/ztimer.h:
 
@@ -233,8 +248,6 @@
 /home/momus/proj_DID/RIOT/core/include/thread_flags.h:
 
 /home/momus/proj_DID/RIOT/cpu/native/include/thread_arch.h:
-
-/home/momus/proj_DID/RIOT/core/lib/include/irq.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/rmutex.h:
 
@@ -317,6 +330,8 @@
 /home/momus/proj_DID/RIOT/sys/include/net/gnrc/netif.h:
 
 /home/momus/proj_DID/RIOT/sys/include/event.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/irq.h:
 
 /home/momus/proj_DID/RIOT/core/include/thread.h:
 

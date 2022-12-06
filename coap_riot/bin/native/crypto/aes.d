@@ -36,7 +36,12 @@
  /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h \
  /home/momus/proj_DID/RIOT/sys/include/crypto/aes.h \
  /home/momus/proj_DID/RIOT/sys/include/crypto/ciphers.h \
- /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h
 
 /usr/include/stdc-predef.h:
 
@@ -166,4 +171,14 @@
 
 /home/momus/proj_DID/RIOT/sys/include/crypto/ciphers.h:
 
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:

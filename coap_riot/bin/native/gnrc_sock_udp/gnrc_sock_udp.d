@@ -24,6 +24,10 @@
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/ipv6.h \
  /home/momus/proj_DID/RIOT/core/include/sched.h /usr/include/inttypes.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/core/include/native_sched.h \
  /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__mbstate_t.h \
@@ -69,6 +73,7 @@
  /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/pkt.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/nettype.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ethertype.h \
  /home/momus/proj_DID/RIOT/core/lib/include/list.h \
  /home/momus/proj_DID/RIOT/sys/include/timex.h \
@@ -81,7 +86,6 @@
  /home/momus/proj_DID/RIOT/core/include/msg.h \
  /home/momus/proj_DID/RIOT/core/include/mutex.h \
  /home/momus/proj_DID/RIOT/core/include/thread.h \
- /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /home/momus/proj_DID/RIOT/core/lib/include/rmutex.h \
  /home/momus/proj_DID/RIOT/sys/include/timex.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/ipv6/nib/conf.h \
@@ -92,6 +96,7 @@
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/netif/internal.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/netif.h \
  /home/momus/proj_DID/RIOT/sys/include/event.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/irq.h \
  /home/momus/proj_DID/RIOT/core/include/thread_flags.h \
  /home/momus/proj_DID/RIOT/sys/include/ptrtag.h \
  /home/momus/proj_DID/RIOT/sys/include/net/gnrc/netapi.h \
@@ -130,7 +135,8 @@
  /home/momus/proj_DID/RIOT/sys/include/random.h \
  /home/momus/proj_DID/RIOT/sys/net/gnrc/sock/include/gnrc_sock_internal.h \
  /home/momus/proj_DID/RIOT/sys/include/net/iana/portrange.h \
- /home/momus/proj_DID/RIOT/sys/net/gnrc/sock/include/sock_types.h
+ /home/momus/proj_DID/RIOT/sys/net/gnrc/sock/include/sock_types.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/debug.h
 
 /usr/include/stdc-predef.h:
 
@@ -207,6 +213,14 @@
 /usr/include/inttypes.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/core/include/native_sched.h:
 
@@ -332,6 +346,8 @@
 
 /home/momus/proj_DID/RIOT/sys/include/net/gnrc/nettype.h:
 
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
 /home/momus/proj_DID/RIOT/sys/include/net/ethertype.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/list.h:
@@ -356,8 +372,6 @@
 
 /home/momus/proj_DID/RIOT/core/include/thread.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/irq.h:
-
 /home/momus/proj_DID/RIOT/core/lib/include/rmutex.h:
 
 /home/momus/proj_DID/RIOT/sys/include/timex.h:
@@ -377,6 +391,8 @@
 /home/momus/proj_DID/RIOT/sys/include/net/gnrc/netif.h:
 
 /home/momus/proj_DID/RIOT/sys/include/event.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/irq.h:
 
 /home/momus/proj_DID/RIOT/core/include/thread_flags.h:
 
@@ -463,3 +479,5 @@
 /home/momus/proj_DID/RIOT/sys/include/net/iana/portrange.h:
 
 /home/momus/proj_DID/RIOT/sys/net/gnrc/sock/include/sock_types.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/debug.h:

@@ -31,6 +31,10 @@
  /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h \
  /home/momus/proj_DID/RIOT/sys/include/net/netopt.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/sys/net/link_layer/eui_provider/include/eui64_provider_params.h \
  /home/momus/proj_DID/RIOT/sys/include/luid.h \
  /home/momus/proj_DID/RIOT/sys/include/net/eui48.h \
@@ -133,6 +137,14 @@
 /home/momus/proj_DID/RIOT/sys/include/net/netopt.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/sys/net/link_layer/eui_provider/include/eui64_provider_params.h:
 

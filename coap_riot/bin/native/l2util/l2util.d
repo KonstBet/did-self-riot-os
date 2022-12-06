@@ -42,7 +42,7 @@
  /usr/include/bits/pthreadtypes-arch.h /usr/include/bits/struct_mutex.h \
  /usr/include/bits/struct_rwlock.h /usr/include/alloca.h \
  /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h \
- /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ipv6.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ipv6/addr.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ipv4/addr.h \
@@ -61,6 +61,11 @@
  /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
  /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h \
  /home/momus/proj_DID/RIOT/sys/include/net/netopt.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /home/momus/proj_DID/RIOT/sys/include/net/l2util.h \
  /home/momus/proj_DID/RIOT/sys/include/net/ndp.h
 
@@ -204,7 +209,7 @@
 
 /usr/include/bits/stdlib-float.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/ipv6.h:
 
@@ -255,6 +260,16 @@
 /usr/include/bits/unistd_ext.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/netopt.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /home/momus/proj_DID/RIOT/sys/include/net/l2util.h:
 

@@ -33,6 +33,10 @@
  /home/momus/proj_DID/RIOT/drivers/include/periph/gpio.h \
  /home/momus/proj_DID/RIOT/drivers/include/periph/gpio.h \
  /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/proj_DID/RIOT/core/lib/include/container.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h
 
 /usr/include/stdc-predef.h:
@@ -134,5 +138,13 @@
 /home/momus/proj_DID/RIOT/drivers/include/periph/gpio.h:
 
 /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+
+/home/momus/proj_DID/RIOT/core/lib/include/container.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
