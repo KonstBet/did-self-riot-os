@@ -22,7 +22,7 @@
 #include "net/nanocoap_sock.h"
 #include "xtimer.h"
 
-#define COAP_INBUF_SIZE (256U)
+#define COAP_INBUF_SIZE (2048U)
 
 #define MAIN_QUEUE_SIZE     (8)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];

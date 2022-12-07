@@ -47,6 +47,7 @@ typedef struct {
 typedef struct {
     char* id;
     attestation* attestation;
+    char* signature;
 } did_document;
 
 //DID ALL INFORMATION -------------------------------------------
@@ -109,7 +110,7 @@ static key_pair* proof_key_pair = NULL;
 
 
 /* digital signature key pair DID DOCUMENT JWK*/ /* Generated using ed25519-genkeypair */
-//static key_pair* document_key_pair = NULL;
+static key_pair* document_key_pair = NULL;
 
 //----------------------------------------------------------------
 
@@ -215,19 +216,21 @@ char* attestationToString(attestation* attestation){
 
 char* didDocumentToString(did_document* document){
     char* document_str = calloc(300, sizeof(char));
-    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
+    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s,\"signature\":\"%s\"}", document->id, attestationToString(document->attestation), document->signature);
     return document_str;
 }
 
 char* didDocumentToStringAsBase64url(did_document* document){
-    char* document_str_base64 = calloc(300, sizeof(char));
+    char* document_base64 = calloc(500, sizeof(char));
 
     char* document_str = calloc(300, sizeof(char));
     sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
-
+    char* document_str_base64 = calloc(300, sizeof(char));
     bytes_to_base64url(document_str, strlen(document_str), document_str_base64);
 
-    return document_str_base64;
+    sprintf(document_base64, "%s.%s", document_str_base64, document->signature);
+    
+    return document_base64;
 }
 
 char* didToString(did* deviceDID){
@@ -239,7 +242,7 @@ char* didToString(did* deviceDID){
 char* didToStringAsBase64(did* deviceDID){
     char* did_str_base64 = calloc(900, sizeof(char));
 
-    sprintf(did_str_base64, "%s.%s", didDocumentToStringAsBase64url(deviceDID->document), didProofToStringAsBase64url(deviceDID->proof));
+    sprintf(did_str_base64, "%s %s", didDocumentToStringAsBase64url(deviceDID->document), didProofToStringAsBase64url(deviceDID->proof));
     return did_str_base64;
 }
 //----------------------------------------------------------------
@@ -292,6 +295,11 @@ did_document* createDidDocument(char* id, attestation* attestation){
     did_document* document = calloc(1, sizeof(did_document));
     document->id = id;
     document->attestation = attestation;
+
+    char* msg = didDocumentToStringAsBase64url(document);
+    char *signature_base64 = sign_message((uint8_t*) msg, strlen(msg), proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
+    document->signature = signature_base64;
+    
     return document;
 }
 
@@ -306,23 +314,27 @@ did* createDid(did_document* document, did_proof* proof){
 //DELETE & FREE MEMORY
 void deleteDid(did* deviceDID){
     if (deviceDID != NULL) {
-        free(deviceDID->proof->header->alg);
-        free(deviceDID->proof->header->jwk->kty);
-        free(deviceDID->proof->header->jwk->crv);
-        free(deviceDID->proof->header->jwk);
-        free(deviceDID->proof->header);
-        free(deviceDID->proof->payload->iat);
-        free(deviceDID->proof->payload->exp);
-        free(deviceDID->proof->payload->s256);
-        free(deviceDID->proof->payload);
-        free(deviceDID->proof->signature);
-        free(deviceDID->proof);
-        free(deviceDID->document->id);
-        free(deviceDID->document->attestation->id);
-        free(deviceDID->document->attestation->type);
-        free(deviceDID->document->attestation);
-        free(deviceDID->document);
-        free(deviceDID);
+        // free(deviceDID->proof->header->alg);
+        // free(deviceDID->proof->header->jwk->kty);
+        // free(deviceDID->proof->header->jwk->crv);
+        // free(deviceDID->proof->header->jwk);
+        // free(deviceDID->proof->header);
+        // free(deviceDID->proof->payload->iat);
+        // free(deviceDID->proof->payload->exp);
+        // free(deviceDID->proof->payload->s256);
+        // free(deviceDID->proof->payload);
+        // free(deviceDID->proof->signature);
+        // free(deviceDID->proof);
+        // free(deviceDID->document->id);
+        // free(deviceDID->document->attestation->id);
+        // free(deviceDID->document->attestation->type);
+        // free(deviceDID->document->attestation->publicKeyJwk->kty);
+        // free(deviceDID->document->attestation->publicKeyJwk->crv);
+        // free(deviceDID->document->attestation->publicKeyJwk);
+        // free(deviceDID->document->attestation);
+        // free(deviceDID->document->signature);
+        // free(deviceDID->document);
+        // free(deviceDID);
         deviceDID = NULL;
     }
 }
@@ -346,20 +358,6 @@ static ssize_t _riot_board_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, co
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
             COAP_FORMAT_TEXT, (uint8_t*)RIOT_BOARD, strlen(RIOT_BOARD));
 }
-
-//// getdiddocument() returns this document signed
-    /*
-        DID document
-        "{
-            \"attestation\": \"public_key we created\"
-        }"
-
-
-        --> we sign this with hardcoded private key
-
-        change sign function from hardcoded to created keys
-    */
-
 
 
 /** @brief  Create Public/Private Key Pair
@@ -424,21 +422,15 @@ static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len
             COAP_FORMAT_TEXT, proof_key_pair->public_key_base64, strlen(proof_key_pair->public_key_base64));
 }
 
-// static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, void *context) {
 
-//     char* temperature = "temperature"; 
-    
-// }
-
-
-/** @brief  Get public key of DID
+/** @brief  Sign message with secret key and return nessage_base64.signature
 * @param[in] message to sign
 * @param[in] message_len length of message
 * @param[in] secret_key secret key
 * @param[in] public_key public key
 * @returns message with signature as string => "message,signature"
 */
-char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8_t* secret_key, uint8_t* public_key) // USED IN SIGN HANDLER
+char* signMessageAndReturnMessageWithSignature(uint8_t* message, uint16_t message_len, uint8_t* secret_key, uint8_t* public_key) // USED IN SIGN HANDLER
 { 
 
     char *signature_base64 = sign_message(message, message_len, secret_key, public_key);
@@ -446,12 +438,22 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8
     //Create response with signature
     char *response = calloc(strlen(signature_base64) + 1 + message_len, sizeof(char));
     memcpy(response, message, message_len);
-    memcpy(response + message_len, ",", 1);
+    memcpy(response + message_len, ".", 1);
     memcpy(response + message_len + 1, signature_base64, strlen(signature_base64));
 
     free(signature_base64);
     
     return response;
+}
+
+char* getTemperatureExample(void) {
+    char *temperature = calloc(34, sizeof(char));
+    memcpy(temperature, "{\"temperature\": 25, \"scale\": \"C\"}", 33);
+
+    char* temperature_base64 = calloc(50, sizeof(char));
+    bytes_to_base64url(temperature, strlen(temperature), temperature_base64);
+
+    return temperature_base64;
 }
 
 // /* -- COAP REQUEST --
@@ -462,17 +464,24 @@ char* signMessageAndReturnResponse(uint8_t* message, uint16_t message_len, uint8
 * @param COAP-PARAMETERS
 * @returns message with signature as string ("message,signature")
 */
-static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
+static ssize_t sendDataVerifiableWithDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
 {
     (void)context;
+    char *data = getTemperatureExample();
 
-    char *response;
-    // sign message with hardcoded keys
-    response = signMessageAndReturnResponse(pkt->payload, pkt->payload_len, proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
+    char *dataSigned = signMessageAndReturnMessageWithSignature((uint8_t *)data, strlen(data), proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
+
+    char *did_base64 = didToStringAsBase64(deviceDid);
+
+    char *response = calloc(strlen(dataSigned) + 1 + strlen(did_base64), sizeof(char));
+    memcpy(response, did_base64, strlen(did_base64));
+    memcpy(response + strlen(did_base64), " ", 1);
+    memcpy(response + strlen(did_base64) + 1, dataSigned, strlen(dataSigned));
+
     printf("\nResponse: %s\n", response);
 
-    // send back message and signature
-    return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+    //send back message and signature
+    return coap_reply_simple(pkt, COAP_CODE_205, buf, len+1024,
             COAP_FORMAT_TEXT, response, strlen(response));
 }
 
@@ -482,25 +491,29 @@ static ssize_t ed25519_sign_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, c
 did* createDeviceDid(void)
 {
     deleteKeyPair(proof_key_pair);
+    deleteKeyPair(document_key_pair);
     deleteDid(deviceDid);
+
     proof_key_pair = calloc(1, sizeof(key_pair));
     createKeysEd25519(proof_key_pair);
+    document_key_pair = calloc(1, sizeof(key_pair));
+    createKeysEd25519(document_key_pair);
 
-    //CREATE KEY
+    //CREATE PROOF KEY
     char* okp = calloc(3, sizeof(char));
     memcpy(okp, "OKP", 3);
     char* crv = calloc(7, sizeof(char));
     memcpy(crv, "Ed25519", 7);
 
-    jwk* myjwk = createJwk(okp, crv, proof_key_pair->public_key_base64);
-    printf("%s\n", jwkToString(myjwk));
+    jwk* myProofJwk = createJwk(okp, crv, proof_key_pair->public_key_base64);
+    printf("%s\n", jwkToString(myProofJwk));
 
 
     //CREATE PROOF HEADER
     char* alg = calloc(5, sizeof(char));
     memcpy(alg, "EdDSA", 5);
 
-    did_proof_header* myDidProofHeader = createDidProofHeader(alg, myjwk);
+    did_proof_header* myDidProofHeader = createDidProofHeader(alg, myProofJwk);
     printf("%s\n", didProofHeaderToString(myDidProofHeader));
 
 
@@ -510,7 +523,15 @@ did* createDeviceDid(void)
     char* attestationType = calloc(15, sizeof(char));
     memcpy(attestationType, "JsonWebKey2020", 15);
 
-    attestation* myattestation = createAttestation(attestationID, attestationType, myjwk);
+    char* okp2 = calloc(3, sizeof(char));
+    memcpy(okp2, "OKP", 3);
+    char* crv2 = calloc(7, sizeof(char));
+    memcpy(crv2, "Ed25519", 7);
+
+    jwk* myDocumentJwk = createJwk(okp2, crv2, document_key_pair->public_key_base64);
+    printf("%s\n", jwkToString(myDocumentJwk));
+
+    attestation* myattestation = createAttestation(attestationID, attestationType, myDocumentJwk);
     printf("%s\n", attestationToString(myattestation));
 
 
@@ -519,7 +540,7 @@ did* createDeviceDid(void)
     memcpy(id, "did:self:", 9);
 
     char* jwkHash = calloc(100, sizeof(char));
-    uint8_t* digest = hashSH256(jwkToStringLexicographically(myjwk));
+    uint8_t* digest = hashSH256(jwkToStringLexicographically(myProofJwk));
     bytes_to_base64url(digest, 32, jwkHash);
     memcpy(id + 9, jwkHash, strlen(jwkHash));
 
@@ -657,8 +678,9 @@ const coap_resource_t coap_resources[] = {
     { "/riot/did/document", COAP_GET, getDidDocument, NULL }, //MINE
     { "/riot/did/getpublickey", COAP_GET, _get_public_key_handler, NULL }, //MINE
     { "/riot/did/proof", COAP_GET, getDidProof, NULL }, //MINE
+    { "/riot/data", COAP_GET, sendDataVerifiableWithDid, NULL }, //MINE
     { "/riot/did", COAP_PUT, updateDid, NULL }, //MINE
-    { "/riot/sign", COAP_POST, ed25519_sign_handler, NULL }, //MINE
+    
 };
 
 const unsigned coap_resources_numof = ARRAY_SIZE(coap_resources);
