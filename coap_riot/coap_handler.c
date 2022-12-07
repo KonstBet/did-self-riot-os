@@ -165,7 +165,7 @@ char* didProofHeaderToString(did_proof_header* header){
 
 char* didProofPayloadToString(did_proof_payload* payload){
     char* payload_str = calloc(300, sizeof(char));
-    sprintf(payload_str, "{\"iat\":\"%s\",\"exp\":\"%s\",\"s256\":\"%s\"}", payload->iat, payload->exp, payload->s256);
+    sprintf(payload_str, "{\"iat\":%s,\"exp\":%s,\"s256\":\"%s\"}", payload->iat, payload->exp, payload->s256);
     return payload_str;
 }
 
@@ -175,10 +175,36 @@ char* didProofHeaderAndPayloadToString(did_proof* proof){
     return proof_str;
 }
 
+char* didProofHeaderAndPayloadToStringAsBase64url(did_proof* proof){
+    char* proof_str_base64 = calloc(600, sizeof(char));
+
+    char* header = calloc(300, sizeof(char));
+    bytes_to_base64url(didProofHeaderToString(proof->header), strlen(didProofHeaderToString(proof->header)), header);
+
+    char* payload = calloc(300, sizeof(char));
+    bytes_to_base64url(didProofPayloadToString(proof->payload), strlen(didProofPayloadToString(proof->payload)), payload);
+
+    sprintf(proof_str_base64, "%s.%s", header, payload);
+    return proof_str_base64;
+}
+
 char* didProofToString(did_proof* proof){
     char* proof_str = calloc(600, sizeof(char));
     sprintf(proof_str, "{\"header\":%s,\"payload\":%s,\"signature\":\"%s\"}", didProofHeaderToString(proof->header), didProofPayloadToString(proof->payload), proof->signature);
     return proof_str;
+}
+
+char* didProofToStringAsBase64url(did_proof* proof){
+    char* proof_str_base64 = calloc(600, sizeof(char));
+
+    char* header = calloc(300, sizeof(char));
+    bytes_to_base64url(didProofHeaderToString(proof->header), strlen(didProofHeaderToString(proof->header)), header);
+
+    char* payload = calloc(300, sizeof(char));
+    bytes_to_base64url(didProofPayloadToString(proof->payload), strlen(didProofPayloadToString(proof->payload)), payload);
+
+    sprintf(proof_str_base64, "%s.%s.%s", header, payload, proof->signature);
+    return proof_str_base64;
 }
 
 char* attestationToString(attestation* attestation){
@@ -193,10 +219,28 @@ char* didDocumentToString(did_document* document){
     return document_str;
 }
 
+char* didDocumentToStringAsBase64url(did_document* document){
+    char* document_str_base64 = calloc(300, sizeof(char));
+
+    char* document_str = calloc(300, sizeof(char));
+    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
+
+    bytes_to_base64url(document_str, strlen(document_str), document_str_base64);
+
+    return document_str_base64;
+}
+
 char* didToString(did* deviceDID){
     char* did_str = calloc(900, sizeof(char));
     sprintf(did_str, "{\"document\":%s,\"proof\":%s}", didDocumentToString(deviceDID->document), didProofToString(deviceDID->proof));
     return did_str;
+}
+
+char* didToStringAsBase64(did* deviceDID){
+    char* did_str_base64 = calloc(900, sizeof(char));
+
+    sprintf(did_str_base64, "%s.%s", didDocumentToStringAsBase64url(deviceDID->document), didProofToStringAsBase64url(deviceDID->proof));
+    return did_str_base64;
 }
 //----------------------------------------------------------------
 
@@ -229,7 +273,7 @@ did_proof* createDidProof(did_proof_header* header, did_proof_payload* payload){
     proof->header = header;
     proof->payload = payload;
 
-    char* msg = didProofHeaderAndPayloadToString(proof);
+    char* msg = didProofHeaderAndPayloadToStringAsBase64url(proof);
     char *signature_base64 = sign_message((uint8_t*) msg, strlen(msg), proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
     proof->signature = signature_base64;
     
@@ -539,7 +583,7 @@ static ssize_t getDid(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ct
     // printf("Target: %s\n", result);
     
 
-    char* response = didToString(deviceDid);
+    char* response = didToStringAsBase64(deviceDid);
     
     return coap_reply_simple(pkt, COAP_CODE_205, buf, len+1024, //INCREASE BUFFER SIZE TO SEND BIGGER RESPONSE
             COAP_FORMAT_TEXT, response, strlen(response));
