@@ -220,6 +220,15 @@ char* didDocumentToString(did_document* document){
     return document_str;
 }
 
+char* didDocumentToStringAsBase64urlNoSignature(did_document* document){
+    char* document_str = calloc(300, sizeof(char));
+    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
+    char* document_str_base64 = calloc(300, sizeof(char));
+    bytes_to_base64url(document_str, strlen(document_str), document_str_base64);
+    
+    return document_str_base64;
+}
+
 char* didDocumentToStringAsBase64url(did_document* document){
     char* document_base64 = calloc(500, sizeof(char));
 
@@ -277,6 +286,7 @@ did_proof* createDidProof(did_proof_header* header, did_proof_payload* payload){
     proof->payload = payload;
 
     char* msg = didProofHeaderAndPayloadToStringAsBase64url(proof);
+    printf("\n\naaa\n%s\n\n", msg);
     char *signature_base64 = sign_message((uint8_t*) msg, strlen(msg), proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
     proof->signature = signature_base64;
     
@@ -296,7 +306,8 @@ did_document* createDidDocument(char* id, attestation* attestation){
     document->id = id;
     document->attestation = attestation;
 
-    char* msg = didDocumentToStringAsBase64url(document);
+    char* msg = didDocumentToStringAsBase64urlNoSignature(document);
+    printf("\n\nbbb\n%s\n\n", msg);
     char *signature_base64 = sign_message((uint8_t*) msg, strlen(msg), proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
     document->signature = signature_base64;
     
@@ -469,7 +480,7 @@ static ssize_t sendDataVerifiableWithDid(coap_pkt_t *pkt, uint8_t *buf, size_t l
     (void)context;
     char *data = getTemperatureExample();
 
-    char *dataSigned = signMessageAndReturnMessageWithSignature((uint8_t *)data, strlen(data), proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
+    char *dataSigned = signMessageAndReturnMessageWithSignature((uint8_t *)data, strlen(data), document_key_pair->secret_key_bytes, document_key_pair->public_key_bytes);
 
     char *did_base64 = didToStringAsBase64(deviceDid);
 
