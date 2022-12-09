@@ -411,27 +411,27 @@ void createKeysEd25519(key_pair* keyPair){
     printf("  - Public key base64: %s\n", keyPair->public_key_base64);
 }
 
-// /* -- COAP REQUEST --
-// REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/getpublickey
-// RESPONSE: Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8= (SAME AS PRINTED IN DEVICE CONSOLE AT CREATEKEYS)
+// // /* -- COAP REQUEST --
+// // REQUEST: coap-client -m get coap://[fe80::7cde:caff:fe7f:ca57%tap0]/riot/getpublickey
+// // RESPONSE: Yv89reLv2nxT049gBd81iUbiJALlzN8uusF54knxWf8= (SAME AS PRINTED IN DEVICE CONSOLE AT CREATEKEYS)
+// // */
+// /** @brief  Get public key of DID Document
+// * @param COAP-PARAMETERS
+// * @returns public key of DID
 // */
-/** @brief  Get public key of DID Document
-* @param COAP-PARAMETERS
-* @returns public key of DID
-*/
-static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
-{
-    (void)context;
+// static ssize_t _get_public_key_handler(coap_pkt_t *pkt, uint8_t *buf, size_t len, coap_request_ctx_t *context)
+// {
+//     (void)context;
 
-    if (proof_key_pair == NULL || proof_key_pair->public_key_base64 == NULL) {
-        char msg[] = "No Public Key found for DID Document Verification";
-        return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, msg, strlen(msg));
-    }
-    else
-        return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
-            COAP_FORMAT_TEXT, proof_key_pair->public_key_base64, strlen(proof_key_pair->public_key_base64));
-}
+//     if (proof_key_pair == NULL || proof_key_pair->public_key_base64 == NULL) {
+//         char msg[] = "No Public Key found for DID Document Verification";
+//         return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+//             COAP_FORMAT_TEXT, msg, strlen(msg));
+//     }
+//     else
+//         return coap_reply_simple(pkt, COAP_CODE_205, buf, len,
+//             COAP_FORMAT_TEXT, proof_key_pair->public_key_base64, strlen(proof_key_pair->public_key_base64));
+// }
 
 
 /** @brief  Sign message with secret key and return nessage_base64.signature
@@ -687,11 +687,9 @@ const coap_resource_t coap_resources[] = {
     { "/riot/board", COAP_GET, _riot_board_handler, NULL },
     { "/riot/did", COAP_GET, getDid, NULL }, //MINE
     { "/riot/did/document", COAP_GET, getDidDocument, NULL }, //MINE
-    { "/riot/did/getpublickey", COAP_GET, _get_public_key_handler, NULL }, //MINE
     { "/riot/did/proof", COAP_GET, getDidProof, NULL }, //MINE
     { "/riot/data", COAP_GET, sendDataVerifiableWithDid, NULL }, //MINE
     { "/riot/did", COAP_PUT, updateDid, NULL }, //MINE
-    
 };
 
 const unsigned coap_resources_numof = ARRAY_SIZE(coap_resources);
