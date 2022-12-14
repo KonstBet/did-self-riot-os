@@ -9,8 +9,23 @@ import aiocoap.resource as resource
 import aiocoap
 import json
 import hashlib
+import url64
+import base64
+from base64 import urlsafe_b64encode, urlsafe_b64decode
+import jwt
+from jwcrypto import jwk, jws
 
 import ed25519
+
+def base64UrlEncode(data):
+    return urlsafe_b64encode(data).rstrip(b'=')
+
+
+def base64UrlDecode(base64Url):
+    padding = b'=' * (4 - (len(base64Url) % 4))
+
+    return urlsafe_b64decode(base64Url + padding)
+
 
 public_key = b"d04e907192471c603e148d73d6a3897976dc260106aa120837ebcf815f0445c2"
 devices = { 'all': [] }
@@ -167,7 +182,66 @@ class getPublicKey(resource.Resource):
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
         
 def verifyDiD(did):
-    print("VERIFYING DID")
+    result = did.split(" ")
+    print(result)
+            
+    did_document_encoded = result[0].split(".")
+    did_proof_encoded = result[1].split(".")
+    print(did_document_encoded, did_proof_encoded, "\n\n")
+    
+    
+    did_document = base64UrlDecode(did_document_encoded[0].encode('utf-8'))
+    did_document = json.loads(did_document)
+    
+    proof_header = base64UrlDecode(did_proof_encoded[0].encode('utf-8'))
+    proof_header = json.loads(proof_header)
+    
+    proof_payload = base64UrlDecode(did_proof_encoded[1].encode('utf-8'))
+    proof_payload = json.loads(proof_payload)
+    
+    print(did_document,"\n\n", proof_header, "\n\n", proof_payload, "\n\n", proof_header['jwk']['x'], "\n\n")
+    
+    proof_public_key = base64UrlDecode(proof_header['jwk']['x'].encode('utf-8'))
+    proof_public_key = base64.b64encode(proof_public_key)
+    
+    print(proof_public_key, "\n\n")
+    
+    #------------------VERIFY SIGNATURE OF PROOF WITH HEADER JWK------------------
+    #PROOF JWK PUBLIC KEY
+    verifyKey = ed25519.VerifyingKey(proof_public_key, encoding="base64")
+    
+    #SIGNATURE OF PROOF HEADER + PROOF PAYLOAD SPEPARATED BY A DOT
+    signature = base64UrlDecode(did_proof_encoded[2].encode('utf-8'))
+    signature = base64.b64encode(signature)
+    
+    print(signature, "\n\n")
+    
+    #STRING OF PROOF HEADER + PROOF PAYLOAD SPEPARATED BY A DOT WHICH WE WANT TO VERIFY
+    proof_string = did_proof_encoded[0] + "." + did_proof_encoded[1]
+    proof_string = proof_string.encode('utf-8')
+    
+    print(proof_string, "\n\n")
+            
+    try:
+        verifyKey.verify(signature, proof_string, encoding="base64") #TODO SIGNATURE IS TOO BIG???
+        print("Signature is valid")
+    except:
+        print("signature is bad!")
+        
+    #------------------VERIFY  EXP AND IAT------------------
+    decoded_jwt = jwt.decode(result[1], options={"verify_signature": False, "require": ["exp", "iat"], "verify_exp": True, "verify_iat": True, })
+    
+    print(decoded_jwt, "\n\n")
+    
+    #------------------VERIFY THUMBPRINT EQUALS TO DID DOCUMENT ID------------------
+    print(json.dumps(proof_header['jwk'], sort_keys=True), "\n\n")
+    _jwk = jwk.JWK.from_json(json.dumps(proof_header['jwk'], sort_keys=True)) #<--Surround it try except
+    _did = "did:self:" + _jwk.thumbprint()
+    if ( did_document['id'] != did):
+        raise Exception("The proof header contains invalid key")
+        return -1
+    
+    
     
 
 class getDid(resource.Resource):
@@ -182,11 +256,15 @@ class getDid(resource.Resource):
             print('Failed to fetch resource:')
             print(e)
         else:
-            print('Result: %s\n%r'%(response.code, response.payload))
+            print('Result: %s\n%r\n\n'%(response.code, response.payload))
             
-            did = json.loads(response.payload.decode('utf-8'))
-            print(did["document"]["id"])
-            verifyDiD(did)
+            verifyDiD(response.payload.decode('utf-8'))
+            
+            
+            
+            # did = json.loads(response.payload.decode('utf-8'))
+            # print(did["document"]["id"])
+            # verifyDiD(did)
             
             
             return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
