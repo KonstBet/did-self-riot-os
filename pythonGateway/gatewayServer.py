@@ -234,12 +234,29 @@ def verifyDiD(did):
     print(decoded_jwt, "\n\n")
     
     #------------------VERIFY THUMBPRINT EQUALS TO DID DOCUMENT ID------------------
-    print(json.dumps(proof_header['jwk'], sort_keys=True), "\n\n")
-    _jwk = jwk.JWK.from_json(json.dumps(proof_header['jwk'], sort_keys=True)) #<--Surround it try except
-    _did = "did:self:" + _jwk.thumbprint()
-    if ( did_document['id'] != did):
+    print(json.dumps(proof_header['jwk'], sort_keys=True, separators=(',', ':')), "\n\n")
+    
+    m = hashlib.sha256()
+    m.update(json.dumps(proof_header['jwk'], sort_keys=True, separators=(',', ':')))
+    thumbprint = m.digest
+    thumbprint = base64UrlDecode(thumbprint)
+    
+    didId = "did:self:" + thumbprint
+    if ( did_document['id'] != didId):
         raise Exception("The proof header contains invalid key")
         return -1
+    
+    #------------------VERIFY S256 CONTAINS HASH OF DID DOCUMENT------------------
+    m = hashlib.sha256()
+    m.update(json.dumps(did_document, separators=(',', ':')))
+    s256 = m.digest
+    s256 = base64UrlDecode(s256)
+    
+    if (proof_payload['s256'] != s256):
+        raise Exception("The proof payload contains invalid hash")
+        return -1
+    
+    
     
     
     
