@@ -80,7 +80,6 @@ size_t bytes_to_base64url(void* in_bytes, size_t in_bytes_size, void* out_base64
 
 /** @brief   Hash string with SHA256
  * @param[in]   str     String to hash
- * @param[out]  hash    Hash of str
  * @returns returns bytes of hash
  */
 uint8_t* hashSH256(char *str)
@@ -217,6 +216,12 @@ char* attestationToString(attestation* attestation){
 char* didDocumentToString(did_document* document){
     char* document_str = calloc(300, sizeof(char));
     sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s,\"signature\":\"%s\"}", document->id, attestationToString(document->attestation), document->signature);
+    return document_str;
+}
+
+char* didDocumentToStringNoSignature(did_document* document){
+    char* document_str = calloc(300, sizeof(char));
+    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
     return document_str;
 }
 
@@ -574,7 +579,7 @@ did* createDeviceDid(void)
     sprintf(exp_str, "%ld", next);
 
     char* s256 = calloc(100, sizeof(char));
-    digest = hashSH256(didDocumentToString(mydocument));
+    digest = hashSH256(didDocumentToStringNoSignature(mydocument));
     bytes_to_base64url(digest, 32, s256);
 
     free(digest);
