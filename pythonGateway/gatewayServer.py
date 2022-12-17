@@ -27,18 +27,18 @@ def base64UrlDecode(base64Url):
     return urlsafe_b64decode(base64Url + padding)
 
 
-devices = { 'all': [] }
+devices = { 'all': ['aaa'] }
 
 
 class RiotBoard(resource.Resource):
     async def render_get(self, request):
         protocol = await Context.create_client_context()
         
+        allResponses = []
+        
         for device in devices['all']:
 
             request = Message(code=GET, uri='coap://[' + device + ']/riot/board')
-
-            print("GET ME THE BOARD FROM ")
 
             try:
                 response = await protocol.request(request).response
@@ -48,8 +48,11 @@ class RiotBoard(resource.Resource):
             else:
                 print('Result: %s\n%r'%(response.code, response.payload))
                 
+                allResponses.append(response.payload.decode('utf-8'))
+                
 
-                return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+        result = '[' + ','.join(allResponses) + ']'
+        return aiocoap.Message(payload=result.encode('ascii'))
         
         
 def verifyDiD(did):
@@ -109,7 +112,6 @@ def verifyDiD(did):
     m.update(json.dumps(proof_header['jwk'], sort_keys=True, separators=(',', ':')).encode('utf-8'))
     thumbprint = m.digest()
     thumbprint = base64UrlEncode(thumbprint)
-    print(thumbprint, "\n\n")
     
     didId = "did:self:" + thumbprint.decode('utf-8')
     if ( did_document['id'] != didId):
@@ -124,7 +126,6 @@ def verifyDiD(did):
     m.update(json.dumps(did_document, separators=(',', ':')).encode('utf-8'))
     s256 = m.digest()
     s256 = base64UrlEncode(s256)
-    print(s256, "\n\n")
     
     if (proof_payload['s256'] != s256.decode('utf-8')):
         raise Exception("The proof payload contains invalid hash")
@@ -138,29 +139,38 @@ def verifyDiD(did):
 class getDid(resource.Resource):
     async def render_get(self, request):
         protocol = await Context.create_client_context()
+        
+        allResponses = []
+        
+        for device in devices['all']:
 
-        request = Message(code=GET, uri='coap://[' + devices['all'][0] + ']/riot/did')
+            request = Message(code=GET, uri='coap://[' + device + ']/riot/did')
 
-        try:
-            response = await protocol.request(request).response
-        except Exception as e:
-            print('Failed to fetch resource:')
-            print(e)
-        else:
-            print('Result: %s\n%r\n\n'%(response.code, response.payload))
-            
-            validDid = verifyDiD(response.payload.decode('utf-8'))
-            
-            if validDid:
-                print("VALID DID")
-                return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+            try:
+                response = await protocol.request(request).response
+            except Exception as e:
+                print('Failed to fetch resource:')
+                print(e)
             else:
-                print("INVALID DID")
-                return aiocoap.Message(payload="INVALID DID".encode('ascii'))
+                print('Result: %s\n%r\n\n'%(response.code, response.payload))
+                
+                validDid = verifyDiD(response.payload.decode('utf-8'))
+                
+                if validDid:
+                    print("VALID DID")
+                    allResponses.append(response.payload.decode('utf-8'))
+                else:
+                    print("INVALID DID FOR DEVICE: " + device)
+                    
+        if len(allResponses) == 0:
+            return aiocoap.Message(payload="No valid DID found".encode('ascii'))
+        else :
+            result = '[' + ','.join(allResponses) + ']'
+            return aiocoap.Message(payload=result.encode('ascii'))
 
 
 def verifyData(response):
-    validData = True #Return value
+    validData = None #Return value
     
     result = response.split(" ")
     
@@ -170,12 +180,10 @@ def verifyData(response):
     did_document = base64UrlDecode(did_document_encoded[0].encode('utf-8'))
     did_document = json.loads(did_document)
     
-    print(did_document)
-    
     data = base64UrlDecode(data_encoded[0].encode('utf-8'))
     data = json.loads(data)
     
-    print(data)
+    print(did_document, "\n\n", data, "\n\n")
     
     
     #------------------VERIFY SIGNATURE OF DATA WITH DID DOCUMENT JWK------------------
@@ -191,15 +199,15 @@ def verifyData(response):
     signature = base64.b64encode(signature)
     
     #STRING OF PROOF HEADER + PROOF PAYLOAD SPEPARATED BY A DOT WHICH WE WANT TO VERIFY
-    proof_string = json.dumps(data, separators=(',', ':'))
-    proof_string = proof_string.encode('utf-8')
+    data_string = data_encoded[0]
+    data_string = data_string.encode('utf-8')
             
     try:
-        verifyKey.verify(signature, proof_string, encoding="base64") #TODO SIGNATURE IS TOO BIG???
-        print("Proof Signature is valid")
+        verifyKey.verify(signature, data_string, encoding="base64") #TODO SIGNATURE IS TOO BIG???
+        print("Data Signature is valid")
+        validData = data
     except:
-        print("Proof Signature is bad!")
-        validData = False
+        print("Data Signature is bad!")
         
     return validData
     
@@ -208,51 +216,76 @@ def verifyData(response):
 class getData(resource.Resource):
     async def render_get(self, request):
         protocol = await Context.create_client_context()
+        
+        allResponses = []
+        
+        for device in devices['all']:
 
-        request = Message(code=GET, uri='coap://[' + devices['all'][0] + ']/riot/data')
+            request = Message(code=GET, uri='coap://[' + device + ']/riot/data')
 
-        try:
-            response = await protocol.request(request).response
-        except Exception as e:
-            print('Failed to fetch resource:')
-            print(e)
-        else:
-            print('Result: %s\n%r\n\n'%(response.code, response.payload))
-            
-            validDid = verifyDiD(response.payload.decode('utf-8'))
-            
-            if validDid:
-                print("VALID DID")
-                return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+            try:
+                response = await protocol.request(request).response
+            except Exception as e:
+                print('Failed to fetch resource:')
+                print(e)
             else:
-                print("INVALID DID")
-                return aiocoap.Message(payload="INVALID DID".encode('ascii'))
+                print('Result: %s\n%r\n\n'%(response.code, response.payload))
+                
+                # Validate DID
+                validDid = verifyDiD(response.payload.decode('utf-8'))
+                
+                if validDid:
+                    print("VALID DID")
+                else:
+                    print("INVALID DID FOR DEVICE: " + device)
+                
+                # Validate DATA
+                validData = verifyData(response.payload.decode('utf-8'))
+                
+                if validData != None:
+                    print("VALID DATA")
+                    allResponses.append(json.dumps(validData, separators=(',', ':')))
+                else:
+                    print("INVALID DATA")
+                
+        if len(allResponses) == 0:
+            return aiocoap.Message(payload="No valid DATA found".encode('ascii'))
+        else :
+            result = '[' + ','.join(allResponses) + ']'
+            return aiocoap.Message(payload=result.encode('ascii'))
 
 
 
 class wellknown(resource.Resource):
     async def render_get(self, request):
         protocol = await Context.create_client_context()
+        
+        allResponses = []
+        
+        for device in devices['all']:
 
-        request = Message(code=GET, uri='coap://[' + devices['all'][0] + ']/.well-known/core')
+            request = Message(code=GET, uri='coap://[' + device + ']/.well-known/core')
 
-        try:
-            response = await protocol.request(request).response
-        except Exception as e:
-            print('Failed to fetch resource:')
-            print(e)
-        else:
-            print('Result: %s\n%r'%(response.code, response.payload))
-            
-            return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+            try:
+                response = await protocol.request(request).response
+            except Exception as e:
+                print('Failed to fetch resource:')
+                print(e)
+            else:
+                print('Result: %s\n%r'%(response.code, response.payload))
+                
+                allResponses.append(response.payload.decode('utf-8'))
+        
+        if len(allResponses) == 0:
+            return aiocoap.Message(payload="No Devices were found".encode('ascii'))
+        else :
+            result = ''.join(allResponses)
+            return aiocoap.Message(payload=result.encode('ascii'))
         
         
 class newDevice(resource.Resource):
     async def render_post(self, request):
-        print(request.remote.hostinfo)
-        print(request.payload)
         newDeviceJson = json.loads(request.payload.decode('utf-8'))
-        print(newDeviceJson)
         
         devices['all'].append(newDeviceJson['ipv6']+'%'+newDeviceJson['interface'])
         print(devices)
@@ -274,6 +307,7 @@ async def main():
             resource.WKCResource(root.get_resources_as_linkheader))
     root.add_resource(['riot','board'], RiotBoard())
     root.add_resource(['riot','did'], getDid())
+    root.add_resource(['riot','data'], getData())
     root.add_resource(['.well-known','core'], wellknown())
     root.add_resource(['newdevice'], newDevice())
 
