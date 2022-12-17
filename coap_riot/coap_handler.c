@@ -463,8 +463,8 @@ char* signMessageAndReturnMessageWithSignature(uint8_t* message, uint16_t messag
 }
 
 char* getTemperatureExample(void) {
-    char *temperature = calloc(34, sizeof(char));
-    memcpy(temperature, "{\"temperature\": 25, \"scale\": \"C\"}", 33);
+    char *temperature = calloc(32, sizeof(char));
+    memcpy(temperature, "{\"temperature\":25,\"scale\":\"C\"}", 31);
 
     char* temperature_base64 = calloc(50, sizeof(char));
     bytes_to_base64url(temperature, strlen(temperature), temperature_base64);

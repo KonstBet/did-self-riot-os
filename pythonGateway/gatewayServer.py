@@ -153,10 +153,82 @@ class getDid(resource.Resource):
             
             if validDid:
                 print("VALID DID")
+                return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
             else:
                 print("INVALID DID")
+                return aiocoap.Message(payload="INVALID DID".encode('ascii'))
+
+
+def verifyData(response):
+    validData = True #Return value
+    
+    result = response.split(" ")
+    
+    did_document_encoded = result[0].split(".")     
+    data_encoded = result[2].split(".")
+    
+    did_document = base64UrlDecode(did_document_encoded[0].encode('utf-8'))
+    did_document = json.loads(did_document)
+    
+    print(did_document)
+    
+    data = base64UrlDecode(data_encoded[0].encode('utf-8'))
+    data = json.loads(data)
+    
+    print(data)
+    
+    
+    #------------------VERIFY SIGNATURE OF DATA WITH DID DOCUMENT JWK------------------
+    #----------------------------------------------------------------------------------
+    did_document_public_key = base64UrlDecode(did_document['attestation']['publicKeyJwk']['x'].encode('utf-8'))
+    did_document_public_key = base64.b64encode(did_document_public_key)
+    
+    #PROOF JWK PUBLIC KEY
+    verifyKey = ed25519.VerifyingKey(did_document_public_key, encoding="base64")
+    
+    #SIGNATURE OF PROOF HEADER + PROOF PAYLOAD SPEPARATED BY A DOT
+    signature = base64UrlDecode(data_encoded[1].encode('utf-8'))
+    signature = base64.b64encode(signature)
+    
+    #STRING OF PROOF HEADER + PROOF PAYLOAD SPEPARATED BY A DOT WHICH WE WANT TO VERIFY
+    proof_string = json.dumps(data, separators=(',', ':'))
+    proof_string = proof_string.encode('utf-8')
             
-            return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+    try:
+        verifyKey.verify(signature, proof_string, encoding="base64") #TODO SIGNATURE IS TOO BIG???
+        print("Proof Signature is valid")
+    except:
+        print("Proof Signature is bad!")
+        validData = False
+        
+    return validData
+    
+    
+    
+class getData(resource.Resource):
+    async def render_get(self, request):
+        protocol = await Context.create_client_context()
+
+        request = Message(code=GET, uri='coap://[' + devices['all'][0] + ']/riot/data')
+
+        try:
+            response = await protocol.request(request).response
+        except Exception as e:
+            print('Failed to fetch resource:')
+            print(e)
+        else:
+            print('Result: %s\n%r\n\n'%(response.code, response.payload))
+            
+            validDid = verifyDiD(response.payload.decode('utf-8'))
+            
+            if validDid:
+                print("VALID DID")
+                return aiocoap.Message(payload=response.payload.decode('utf-8').encode('ascii'))
+            else:
+                print("INVALID DID")
+                return aiocoap.Message(payload="INVALID DID".encode('ascii'))
+
+
 
 class wellknown(resource.Resource):
     async def render_get(self, request):
