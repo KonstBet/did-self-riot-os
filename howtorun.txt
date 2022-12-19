@@ -1,5 +1,5 @@
 //----------------------------------//----------------------------------//----------------------------------/
-//###  COAP SERVER RIOT  ###
+//###  COAP SERVER RIOT  ### // DOWNLOAD RIOT FOLDER FROM RIOT REPOSITORY
 $ sudo ip tuntap add tap0 mode tap user ${USER}
 $ sudo ip link set tap0 up
 $ make all term

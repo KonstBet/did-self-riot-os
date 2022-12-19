@@ -1,9 +1,9 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/c25519/edsign.o: \
- /home/momus/proj_DID/RIOT/build/pkg/c25519/src/edsign.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/c25519/edsign.o: \
+ /home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/edsign.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
- /home/momus/proj_DID/RIOT/build/pkg/c25519/src/ed25519.h \
- /home/momus/proj_DID/RIOT/build/pkg/c25519/src/f25519.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/ed25519.h \
+ /home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/f25519.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
@@ -15,17 +15,17 @@
  /usr/include/string.h /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
  /usr/include/strings.h \
- /home/momus/proj_DID/RIOT/build/pkg/c25519/src/sha512.h \
- /home/momus/proj_DID/RIOT/build/pkg/c25519/src/fprime.h \
- /home/momus/proj_DID/RIOT/build/pkg/c25519/src/edsign.h
+ /home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/sha512.h \
+ /home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/fprime.h \
+ /home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/edsign.h
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
-/home/momus/proj_DID/RIOT/build/pkg/c25519/src/ed25519.h:
+/home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/ed25519.h:
 
-/home/momus/proj_DID/RIOT/build/pkg/c25519/src/f25519.h:
+/home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/f25519.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
@@ -69,8 +69,8 @@
 
 /usr/include/strings.h:
 
-/home/momus/proj_DID/RIOT/build/pkg/c25519/src/sha512.h:
+/home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/sha512.h:
 
-/home/momus/proj_DID/RIOT/build/pkg/c25519/src/fprime.h:
+/home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/fprime.h:
 
-/home/momus/proj_DID/RIOT/build/pkg/c25519/src/edsign.h:
+/home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/edsign.h:

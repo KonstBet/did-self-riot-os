@@ -1,7 +1,8 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/hashes/hashes.o: \
- /home/momus/proj_DID/RIOT/sys/hashes/hashes.c /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
- /home/momus/proj_DID/RIOT/sys/include/hashes.h \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/hashes/hashes.o: \
+ /home/momus/did-self-riot-os/RIOT/sys/hashes/hashes.c \
+ /usr/include/stdc-predef.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/hashes.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h /usr/include/inttypes.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
@@ -14,9 +15,9 @@
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
-/home/momus/proj_DID/RIOT/sys/include/hashes.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/hashes.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

@@ -1,7 +1,7 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/hashes/aes128_cmac.o: \
- /home/momus/proj_DID/RIOT/sys/hashes/aes128_cmac.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/hashes/aes128_cmac.o: \
+ /home/momus/did-self-riot-os/RIOT/sys/hashes/aes128_cmac.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
  /usr/include/inttypes.h /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h \
@@ -19,13 +19,13 @@
  /usr/include/bits/stdio.h /usr/include/string.h \
  /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
  /usr/include/strings.h \
- /home/momus/proj_DID/RIOT/sys/include/crypto/ciphers.h \
- /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
- /home/momus/proj_DID/RIOT/sys/include/hashes/aes128_cmac.h
+ /home/momus/did-self-riot-os/RIOT/sys/include/crypto/ciphers.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/hashes/aes128_cmac.h
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
 /usr/include/inttypes.h:
 
@@ -93,8 +93,8 @@
 
 /usr/include/strings.h:
 
-/home/momus/proj_DID/RIOT/sys/include/crypto/ciphers.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/crypto/ciphers.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h:
 
-/home/momus/proj_DID/RIOT/sys/include/hashes/aes128_cmac.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/hashes/aes128_cmac.h:

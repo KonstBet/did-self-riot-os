@@ -1,7 +1,8 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/fmt/fmt.o: \
- /home/momus/proj_DID/RIOT/sys/fmt/fmt.c /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
- /home/momus/proj_DID/RIOT/core/lib/include/assert.h \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/fmt/fmt.o: \
+ /home/momus/did-self-riot-os/RIOT/sys/fmt/fmt.c \
+ /usr/include/stdc-predef.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/assert.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
@@ -22,18 +23,18 @@
  /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
  /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
  /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h \
- /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
- /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
- /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
- /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
- /home/momus/proj_DID/RIOT/core/lib/include/container.h \
- /home/momus/proj_DID/RIOT/sys/include/fmt.h
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/riot_version.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/container.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/fmt.h
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/assert.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/assert.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdarg.h:
 
@@ -113,14 +114,14 @@
 
 /usr/include/bits/unistd_ext.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/kernel_defines.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/riot_version.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/compiler_hints.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/container.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/container.h:
 
-/home/momus/proj_DID/RIOT/sys/include/fmt.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/fmt.h:

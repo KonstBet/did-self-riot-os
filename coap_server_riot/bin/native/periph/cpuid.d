@@ -1,7 +1,7 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/periph/cpuid.o: \
- /home/momus/proj_DID/RIOT/cpu/native/periph/cpuid.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/periph/cpuid.o: \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/periph/cpuid.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
  /usr/include/string.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
@@ -13,8 +13,8 @@
  /usr/include/bits/timesize.h /usr/include/bits/typesizes.h \
  /usr/include/bits/time64.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
- /home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h \
- /home/momus/proj_DID/RIOT/cpu/native/include/native_internal.h \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/include/cpu_conf.h \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/include/native_internal.h \
  /usr/include/signal.h /usr/include/bits/signum.h \
  /usr/include/bits/signum-generic.h \
  /usr/include/bits/types/sig_atomic_t.h \
@@ -61,20 +61,21 @@
  /usr/include/bits/types/struct_itimerspec.h /usr/include/sys/time.h \
  /usr/include/sys/stat.h /usr/include/bits/stat.h /usr/include/sys/uio.h \
  /usr/include/bits/uio_lim.h \
- /home/momus/proj_DID/RIOT/core/include/sched.h /usr/include/inttypes.h \
- /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
- /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
- /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
- /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
- /home/momus/proj_DID/RIOT/core/lib/include/container.h \
- /home/momus/proj_DID/RIOT/core/include/native_sched.h \
- /home/momus/proj_DID/RIOT/core/lib/include/clist.h \
+ /home/momus/did-self-riot-os/RIOT/core/include/sched.h \
+ /usr/include/inttypes.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/riot_version.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/container.h \
+ /home/momus/did-self-riot-os/RIOT/core/include/native_sched.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/clist.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
- /home/momus/proj_DID/RIOT/core/lib/include/list.h \
- /home/momus/proj_DID/RIOT/drivers/include/periph/cpuid.h \
- /home/momus/proj_DID/RIOT/cpu/native/include/periph_cpu.h \
- /home/momus/proj_DID/RIOT/cpu/native/include/periph_conf.h \
- /home/momus/proj_DID/RIOT/core/lib/include/macros/units.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/list.h \
+ /home/momus/did-self-riot-os/RIOT/drivers/include/periph/cpuid.h \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/include/periph_cpu.h \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/include/periph_conf.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/macros/units.h \
  /usr/include/linux/gpio.h /usr/include/linux/ioctl.h \
  /usr/include/asm/ioctl.h /usr/include/asm-generic/ioctl.h \
  /usr/include/linux/types.h /usr/include/asm/types.h \
@@ -82,7 +83,7 @@
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
 /usr/include/string.h:
 
@@ -126,9 +127,9 @@
 
 /usr/include/bits/stdint-uintn.h:
 
-/home/momus/proj_DID/RIOT/cpu/native/include/cpu_conf.h:
+/home/momus/did-self-riot-os/RIOT/cpu/native/include/cpu_conf.h:
 
-/home/momus/proj_DID/RIOT/cpu/native/include/native_internal.h:
+/home/momus/did-self-riot-os/RIOT/cpu/native/include/native_internal.h:
 
 /usr/include/signal.h:
 
@@ -308,35 +309,35 @@
 
 /usr/include/bits/uio_lim.h:
 
-/home/momus/proj_DID/RIOT/core/include/sched.h:
+/home/momus/did-self-riot-os/RIOT/core/include/sched.h:
 
 /usr/include/inttypes.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/kernel_defines.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/riot_version.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/compiler_hints.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/container.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/container.h:
 
-/home/momus/proj_DID/RIOT/core/include/native_sched.h:
+/home/momus/did-self-riot-os/RIOT/core/include/native_sched.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/clist.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/clist.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/list.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/list.h:
 
-/home/momus/proj_DID/RIOT/drivers/include/periph/cpuid.h:
+/home/momus/did-self-riot-os/RIOT/drivers/include/periph/cpuid.h:
 
-/home/momus/proj_DID/RIOT/cpu/native/include/periph_cpu.h:
+/home/momus/did-self-riot-os/RIOT/cpu/native/include/periph_cpu.h:
 
-/home/momus/proj_DID/RIOT/cpu/native/include/periph_conf.h:
+/home/momus/did-self-riot-os/RIOT/cpu/native/include/periph_conf.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/macros/units.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/macros/units.h:
 
 /usr/include/linux/gpio.h:
 

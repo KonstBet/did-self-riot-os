@@ -1,8 +1,8 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/c25519/fprime.o: \
- /home/momus/proj_DID/RIOT/build/pkg/c25519/src/fprime.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/c25519/fprime.o: \
+ /home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/fprime.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
- /home/momus/proj_DID/RIOT/build/pkg/c25519/src/fprime.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/fprime.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
@@ -17,9 +17,9 @@
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
-/home/momus/proj_DID/RIOT/build/pkg/c25519/src/fprime.h:
+/home/momus/did-self-riot-os/RIOT/build/pkg/c25519/src/fprime.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 

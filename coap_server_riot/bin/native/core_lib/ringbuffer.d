@@ -1,8 +1,8 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/core_lib/ringbuffer.o: \
- /home/momus/proj_DID/RIOT/core/lib/ringbuffer.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/core_lib/ringbuffer.o: \
+ /home/momus/did-self-riot-os/RIOT/core/lib/ringbuffer.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
- /home/momus/proj_DID/RIOT/core/lib/include/ringbuffer.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/ringbuffer.h \
  /usr/include/string.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
@@ -13,9 +13,9 @@
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/ringbuffer.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/ringbuffer.h:
 
 /usr/include/string.h:
 

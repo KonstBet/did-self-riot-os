@@ -1,7 +1,7 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/crypto/ciphers.o: \
- /home/momus/proj_DID/RIOT/sys/crypto/ciphers.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/crypto/ciphers.o: \
+ /home/momus/did-self-riot-os/RIOT/sys/crypto/ciphers.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
  /usr/include/string.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
@@ -17,15 +17,15 @@
  /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  /usr/include/bits/stdio.h \
- /home/momus/proj_DID/RIOT/sys/include/crypto/ciphers.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/crypto/ciphers.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/wchar.h /usr/include/bits/stdint-intn.h \
  /usr/include/bits/stdint-uintn.h \
- /home/momus/proj_DID/RIOT/core/lib/include/modules.h
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
 /usr/include/string.h:
 
@@ -81,7 +81,7 @@
 
 /usr/include/bits/stdio.h:
 
-/home/momus/proj_DID/RIOT/sys/include/crypto/ciphers.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/crypto/ciphers.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
@@ -93,4 +93,4 @@
 
 /usr/include/bits/stdint-uintn.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h:

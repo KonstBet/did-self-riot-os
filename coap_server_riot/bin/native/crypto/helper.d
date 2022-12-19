@@ -1,7 +1,8 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/crypto/helper.o: \
- /home/momus/proj_DID/RIOT/sys/crypto/helper.c /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
- /home/momus/proj_DID/RIOT/sys/include/crypto/helper.h \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/crypto/helper.o: \
+ /home/momus/did-self-riot-os/RIOT/sys/crypto/helper.c \
+ /usr/include/stdc-predef.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/crypto/helper.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
@@ -14,9 +15,9 @@
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
-/home/momus/proj_DID/RIOT/sys/include/crypto/helper.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/crypto/helper.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h:
 

@@ -1,7 +1,7 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/ipv6_hdr/ipv6_hdr_print.o: \
- /home/momus/proj_DID/RIOT/sys/net/network_layer/ipv6/hdr/ipv6_hdr_print.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/ipv6_hdr/ipv6_hdr_print.o: \
+ /home/momus/did-self-riot-os/RIOT/sys/net/network_layer/ipv6/hdr/ipv6_hdr_print.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
  /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
@@ -18,18 +18,19 @@
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/wchar.h /usr/include/bits/stdint-intn.h \
  /usr/include/bits/stdint-uintn.h \
- /home/momus/proj_DID/RIOT/sys/include/net/ipv6/hdr.h \
- /home/momus/proj_DID/RIOT/sys/include/byteorder.h /usr/include/string.h \
- /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
- /usr/include/strings.h /home/momus/proj_DID/RIOT/sys/include/unaligned.h \
- /home/momus/proj_DID/RIOT/sys/include/net/inet_csum.h \
- /home/momus/proj_DID/RIOT/sys/include/net/ipv6/addr.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/net/ipv6/hdr.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/byteorder.h \
+ /usr/include/string.h /usr/include/bits/types/locale_t.h \
+ /usr/include/bits/types/__locale_t.h /usr/include/strings.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/unaligned.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/net/inet_csum.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/net/ipv6/addr.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
- /home/momus/proj_DID/RIOT/sys/include/net/ipv4/addr.h
+ /home/momus/did-self-riot-os/RIOT/sys/include/net/ipv4/addr.h
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
 /usr/include/stdio.h:
 
@@ -89,9 +90,9 @@
 
 /usr/include/bits/stdint-uintn.h:
 
-/home/momus/proj_DID/RIOT/sys/include/net/ipv6/hdr.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/net/ipv6/hdr.h:
 
-/home/momus/proj_DID/RIOT/sys/include/byteorder.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/byteorder.h:
 
 /usr/include/string.h:
 
@@ -101,12 +102,12 @@
 
 /usr/include/strings.h:
 
-/home/momus/proj_DID/RIOT/sys/include/unaligned.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/unaligned.h:
 
-/home/momus/proj_DID/RIOT/sys/include/net/inet_csum.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/net/inet_csum.h:
 
-/home/momus/proj_DID/RIOT/sys/include/net/ipv6/addr.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/net/ipv6/addr.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
 
-/home/momus/proj_DID/RIOT/sys/include/net/ipv4/addr.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/net/ipv4/addr.h:

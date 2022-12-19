@@ -1,6 +1,7 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/iolist/iolist.o: \
- /home/momus/proj_DID/RIOT/sys/iolist/iolist.c /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/iolist/iolist.o: \
+ /home/momus/did-self-riot-os/RIOT/sys/iolist/iolist.c \
+ /usr/include/stdc-predef.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
  /usr/include/errno.h /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h \
@@ -20,22 +21,25 @@
  /usr/include/endian.h /usr/include/bits/endian.h \
  /usr/include/bits/endianness.h /usr/include/bits/byteswap.h \
  /usr/include/bits/uintn-identity.h \
- /home/momus/proj_DID/RIOT/sys/posix/include/sys/select.h \
+ /home/momus/did-self-riot-os/RIOT/sys/posix/include/sys/select.h \
  /usr/include/sys/time.h /usr/include/bits/types/struct_timeval.h \
- /home/momus/proj_DID/RIOT/sys/include/bitfield.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/bitfield.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/irq.h \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/include/cpu_conf.h \
  /usr/include/bits/pthreadtypes.h /usr/include/bits/thread-shared-types.h \
  /usr/include/bits/pthreadtypes-arch.h /usr/include/bits/struct_mutex.h \
  /usr/include/bits/struct_rwlock.h /usr/include/bits/types/struct_iovec.h \
  /usr/include/bits/uio_lim.h \
- /home/momus/proj_DID/RIOT/sys/include/iolist.h /usr/include/unistd.h \
- /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
- /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
- /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h
+ /home/momus/did-self-riot-os/RIOT/sys/include/iolist.h \
+ /usr/include/unistd.h /usr/include/bits/posix_opt.h \
+ /usr/include/bits/environments.h /usr/include/bits/confname.h \
+ /usr/include/bits/getopt_posix.h /usr/include/bits/getopt_core.h \
+ /usr/include/bits/unistd_ext.h
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
 /usr/include/errno.h:
 
@@ -113,15 +117,19 @@
 
 /usr/include/bits/uintn-identity.h:
 
-/home/momus/proj_DID/RIOT/sys/posix/include/sys/select.h:
+/home/momus/did-self-riot-os/RIOT/sys/posix/include/sys/select.h:
 
 /usr/include/sys/time.h:
 
 /usr/include/bits/types/struct_timeval.h:
 
-/home/momus/proj_DID/RIOT/sys/include/bitfield.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/bitfield.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
+
+/home/momus/did-self-riot-os/RIOT/core/lib/include/irq.h:
+
+/home/momus/did-self-riot-os/RIOT/cpu/native/include/cpu_conf.h:
 
 /usr/include/bits/pthreadtypes.h:
 
@@ -137,7 +145,7 @@
 
 /usr/include/bits/uio_lim.h:
 
-/home/momus/proj_DID/RIOT/sys/include/iolist.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/iolist.h:
 
 /usr/include/unistd.h:
 

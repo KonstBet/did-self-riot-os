@@ -1,7 +1,7 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/periph_common/cpuid.o: \
- /home/momus/proj_DID/RIOT/drivers/periph_common/cpuid.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/periph_common/cpuid.o: \
+ /home/momus/did-self-riot-os/RIOT/drivers/periph_common/cpuid.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
@@ -13,10 +13,10 @@
  /usr/include/string.h /usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h \
  /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
  /usr/include/strings.h \
- /home/momus/proj_DID/RIOT/drivers/include/periph/cpuid.h \
- /home/momus/proj_DID/RIOT/cpu/native/include/periph_cpu.h \
- /home/momus/proj_DID/RIOT/cpu/native/include/periph_conf.h \
- /home/momus/proj_DID/RIOT/core/lib/include/macros/units.h \
+ /home/momus/did-self-riot-os/RIOT/drivers/include/periph/cpuid.h \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/include/periph_cpu.h \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/include/periph_conf.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/macros/units.h \
  /usr/include/linux/gpio.h /usr/include/linux/ioctl.h \
  /usr/include/asm/ioctl.h /usr/include/asm-generic/ioctl.h \
  /usr/include/linux/types.h /usr/include/asm/types.h \
@@ -28,7 +28,7 @@
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
@@ -72,13 +72,13 @@
 
 /usr/include/strings.h:
 
-/home/momus/proj_DID/RIOT/drivers/include/periph/cpuid.h:
+/home/momus/did-self-riot-os/RIOT/drivers/include/periph/cpuid.h:
 
-/home/momus/proj_DID/RIOT/cpu/native/include/periph_cpu.h:
+/home/momus/did-self-riot-os/RIOT/cpu/native/include/periph_cpu.h:
 
-/home/momus/proj_DID/RIOT/cpu/native/include/periph_conf.h:
+/home/momus/did-self-riot-os/RIOT/cpu/native/include/periph_conf.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/macros/units.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/macros/units.h:
 
 /usr/include/linux/gpio.h:
 

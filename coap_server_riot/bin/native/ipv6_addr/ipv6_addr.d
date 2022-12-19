@@ -1,8 +1,8 @@
-/home/momus/proj_DID/coap_server_riot/bin/native/ipv6_addr/ipv6_addr.o: \
- /home/momus/proj_DID/RIOT/sys/net/network_layer/ipv6/addr/ipv6_addr.c \
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/ipv6_addr/ipv6_addr.o: \
+ /home/momus/did-self-riot-os/RIOT/sys/net/network_layer/ipv6/addr/ipv6_addr.c \
  /usr/include/stdc-predef.h \
- /home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h \
- /home/momus/proj_DID/RIOT/core/lib/include/assert.h \
+ /home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/assert.h \
  /usr/include/stdlib.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
@@ -18,14 +18,16 @@
  /usr/include/endian.h /usr/include/bits/endian.h \
  /usr/include/bits/endianness.h /usr/include/bits/byteswap.h \
  /usr/include/bits/uintn-identity.h \
- /home/momus/proj_DID/RIOT/sys/posix/include/sys/select.h \
+ /home/momus/did-self-riot-os/RIOT/sys/posix/include/sys/select.h \
  /usr/include/string.h /usr/include/bits/types/locale_t.h \
  /usr/include/bits/types/__locale_t.h /usr/include/strings.h \
  /usr/include/sys/time.h /usr/include/bits/types/struct_timeval.h \
- /home/momus/proj_DID/RIOT/sys/include/bitfield.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/bitfield.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h /usr/include/stdint.h \
  /usr/include/bits/wchar.h /usr/include/bits/stdint-uintn.h \
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/irq.h \
+ /home/momus/did-self-riot-os/RIOT/cpu/native/include/cpu_conf.h \
  /usr/include/bits/pthreadtypes.h /usr/include/bits/thread-shared-types.h \
  /usr/include/bits/pthreadtypes-arch.h /usr/include/bits/struct_mutex.h \
  /usr/include/bits/struct_rwlock.h /usr/include/alloca.h \
@@ -35,22 +37,23 @@
  /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
  /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
- /usr/include/bits/stdio.h /home/momus/proj_DID/RIOT/sys/include/fmt.h \
- /home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h \
- /home/momus/proj_DID/RIOT/core/lib/include/modules.h \
- /home/momus/proj_DID/RIOT/core/lib/include/riot_version.h \
- /home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h \
- /home/momus/proj_DID/RIOT/core/lib/include/container.h \
- /home/momus/proj_DID/RIOT/sys/include/net/ipv6/addr.h \
- /home/momus/proj_DID/RIOT/sys/include/byteorder.h \
- /home/momus/proj_DID/RIOT/sys/include/unaligned.h \
- /home/momus/proj_DID/RIOT/sys/include/net/ipv4/addr.h
+ /usr/include/bits/stdio.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/fmt.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/kernel_defines.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/riot_version.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/compiler_hints.h \
+ /home/momus/did-self-riot-os/RIOT/core/lib/include/container.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/net/ipv6/addr.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/byteorder.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/unaligned.h \
+ /home/momus/did-self-riot-os/RIOT/sys/include/net/ipv4/addr.h
 
 /usr/include/stdc-predef.h:
 
-/home/momus/proj_DID/coap_server_riot/bin/native/riotbuild/riotbuild.h:
+/home/momus/did-self-riot-os/coap_server_riot/bin/native/riotbuild/riotbuild.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/assert.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/assert.h:
 
 /usr/include/stdlib.h:
 
@@ -108,7 +111,7 @@
 
 /usr/include/bits/uintn-identity.h:
 
-/home/momus/proj_DID/RIOT/sys/posix/include/sys/select.h:
+/home/momus/did-self-riot-os/RIOT/sys/posix/include/sys/select.h:
 
 /usr/include/string.h:
 
@@ -122,7 +125,7 @@
 
 /usr/include/bits/types/struct_timeval.h:
 
-/home/momus/proj_DID/RIOT/sys/include/bitfield.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/bitfield.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h:
 
@@ -133,6 +136,10 @@
 /usr/include/bits/stdint-uintn.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/9/include/stdbool.h:
+
+/home/momus/did-self-riot-os/RIOT/core/lib/include/irq.h:
+
+/home/momus/did-self-riot-os/RIOT/cpu/native/include/cpu_conf.h:
 
 /usr/include/bits/pthreadtypes.h:
 
@@ -172,22 +179,22 @@
 
 /usr/include/bits/stdio.h:
 
-/home/momus/proj_DID/RIOT/sys/include/fmt.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/fmt.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/kernel_defines.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/kernel_defines.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/modules.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/modules.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/riot_version.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/riot_version.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/compiler_hints.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/compiler_hints.h:
 
-/home/momus/proj_DID/RIOT/core/lib/include/container.h:
+/home/momus/did-self-riot-os/RIOT/core/lib/include/container.h:
 
-/home/momus/proj_DID/RIOT/sys/include/net/ipv6/addr.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/net/ipv6/addr.h:
 
-/home/momus/proj_DID/RIOT/sys/include/byteorder.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/byteorder.h:
 
-/home/momus/proj_DID/RIOT/sys/include/unaligned.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/unaligned.h:
 
-/home/momus/proj_DID/RIOT/sys/include/net/ipv4/addr.h:
+/home/momus/did-self-riot-os/RIOT/sys/include/net/ipv4/addr.h:
