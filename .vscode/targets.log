@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Dec 17 18:33:32 2022
+# Make data base, printed on Mon Dec 19 18:33:36 2022
 
 # Variables
 
@@ -53,7 +53,7 @@ PATH = /home/momus/.vscode-server/bin/1ad8d514439d5077d2b0b7ee64d2ce82a9308e5a/b
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-1074c147-0f1c-4f4d-b666-6ed5b941a90c.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-574f068c-6681-456d-a45c-7c34905d1428.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -65,7 +65,7 @@ PWD = /home/momus/proj_DID
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/27_interop
+WSL_INTEROP = /run/WSL/12_interop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -140,8 +140,10 @@ LANG = C
 TERM = xterm-256color
 # environment
 WSL_DISTRO_NAME = Ubuntu
+# environment
+MOTD_SHOWN = update-motd
 # variable set hash-table stats:
-# Load=64/1024=6%, Rehash=0, Collisions=4/86=5%
+# Load=65/1024=6%, Rehash=0, Collisions=4/87=5%
 
 # Pattern-specific Variable Values
 
@@ -207,6 +209,6 @@ GNUmakefile:
 # strcache performance: lookups = 24 / hit rate = 12%
 # hash-table stats:
 # Load=21/8192=0%, Rehash=0, Collisions=1/24=4%
-# Finished Make data base on Sat Dec 17 18:33:32 2022
+# Finished Make data base on Mon Dec 19 18:33:36 2022
 
  

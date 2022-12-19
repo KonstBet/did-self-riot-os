@@ -1,33 +1,32 @@
-//GATEWAY
-$ python3 gatewayServer.py
-
-
-//COAP SERVER
+//----------------------------------//----------------------------------//----------------------------------/
+//###  COAP SERVER RIOT  ###
 $ sudo ip tuntap add tap0 mode tap user ${USER}
 $ sudo ip link set tap0 up
 $ make all term
+OR
+$ ./run_coap_server.sh
+//----------------------------------//----------------------------------//----------------------------------/
 
 
-//Requests from terminal with coap-client
-$ coap-client -m get coap://localhost/riot/board
-$ coap-client -m get coap://localhost/riot/createkeys
-$ coap-client -m get coap://localhost/riot/getpublickey
-$ coap-client -m post coap://localhost/newdevice -e '{"ipv6": "fe80::3c4f:23ff:febb:8b1f", "interface": "tap0"}'
-
-$ coap-client -m post coap://localhost/riot/signandverify -e message
+//----------------------------------//----------------------------------//----------------------------------/
+//###  GATEWAY PYTHON  ###
+$ python3 gateway_coap_server_client.py
+//----------------------------------//----------------------------------//----------------------------------/
 
 
+//----------------------------------//----------------------------------//----------------------------------/
+//###  COAP CLIENT  ### //Requests from terminal with coap-client
+//Read ipv6 address from running RIOT CoAP Server e.g.({"IPv6 addresses": ["fe80::381e:40ff:febf:26bf"]})
+$ coap-client -m post coap://localhost/newdevice -e '{"ipv6": "fe80::381e:40ff:febf:26bf", "interface": "tap0"}'
 
+//READ RESOURCES
+$ coap-client -m get coap://localhost/riot/board //READ BOARD
+$ coap-client -m get coap://localhost/riot/did //READ DID Document & Proof as defined in theory (base64url encoded, separated by space etc.)
+$ coap-client -m get coap://localhost/riot/data //READ DATA. CLIENT RECEIVES THE REAL DATA, THE DATA ARE VERIFIED IN GATEWAY
+//WE CAN CHANGE GATEWAY TO SEND DATA WITH DID DOCUMENT SO THEY CAN BE VERIFIED AT THE CLIENT IF WE WANT INSTEAD FROM THE GATEWAY
 
-coap-client -m post coap://[ff02::1%tap0]/riot/sign -e message
-
-coap-client -m post coap://[ff02::1%tap0]/riot/sign -e message -N
-
-
-
-{
-  "kty": "OKP",
-  "alg": "EdDSA",
-  "crv": "Ed25519",
-  "x": "60mR98SQlHUSeLeIu7TeJBTLRG10qlcDLU4AJjQdqMQ"
-}
+//WE CAN ALSO USE RESOURCES FOR DEBUGGING PURPOSES TO RECEIVE DID DOCUMENT AND PROOF (NOT BASE64URL ENCODED)
+//GATEWAY CANT READ THOSE RESOURCES, NO ENDPOINT
+$ coap-client -m get coap://[fe80::381e:40ff:febf:26bf%tap0]/riot/did/document
+$ coap-client -m get coap://[fe80::381e:40ff:febf:26bf%tap0]/riot/did/proof
+//----------------------------------//----------------------------------//----------------------------------/
