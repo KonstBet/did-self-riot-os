@@ -47,7 +47,6 @@ typedef struct {
 typedef struct {
     char* id;
     attestation* attestation;
-    char* signature;
 } did_document;
 
 //DID ALL INFORMATION -------------------------------------------
@@ -215,7 +214,7 @@ char* attestationToString(attestation* attestation){
 
 char* didDocumentToString(did_document* document){
     char* document_str = calloc(300, sizeof(char));
-    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s,\"signature\":\"%s\"}", document->id, attestationToString(document->attestation), document->signature);
+    sprintf(document_str, "{\"id\":\"%s\",\"attestation\":%s}", document->id, attestationToString(document->attestation));
     return document_str;
 }
 
@@ -242,7 +241,7 @@ char* didDocumentToStringAsBase64url(did_document* document){
     char* document_str_base64 = calloc(300, sizeof(char));
     bytes_to_base64url(document_str, strlen(document_str), document_str_base64);
 
-    sprintf(document_base64, "%s.%s", document_str_base64, document->signature);
+    sprintf(document_base64, "%s", document_str_base64);
     
     return document_base64;
 }
@@ -313,8 +312,7 @@ did_document* createDidDocument(char* id, attestation* attestation){
 
     char* msg = didDocumentToStringAsBase64urlNoSignature(document);
     printf("\n\nbbb\n%s\n\n", msg);
-    char *signature_base64 = sign_message((uint8_t*) msg, strlen(msg), proof_key_pair->secret_key_bytes, proof_key_pair->public_key_bytes);
-    document->signature = signature_base64;
+    
     
     return document;
 }
