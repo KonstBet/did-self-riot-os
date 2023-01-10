@@ -35,7 +35,7 @@ Read Resources through the Gateway.
 ```
 $ coap-client -m get coap://localhost/riot/board //READ BOARD
 $ coap-client -m get coap://localhost/riot/did //READ DID Document & Proof
-$ coap-client -m get coap://localhost/riot/data //READ DATA. THE DATA ARE VERIFIED IN GATEWAY
+$ coap-client -m get coap://localhost/riot/data //READ DATA (the data are verified in gateway)
 ```
 
 ## Author
